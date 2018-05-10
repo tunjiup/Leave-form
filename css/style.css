@@ -1,0 +1,240 @@
+html, body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 9.5pt;
+  background: #e5e5e5;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/*Bootstrap*/
+.navbar{
+  background: #fff;
+  border-bottom: 1px solid #c3c3c3;
+}
+
+.navbar-brand{
+  color: #000;
+}
+
+.main.formPaper{
+  width: 210mm;
+  height: 290mm;
+  background: #fff;
+  margin: 10px auto;
+  padding: 0in 0.65in 1in;
+  position: relative;
+  color: #000;
+  opacity: 1;
+}
+
+.formPaper .header{
+  height: 1.12in;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-top: 13px;
+}
+
+.header img{
+  width: 0.9in;
+}
+
+.header > .address{
+  display: block;
+  font-size: 7pt;
+}
+
+.content .title{
+  font-size: 12pt;
+  font-weight: bold;
+  text-align: center;
+}
+
+.section > .s-title{
+  background: #000;
+  color: #fff;
+  font-size: 10pt;
+  text-align: center;
+  font-weight: bold;
+}
+
+.section > .s-title.w-spc{
+  margin-top: 9.5pt;
+}
+
+.form{
+  padding: 0 10px;
+}
+
+.hr-tbl, .ap-tbl{
+  padding: 10px;
+}
+
+.form > table tr > td{
+  height: 0.3in;
+}
+
+.form .lbl{
+  width: 1.18in;
+}
+
+.form .tplr .sublbl{
+  width: 0.94in
+}
+
+.form .subinpt{
+  width: 0.25in;
+  position: relative;
+}
+
+td.space{
+  width: 0.24in
+}
+
+td.endSpace{
+  width: 0.50in
+}
+
+.rfl{
+  margin: 9.5pt 0;
+  padding: 9.5pt 9.5pt 9.5pt 0;
+  border: 1px solid #000; border-left: 0;
+}
+
+.reminder{
+  font-size: 9pt;
+  font-style: italic;
+}
+
+.lv-container{
+  height:0.63in;
+  width: 7.1in;
+  vertical-align: top;
+}
+
+.lv-checkbox table{
+  width: auto;
+}
+
+input[type="text"]{
+  border: 0;
+  border-bottom: 1px solid #000;
+  width: 100%;
+}
+
+.subinpt input[type="checkbox"]{
+  display: none;
+}
+
+.subinpt label:after{
+  content: 'X';
+  width: 16px;
+  font-size: 9pt;
+  height: 16px;
+  position: absolute;
+  top: -3px;
+  left: 2px;
+  /* border: 3px solid #333; */
+  border-top: none;
+  border-right: none;
+  background: transparent;
+  opacity: 0;
+}
+
+.subinpt input[type=checkbox]:checked + label:after {
+    opacity: 1;
+}
+
+.subinpt label{
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  position: absolute;
+  top: 6px;
+  left: 4px;
+  background: #fcfff4;
+  background: transparent;
+  /* border-radius: 4px; */
+  box-shadow: none;
+  border: 1px solid #000;
+}
+
+.text-center > input[type="text"]{
+  text-align: center;
+}
+
+.ap-tbl input{
+  border: 0;
+  height: 0.44in;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.hr-tbl table, .ap-tbl table{
+  font-size: 9.3pt;
+}
+
+.hr-tbl table tr td,
+.ap-tbl table tr td{
+  border: 1px solid #585858;
+  vertical-align: top
+}
+
+.hr-lbl{
+  width: 1.71in;
+  height: 0.26in;
+  text-align: center;
+  font-size: 8.5pt;
+}
+
+.hr-lbl-col{
+  width: 1.3in;
+  height: 0.26in;
+  font-size: 8.5pt;
+  text-align: center;
+}
+
+.hr-lbl-rowcol{
+  width: 1.3in;
+  height: 0.25in;
+  padding-left: 10px;
+}
+
+.hr-lbl-row{
+   width: 1.71in;
+   height: 0.25in;
+   padding-left: 10px;
+}
+
+.ap-lbl{
+  width: 2.04in;
+  height: 0.16in;
+  text-align: center;
+}
+
+.ap-lbl-row{
+  width: 2.04in;
+  height: 0.46in;
+  border: 1px solid #000;
+  text-align: left;
+  vertical-align: top
+}
+
+.footer{
+  width: 100%;
+  height: 0.5in;
+  font-size: 10pt;
+  opacity: 0.6;
+  font-style: italic;
+  padding: 10pt;
+}
+
+.footer > .footer-text{
+  float: left;
+}
+
+.footer > .footer-text.right{
+  float: right;
+}
