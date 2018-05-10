@@ -238,3 +238,9 @@ input[type="text"]{
 .footer > .footer-text.right{
   float: right;
 }
+
+.print{
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
