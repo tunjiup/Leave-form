@@ -14,6 +14,15 @@ class Welcome extends MY_Controller {
 		$this->parser->parse('dashboard',$data);
 	}
 
+	public function form() {
+		
+		$this->form_validation->set_rules('title', 'With pay', 'trim|xss_clean');
+		$this->form_validation->set_rules('start', 'Date From', 'trim|xss_clean');
+		$this->form_validation->set_rules('end', 'Date to', 'trim|xss_clean');
+		$this->form_validation->set_rules('types', 'Type of Leave Requested', 'trim|xss_clean');
+		$this->form_validation->set_rules('reason', 'Reason for Leave', 'trim|xss_clean');
+	}
+
 	/**
 	* Show All Events
 	* @return JSON String
