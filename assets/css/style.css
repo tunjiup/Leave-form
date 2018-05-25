@@ -543,7 +543,6 @@ body > .row.main-container{
     height:40px;
     border: 1px solid #ccc;;
     background: #fafafa;
-    transition:0.2s ease-in-out;
     border-radius: 0;
     border: 0;
     border-bottom: 1px solid #cecece;
@@ -553,11 +552,6 @@ body > .row.main-container{
 .login-form input:focus{
     outline: 0;
     background: #eee;
-}
-
-.login-form button.login{
-    margin-top:15px;
-    padding: 10px 20px;
 }
 
 .login-form label{
@@ -581,6 +575,7 @@ body > .row.main-container{
   font-weight: 600;
   color: #000;
   text-align: center;
+  padding: 10px 20px;
 }
 
 .loginMain{
