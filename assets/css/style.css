@@ -321,6 +321,12 @@ body > .row.main-container{
   -moz-box-shadow: 1px 5px 7px rgba(33,33,33,1);    /* Safari+Chrome */
   -webkit-box-shadow: 1px 5px 7px rgba(33,33,33,.7);    /* Opera */
   box-shadow: 1px 5px 7px rgba(33, 33, 33, 0.27);
+  cursor: pointer;
+}
+
+.leave-wrapper:hover{
+  background: #ffe38e;
+  box-shadow: 0 0 20px 0px #ffc700, 1px 5px 7px rgba(33, 33, 33, 0.27);
 }
 
 .lv-name{
@@ -469,4 +475,117 @@ body > .row.main-container{
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
+}
+
+#editProfile label{
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#editProfile input{
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid #cecece;
+}
+
+
+#editProfile input[type="submit"]{
+  border-radius: 0;
+  border: 1px solid #cecece;
+  margin: 10px 0;
+  background: #efefef;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/*Login*/
+
+.login-container{
+    position: relative;
+    width: 60%;
+    margin: 20% auto;
+    padding: 40px;
+    text-align: left;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+.login-container::before,.login-container::after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 3.5px;
+    left: 0;
+    background: #fff;
+    z-index: -1;
+    -webkit-transform: rotateZ(4deg);
+    -moz-transform: rotateZ(4deg);
+    -ms-transform: rotateZ(4deg);
+    border: 1px solid #ccc;
+
+}
+
+.login-container::after{
+    top: 5px;
+    z-index: -2;
+    -webkit-transform: rotateZ(-2deg);
+    -moz-transform: rotateZ(-2deg);
+    -ms-transform: rotateZ(-2deg);
+
+}
+
+.login-form input{
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    height:40px;
+    border: 1px solid #ccc;;
+    background: #fafafa;
+    transition:0.2s ease-in-out;
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid #cecece;
+    background: #fff;
+}
+
+.login-form input:focus{
+    outline: 0;
+    background: #eee;
+}
+
+.login-form button.login{
+    margin-top:15px;
+    padding: 10px 20px;
+}
+
+.login-form label{
+  width: 100%;
+  display: block;
+  margin: 10px 0;
+}
+
+.login-form a.fpass{
+  text-align: left;
+  font-weight: 600;
+  color: #ca4c4c;
+}
+
+.login-form input[type="submit"]{
+  border-radius: 0;
+  border: 1px solid #cecece;
+  margin: 30px 0;
+  background: #efefef;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+}
+
+.loginMain{
+  top: 0;
+  position: absolute;
+  background: #212121;
+  z-index: -10;
 }

@@ -15,7 +15,7 @@ class Welcome extends MY_Controller {
 	}
 
 	public function form() {
-		
+
 		$this->form_validation->set_rules('title', 'With pay', 'trim|xss_clean');
 		$this->form_validation->set_rules('start', 'Date From', 'trim|xss_clean');
 		$this->form_validation->set_rules('end', 'Date to', 'trim|xss_clean');
@@ -38,7 +38,7 @@ class Welcome extends MY_Controller {
 		$allEvents = array();
 
 		foreach ($events as $event) {
-			
+
 			$allEvents[] = array(
 				'id' => $event->employee_id,
 				'title' => $event->username.' - '.$event->title.' '.$event->leaveprefix,
@@ -82,7 +82,7 @@ class Welcome extends MY_Controller {
 
 			$output .= '
 				<div class="col-sm">
-					<div class="leave-wrapper">
+					<div class="leave-wrapper" data-toggle="modal" data-target="#editProfile">
 						<div class="lv-name">'.$val->username.'</div>
 						<div class="lv-info">
 							<div class="lv-label">VL</div>
