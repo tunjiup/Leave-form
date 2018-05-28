@@ -17,8 +17,9 @@
 		<div class="row main-container">
 			<div class="col-sm body-container">
 				<div class="requestBtn">
-					<button>Request Leave</button>
+					<a href="<?php echo base_url('leave-form'); ?>">Request Leave</a>
 				</div>
+				<?php echo $this->session->flashdata('success'); ?>
 				<div class="row leave-container">
 					<?php echo $employee; ?>
 				</div>
@@ -47,43 +48,52 @@
 
 		<!-- Modal -->
 		<div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="editProfileLabel">Edit Profile</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		        <form>
-							<label>
-								Username
-								<input type="text" placeholder="username"  class="form-control" />
-							</label>
-							<label>
-								Password
-								<input type="password" placeholder="password" class="form-control" />
-							</label>
-							<label>
-								Email
-								<input type="email" placeholder="email" class="form-control" />
-							</label>
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editProfileLabel">Edit Profile </h5>
+						<a href="#" id="modalChangePass">Change Password</a>
+					</div>
+					<div class="modal-body">
+						<form method="post" action="<?php echo base_url('profile/update'); ?>">
+							<label>Username<input type="text" placeholder="username" name="username" class="form-control"  value="<?php echo $mydata['username']; ?>" required/></label>
+							<label>Gender<?php echo form_dropdown('gender', gender(), (isset($mydata['gender'])) ? $mydata['gender']: '', 'class="form-control" required'); ?></label>
+							<label>Fullname<input type="text" placeholder="Juan Dela Cruz" name="fullname" class="form-control" value="<?php echo $mydata['fullname']; ?>"  required></label>
+							<label>Address<input type="text" placeholder="Address" name="address" class="form-control" value="<?php echo $mydata['address']; ?>"  required></label>
+							<label>Email<input type="email" placeholder="juan@sample.com" name="email" class="form-control" value="<?php echo $mydata['email']; ?>"  required></label>
+							<label>Phone<input type="text" placeholder="+6309312458214" name="phone" class="form-control" value="<?php echo $mydata['cp_no']; ?>" required/></label>
 							<input type="submit" class="form-control btn btn-default pull-right">
 						</form>
-		      </div>
-		    </div>
-		  </div>
+					</div>
+				</div>
+			</div>
 		</div>
 
-
-
+		<!-- Modal Change Password -->
+		<div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editProfileLabel">Change Password</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<form method="post" action="<?php echo base_url('change-password'); ?>">
+							<label>New Password<input type="password" placeholder="Password" name="password" id="pass" class="form-control" required/></label>
+							<label>Confirm New Password<input type="password" placeholder="Confirm New Password" name="confirmpassword" id="cpass" class="form-control" required/></label>
+							<input type="submit" class="form-control btn btn-default pull-right" id="changeMyPass">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/fullcalendar.min.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/gcal.js"></script>
+    <script src="<?php echo base_url('assets/'); ?>js/modalFunction.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
 
 	<script>
@@ -99,6 +109,42 @@
 					url: '<?php echo base_url('events'); ?>',
 					error: function() {
 						$('#script-warning').show();
+					}
+				}
+			});
+
+			$('#pass').on('blur', function(){
+				var pass = $(this).val();
+				var cpass = $('#cpass').val();
+				if($('#cpass').val() == '') {
+					$('#changeMyPass').attr('disabled','disabled');
+				} else {
+					if(cpass == pass) {
+						$(this).css({"border-color": ""});
+						$('#cpass').css({"border-color": ""});
+						$('#changeMyPass').removeAttr('disabled','disabled');
+					} else {
+						$(this).css({"border-color": "#dc3545"});
+						$('#cpass').css({"border-color": "#dc3545"});
+						$('#changeMyPass').attr('disabled','disabled');
+					}
+				}
+			});
+
+			$('#cpass').on('blur', function(){
+				var cpass = $(this).val();
+				var pass = $('#pass').val();
+				if($('#pass').val() == '') {
+					$('#changeMyPass').attr('disabled','disabled');
+				} else {
+					if(cpass == pass) {
+						$(this).css({"border-color": ""});
+						$('#pass').css({"border-color": ""});
+						$('#changeMyPass').removeAttr('disabled','disabled');
+					} else {
+						$(this).css({"border-color": "#dc3545"});
+						$('#pass').css({"border-color": "#dc3545"});
+						$('#changeMyPass').attr('disabled','disabled');
 					}
 				}
 			});

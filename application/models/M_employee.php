@@ -22,6 +22,43 @@ class M_employee extends CI_Model {
 
 	}
 
+	public function vacationLeaveBalance($total) {
+		$where = array('employee_id' => $this->session->userdata('empid'));
+		$data = array('vacationleave' => $total);
+		$this->db->where($where);
+		return $this->db->update('leavebalance',$data);
+	}
+
+	public function sickLeaveBalance($total) {
+		$where = array('employee_id' => $this->session->userdata('empid'));
+		$data = array('sickleave' => $total);
+		$this->db->where($where);
+		return $this->db->update('leavebalance',$data);
+	}
+
+	public function birthdayLeave() {
+		$where = array('employee_id' => $this->session->userdata('empid'));
+		$data = array('birthleave' => 0);
+		$this->db->where($where);
+		return $this->db->update('leavebalance',$data);
+	}
+
+	/**
+	* @param Int Employee Id
+	* @return Boolean
+	*/
+	public function getMyleave() {
+		$data = array();
+		$where = array('employee_id' => $this->session->userdata('empid'));
+		$this->db->where($where);
+		$res = $this->db->get('leavebalance');
+		if($res->num_rows() > 0){
+			$data = $res->row_array();
+		}
+		$res->free_result();
+		return $data;
+	}
+
 	/**
 	* Get Birthday of the month
 	* @return String

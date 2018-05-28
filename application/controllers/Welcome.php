@@ -4,23 +4,43 @@ class Welcome extends MY_Controller {
 
 	function __construct() {
 		parent::__construct();
+		if(!$this->session->userdata('logged_in')) redirect('login');
 		$this->load->model('M_employee','employee');
+		$this->load->model('M_user','user');
 	}
 
 	public function index() {
 
+		$data['mydata'] = $this->user->getMydata();
 		$data['employee'] = $this->getEmployee();
 		$data['dob'] = $this->getEmployeedob();
 		$this->parser->parse('dashboard',$data);
 	}
 
-	public function form() {
+	public function edit() {
 
-		$this->form_validation->set_rules('title', 'With pay', 'trim|xss_clean');
-		$this->form_validation->set_rules('start', 'Date From', 'trim|xss_clean');
-		$this->form_validation->set_rules('end', 'Date to', 'trim|xss_clean');
-		$this->form_validation->set_rules('types', 'Type of Leave Requested', 'trim|xss_clean');
-		$this->form_validation->set_rules('reason', 'Reason for Leave', 'trim|xss_clean');
+		if(!$this->session->userdata('logged_in')) redirect('login');
+
+		$config = $this->config->item('edit');
+
+		$this->require_validation($config);
+
+		if($this->form_validation->run()) {
+			
+			$id = $this->session->userdata('userid');
+
+			$data['username'] = $this->input->post('username');
+			$data['fullname'] = $this->input->post('fullname');
+			$data['address'] = $this->input->post('address');
+			$data['email'] = $this->input->post('email');
+			$data['cp_no'] = $this->input->post('phone');
+			$data['gender'] = $this->input->post('gender');
+
+			if($this->user->updateMydata($data,$id)) {
+				$this->session->set_flashdata('success','<div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Successfully update!</strong></div>');
+				redirect(base_url());
+			}
+		}
 	}
 
 	/**
@@ -36,14 +56,15 @@ class Welcome extends MY_Controller {
 		$events = $this->employee->getEvents($start, $end);
 
 		$allEvents = array();
-
 		foreach ($events as $event) {
+
+			$str = date('Y-m-d',strtotime($event->end . ' +1 day'));
 
 			$allEvents[] = array(
 				'id' => $event->employee_id,
-				'title' => $event->username.' - '.$event->title.' '.$event->leaveprefix,
+				'title' => $event->username.' - '.$event->title,
 				'start' => $event->start,
-				'end' => $event->end
+				'end' => $str
 			);
 		}
 
@@ -79,10 +100,14 @@ class Welcome extends MY_Controller {
 				$s_l = $_sl[0];
 				$sl = $_sl[1];
 			}
-
+			if($this->session->userdata('uname') == $val->username) {
+				$modal = 'data-toggle="modal" data-target="#editProfile"';
+			} else {
+				$modal = '';
+			}
 			$output .= '
 				<div class="col-sm">
-					<div class="leave-wrapper" data-toggle="modal" data-target="#editProfile">
+					<div class="leave-wrapper" '.$modal.'>
 						<div class="lv-name">'.$val->username.'</div>
 						<div class="lv-info">
 							<div class="lv-label">VL</div>

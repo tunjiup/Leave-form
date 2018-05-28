@@ -1,66 +1,61 @@
 function print() {
-  var element = document.getElementById('formPaper');
-  var opt = {
-    margin: 0,
-    filename: 'LeaveForm_MSW.pdf',
-    image: {
-      type: 'jpeg',
-      quality: 1
-    },
-    html2canvas: {
-      dpi: 300,
-      letterRendering: true
-    },
-    jsPDF: {
-      unit: 'in',
-      format: 'A4',
-      orientation: 'portrait'
-    }
-  };
+	var element = document.getElementById('formPaper');
+	var opt = {
+		margin: 0,
+		filename: 'LeaveForm_MSW.pdf',
+		image: {
+			type: 'jpeg',
+			quality: 1
+		},
+		html2canvas: {
+			dpi: 300,
+			letterRendering: true
+		},
+		jsPDF: {
+			unit: 'in',
+			format: 'A4',
+			orientation: 'portrait'
+		}
+	};
 
-  html2pdf(element, opt);
-}
-function disabled() {
-  $('#ckbox').attr('disabled','disabled');
-  $('#ckbox2').attr('disabled','disabled');
-  $('#ckbox3').attr('disabled','disabled');
-  $('#ckbox4').attr('disabled','disabled');
-  $('#ckbox5').attr('disabled','disabled');
-  $('#ckbox6').attr('disabled','disabled');
-  $('#ckbox7').attr('disabled','disabled');
-  $('#ckbox8').attr('disabled','disabled');
-  $('#ckbox9').attr('disabled','disabled');
+	html2pdf(element, opt);
 }
 
-function removeDisabled() {
-  $('#ckbox').removeAttr('disabled','disabled');
-  $('#ckbox2').removeAttr('disabled','disabled');
-  $('#ckbox3').removeAttr('disabled','disabled');
-  $('#ckbox4').removeAttr('disabled','disabled');
-  $('#ckbox5').removeAttr('disabled','disabled');
-  $('#ckbox6').removeAttr('disabled','disabled');
-  $('#ckbox7').removeAttr('disabled','disabled');
-  $('#ckbox8').removeAttr('disabled','disabled');
-  $('#ckbox9').removeAttr('disabled','disabled');
-}
-$('#ckbox').click(function(){
-  if($(this).is(":checked")) {
-    $('#ckbox2').attr('disabled','disabled');
-    $('#ckbox3').attr('disabled','disabled');
-    $('#ckbox4').attr('disabled','disabled');
-    $('#ckbox5').attr('disabled','disabled');
-    $('#ckbox6').attr('disabled','disabled');
-    $('#ckbox7').attr('disabled','disabled');
-    $('#ckbox8').attr('disabled','disabled');
-    $('#ckbox9').attr('disabled','disabled');
-  } else {
-    $('#ckbox2').removeAttr('disabled','disabled');
-    $('#ckbox3').removeAttr('disabled','disabled');
-    $('#ckbox4').removeAttr('disabled','disabled');
-    $('#ckbox5').removeAttr('disabled','disabled');
-    $('#ckbox6').removeAttr('disabled','disabled');
-    $('#ckbox7').removeAttr('disabled','disabled');
-    $('#ckbox8').removeAttr('disabled','disabled');
-    $('#ckbox9').removeAttr('disabled','disabled');
-  }
+$(document).ready(function(){
+	
+	$('#saveto').click(function(){
+		var contLeave = $('#contLeave').val();
+		var dateFrom = $('#dateFrom').val();
+		var dateTo = $('#dateTo').val();
+		var reason = $('#reason').val();
+		var regular = $('#regular').val();
+		var noDays = $('#noDays').val();
+		$.ajax({
+			url:"http://localhost:8080/dev-leave-form/leave-form/add",
+			type: "POST",
+			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, contLeave:contLeave, noDays:noDays},
+			success: function(data) {
+				$('#successLeave').modal('show');
+				print();
+				window.setTimeout(function(){window.location.href = "http://localhost:8080/dev-leave-form/" }, 5000);
+			},
+			error:function() {
+				alert('Error');
+			}
+		});
+	});
+
+	$("#dateFrom").datepicker();
+	$("#dateTo").datepicker();
+
+	$('#dateTo').on('changeDate', function(){
+		var oneDay = 24*60*60*1000;
+		var from = new Date ($("#dateFrom").val());
+		var to = new Date ($(this).val());
+
+		var int = Math.round(Math.abs((from.getTime() - to.getTime()) / (oneDay)));
+
+		$('#noDays').val(int + 1);
+
+	});
 });
