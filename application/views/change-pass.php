@@ -14,8 +14,10 @@
 	<body class="loginMain">
 	 	<div class="container">
 	 		<div class="login-container">
+
 	 			<div id="output"></div>
 	 			<div class="form-box login-form">
+	 				<div class="labl">Change Password</div>
 	 				<form action="" method="post">
 	 					<label>New Password<input type="password" placeholder="New Password" name="password"><?php echo form_error('password') ?></label>
 	 					<label>Confirm New Password<input type="password" placeholder="Confirm New Password" name="confirmpassword"><?php echo form_error('confirmpassword') ?></label>

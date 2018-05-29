@@ -8,6 +8,7 @@
 		<meta name="author" content="MegaSportWorld">
 		<meta name="robots" content="noindex,nofollow">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 		<link href="<?php echo base_url('assets/'); ?>css/bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo base_url('assets/'); ?>css/style.css" rel="stylesheet">
 	</head>

@@ -10,7 +10,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
-		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap-datepicker3.min.css">
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap-datetimepicker.min.css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	</head>
 	<body>
@@ -80,9 +80,9 @@
 								<table>
 									<tr>
 										<td class="lbl" style="width: 1.68in">Dates of Leave From: </td>
-										<td class="inpt text-center" style="width: 2.44in"><input type="text" name="dateFrom" id="dateFrom" data-date-start-date="0d"/></td>
+										<td class="inpt text-center" style="width: 2.44in"><input type="text" name="dateFrom" id="dateFrom" data-toggle="datetimepicker" data-target="#dateFrom" class=" datetimepicker-input" data-date-start-date="0d"/></td>
 										<td class="lbl" style="width: 0.28in">to</td>
-										<td class="inpt text-center" style="width: 2.61in"><input type="text" name="dateTo" id="dateTo" data-date-start-date="0d"/></td>
+										<td class="inpt text-center" style="width: 2.61in"><input type="text" name="dateTo" id="dateTo" data-date-start-date="0d" data-toggle="datetimepicker" data-target="#dateTo" class=" datetimepicker-input"/></td>
 									</tr>
 									<tr>
 										<td colspan="4" class="lv-container">
@@ -234,10 +234,10 @@
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/html2pdf.bundle.min.js"></script>
-		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
-		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datepicker.js"></script>
-		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datepicker.min.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datetimepicker.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/restrictCheckbox.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
 	</body>
 </html>

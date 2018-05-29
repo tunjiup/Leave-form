@@ -46,17 +46,17 @@ class Login extends MY_Controller {
 						
 					} else {
 
-						$this->session->set_flashdata('error','<p class="text-center text-danger"> Account not yet activated </p>');
+						$this->session->set_flashdata('error','<div class="alert alert-danger"> Account not yet activated </div>');
 
 					}
 				} else {
 
-					$this->session->set_flashdata('error','<p class="text-center text-danger"> Invalid Password </p>');
+					$this->session->set_flashdata('error','<div class="alert alert-danger"> Invalid Password </div>');
 
 				}
 			} else {
 
-				$this->session->set_flashdata('error','<p class="text-center text-danger"> Invalid Username </p>');
+				$this->session->set_flashdata('error','<div class="alert alert-danger"> Invalid Username </div>');
 
 			}
 

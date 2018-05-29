@@ -21,6 +21,20 @@ function print() {
 	html2pdf(element, opt);
 }
 
+
+
+
+$(function () {
+    $('#dateFrom').datetimepicker();
+    $('#dateTo').datetimepicker({useCurrent: false});
+    $("#dateFrom").on("change.datetimepicker", function (e) {
+        $('#dateTo').datetimepicker('minDate', e.date);
+    });
+    $("#dateTo").on("change.datetimepicker", function (e) {
+        $('#dateFrom').datetimepicker('maxDate', e.date);
+    });
+});
+
 $(document).ready(function(){
 	
 	$('#saveto').click(function(){
@@ -45,17 +59,17 @@ $(document).ready(function(){
 		});
 	});
 
-	$("#dateFrom").datepicker();
-	$("#dateTo").datepicker();
+	// $("#dateFrom").datepicker();
+	// $("#dateTo").datepicker();
 
-	$('#dateTo').on('changeDate', function(){
-		var oneDay = 24*60*60*1000;
-		var from = new Date ($("#dateFrom").val());
-		var to = new Date ($(this).val());
+	// $('#dateTo').on('changeDate', function(){
+	// 	var oneDay = 24*60*60*1000;
+	// 	var from = new Date ($("#dateFrom").val());
+	// 	var to = new Date ($(this).val());
 
-		var int = Math.round(Math.abs((from.getTime() - to.getTime()) / (oneDay)));
+	// 	var int = Math.round(Math.abs((from.getTime() - to.getTime()) / (oneDay)));
 
-		$('#noDays').val(int + 1);
+	// 	$('#noDays').val(int + 1);
 
-	});
+	// });
 });

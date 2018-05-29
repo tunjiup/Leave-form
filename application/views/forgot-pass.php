@@ -16,6 +16,7 @@
 	 		<div class="login-container">
 	 			<div id="output"></div>
 	 			<div class="form-box login-form">
+	 				<div class="labl">Forget Password</div>
 	 				<form action="" method="post">
 	 					<label>Email<input type="text" placeholder="Email" name="email"><?php echo form_error('email') ?></label>
 	 					<input type="submit" class="btn btn-info btn-block login" value="Request">

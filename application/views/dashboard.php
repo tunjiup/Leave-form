@@ -14,11 +14,24 @@
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
 	</head>
 	<body>
-		<div class="row main-container">
+		<div id="mySidenav" class="sidenav">
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <a href="<?php echo base_url('leave-form'); ?>">Request Leave</a>
+		  <a href="#">Logout</a>
+		</div>
+		
+		<div class="row main-container" id="main">
+			<div class="btn-fix" onclick="openNav()">
+				<span>Menu</span>
+			</div>
 			<div class="col-sm body-container">
-				<div class="requestBtn">
-					<a href="<?php echo base_url('leave-form'); ?>">Request Leave</a>
-				</div>
+				<!-- <div class="req">
+					<a href="<?php echo base_url('leave-form'); ?>">
+						<div class="requestBtn">
+						Request Leave
+						</div>
+					</a>
+				</div> -->
 				<?php echo $this->session->flashdata('success'); ?>
 				<div class="row leave-container">
 					<?php echo $employee; ?>
@@ -150,6 +163,16 @@
 			});
 
 		});
+
+		function openNav() {
+		    document.getElementById("mySidenav").style.width = "190px";
+		    document.getElementById("main").style.marginLeft = "190px";
+		}
+
+		function closeNav() {
+		    document.getElementById("mySidenav").style.width = "0";
+		    document.getElementById("main").style.marginLeft= "0";
+		}
 
 	</script>
   </body>
