@@ -488,20 +488,20 @@ a:hover, a:focus{
   text-align: center;
 }
 
-#editProfile label{
+#editProfile label, #changePass label{
   width: 100%;
   font-size: 16px;
   font-weight: 600;
 }
 
-#editProfile input{
+#editProfile input, #changePass input{
   border-radius: 0;
   border: 0;
   border-bottom: 1px solid #cecece;
 }
 
 
-#editProfile input[type="submit"]{
+#editProfile input[type="submit"], #changePass input[type="submit"]{
   border-radius: 0;
   border: 1px solid #cecece;
   margin: 10px 0;

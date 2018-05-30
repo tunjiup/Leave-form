@@ -17,6 +17,7 @@
 		<div id="mySidenav" class="sidenav">
 		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		  <a href="<?php echo base_url('leave-form'); ?>">Request Leave</a>
+		  <a href="#" data-toggle="modal" data-target="#editProfile">Profile</a>
 		  <a href="#">Logout</a>
 		</div>
 		
