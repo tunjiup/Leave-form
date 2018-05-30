@@ -21,33 +21,21 @@ function print() {
 	html2pdf(element, opt);
 }
 
-
-
-
-$(function () {
-    $('#dateFrom').datetimepicker();
-    $('#dateTo').datetimepicker({useCurrent: false});
-    $("#dateFrom").on("change.datetimepicker", function (e) {
-        $('#dateTo').datetimepicker('minDate', e.date);
-    });
-    $("#dateTo").on("change.datetimepicker", function (e) {
-        $('#dateFrom').datetimepicker('maxDate', e.date);
-    });
-});
-
 $(document).ready(function(){
 	
 	$('#saveto').click(function(){
+		var dateTimeFrom = $('#dateTimePickerFrom').val();
+		var dateTimeTo = $('#dateTimePickerTo').val();
+		var dateFrom = $('#datePickerFrom').val();
+		var dateTo = $('#datePickerTo').val();
 		var contLeave = $('#contLeave').val();
-		var dateFrom = $('#dateFrom').val();
-		var dateTo = $('#dateTo').val();
 		var reason = $('#reason').val();
 		var regular = $('#regular').val();
 		var noDays = $('#noDays').val();
 		$.ajax({
 			url:"http://localhost:8080/dev-leave-form/leave-form/add",
 			type: "POST",
-			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, contLeave:contLeave, noDays:noDays},
+			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
 				$('#successLeave').modal('show');
 				print();
@@ -58,18 +46,4 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-	// $("#dateFrom").datepicker();
-	// $("#dateTo").datepicker();
-
-	// $('#dateTo').on('changeDate', function(){
-	// 	var oneDay = 24*60*60*1000;
-	// 	var from = new Date ($("#dateFrom").val());
-	// 	var to = new Date ($(this).val());
-
-	// 	var int = Math.round(Math.abs((from.getTime() - to.getTime()) / (oneDay)));
-
-	// 	$('#noDays').val(int + 1);
-
-	// });
 });

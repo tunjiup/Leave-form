@@ -10,12 +10,23 @@ $config = array(
 		array(
 			'field' => 'dateFrom',
 			'label' => 'Dates of Leave From',
-			'rules' => 'trim|required|xss_clean'
+			'rules' => 'trim|xss_clean'
 		),
 		array(
 			'field' => 'dateTo',
 			'label' => 'Dates of Leave To',
-			'rules' => 'trim|required|xss_clean'
+			'rules' => 'trim|xss_clean'
+			
+		),
+		array(
+			'field' => 'dateTimeFrom',
+			'label' => 'Dates of Leave From',
+			'rules' => 'trim|xss_clean'
+		),
+		array(
+			'field' => 'dateTimeTo',
+			'label' => 'Dates of Leave To',
+			'rules' => 'trim|xss_clean'
 			
 		),
 		array(

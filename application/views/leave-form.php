@@ -15,6 +15,7 @@
 	</head>
 	<body>
 		<div class="wrapper">
+			<!-- <form method="post" action="http://localhost:8080/dev-leave-form/leave-form/add"> -->
 				<div class="main formPaper" id="formPaper">
 					<div class="header">
 						<img src="<?php echo base_url('assets/'); ?>img/ocvi_logo.jpg" />
@@ -78,11 +79,8 @@
 									</tr>
 								</table>
 								<table>
-									<tr>
-										<td class="lbl" style="width: 1.68in">Dates of Leave From: </td>
-										<td class="inpt text-center" style="width: 2.44in"><input type="text" name="dateFrom" id="dateFrom" data-toggle="datetimepicker" data-target="#dateFrom" class=" datetimepicker-input" data-date-start-date="0d"/></td>
-										<td class="lbl" style="width: 0.28in">to</td>
-										<td class="inpt text-center" style="width: 2.61in"><input type="text" name="dateTo" id="dateTo" data-date-start-date="0d" data-toggle="datetimepicker" data-target="#dateTo" class=" datetimepicker-input"/></td>
+									<tr id="dateFunction">
+										
 									</tr>
 									<tr>
 										<td colspan="4" class="lv-container">
@@ -97,7 +95,7 @@
 														<td class="subinpt"><input type="checkbox" class="withorwithoutpay" id="ckbox11" value="lW/OP" /> <label for="ckbox11"></td>
 														<td style="width: 0.8in">LW/OP</td>
 														<td style="width: 1.75in">TOTAL NUMBER OF DAYS:</td>
-														<td style="width: 0.2in;"><input type="text" name="noDays" id="noDays" style=" text-align: center;" readonly /></td>
+														<td style="width: 0.2in;"><input type="text" name="noDays" id="noDays" style=" text-align: center;" /></td>
 														<td class="endSpace"></td>
 													</tr>
 												</table>
@@ -214,7 +212,7 @@
 					</div>
 				</div>
 				<input type="submit" class="print" id="saveto" value="Save this">
-			<!-- </form> -->
+			</form>
 		</div>
 
 		<!-- Modal Message -->

@@ -27,18 +27,28 @@ class Leaveform extends MY_Controller {
 
 		if($this->form_validation->run()) {
 
-			$from = $this->input->post('dateFrom');
-			$to = $this->input->post('dateTo');
+			$datefrom = $this->input->post('dateFrom');
+			$dateto = $this->input->post('dateTo');
+			$timefrom = $this->input->post('dateTimeFrom');
+			$timeto = $this->input->post('dateTimeTo');
+			if($datefrom == NULL) {
+				$conFrom = date('Y-m-d',strtotime($timefrom));
+				$conTo = date('Y-m-d',strtotime($timeto));
+			} else {
+				$conFrom = date('Y-m-d',strtotime($datefrom));
+				$conTo = date('Y-m-d',strtotime($dateto));
+			}
+
 			$data['employee_id'] = $this->session->userdata('empid');
 			$data['title'] = $this->input->post('contLeave').' Leave';
 			$data['types'] = $this->input->post('regular');
 			$data['reason'] = $this->input->post('reason');
 			$data['days'] = $this->input->post('noDays');
-			$data['start'] = date('Y-m-d',strtotime($from));
-			$data['end'] = date('Y-m-d',strtotime($to));
+			$data['start'] = $conFrom;
+			$data['end'] = $conTo;
 			$data['processedby'] = $this->session->userdata('uname');
 			$data['created_at'] = date("Y-m-d H:i:s");
-
+			
 			if($this->leave->insertLeave($data)) {
 
 				if($data['title'] == Constant::L_SICK) {
