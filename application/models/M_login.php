@@ -23,6 +23,16 @@ class M_login extends CI_Model {
 		return $data;
 	}
 
+	public function checkEmail($email) {
+		$data = array();
+		$q = $this->db->get_where('users', array('email' => $email), 1);
+		if ($q->num_rows() > 0) {
+			$data = $q->row_array();
+		}
+		$q->free_result();
+		return $data;
+	}
+
 	/**
 	* Update Data
 	* @param Int $id

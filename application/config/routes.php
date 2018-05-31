@@ -17,10 +17,11 @@ $route['forgot-password'] = 'Login/forgotpass';
 
 //Change pass
 $route['verify/(:any)'] = 'Login/changepass/$1';
-$route['change-password'] = 'Login/updateMyPassword';
+$route['change-password'] = 'Login/updatePassword';
 
 //User
 $route['profile/update'] = 'Welcome/edit';
+$route['employee/profile/(:any)'] = 'Welcome/modalDir/$1';
 
 //LeaveForm
 $route['leave-form'] = 'Leaveform';

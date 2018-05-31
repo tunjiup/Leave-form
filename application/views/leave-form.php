@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap-datetimepicker.min.css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="wrapper">
@@ -44,6 +45,9 @@
 									<tr>
 										<td class="lbl" colspan="4">Type of Leave Requested: </td>
 									</tr>
+									<input type="hidden" id="vL" value="<?php echo $vl ?>">
+									<input type="hidden" id="sL" value="<?php echo $sl ?>">
+									<input type="hidden" id="bL" value="<?php echo $bl ?>">
 									<tr>
 										<td class="inpt tplr" colspan="4">
 											<table id="checkTypes">
@@ -212,7 +216,7 @@
 					</div>
 				</div>
 				<input type="submit" class="print" id="saveto" value="Save this">
-			</form>
+			<!-- </form> -->
 		</div>
 
 		<!-- Modal Message -->
@@ -237,5 +241,6 @@
 		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datetimepicker.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/restrictCheckbox.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
+    	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 	</body>
 </html>

@@ -13,6 +13,9 @@ class MY_Controller extends CI_Controller {
 		$this->load->helper('cs_password');
 		$this->load->config('validations');
 		$this->load->helper('cs_dropdown');
+		$this->emailSetting();
+		$this->_ci =& get_instance();
+		$this->_ci->load->model('M_leave','leave');
 	}
 
 
@@ -43,19 +46,9 @@ class MY_Controller extends CI_Controller {
 	}
 
 	/**
-	* Email Template
+	* Email Template Leave
 	*/
 	public function resetEmailTemplate($res,$reset){
-		$config = Array(
-			'protocol' => 'smtp',
-			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_port' => 465,
-			'smtp_user' => 'mswdummy2017@gmail.com',
-			'smtp_pass' => 'mwsdummy2017',
-			'charset'   => 'iso-8859-1'
-		);
-		$this->load->library('email', $config);
-		$this->email->set_mailtype("html");
 		$sitename = strtolower($_SERVER['SERVER_NAME']);
 		$from_email = 'no-reply@'.$sitename;
 
@@ -72,16 +65,59 @@ class MY_Controller extends CI_Controller {
 		$this->email->message($message);
 	}
 
+	public function sentManager($res,$data){
+
+		$manager = $res['manager'];
+		$recipient = $this->leave->getManagerEmail($manager);
+		$sitename = strtolower($_SERVER['SERVER_NAME']);
+		$from_email = 'leave-form@'.$sitename;
+
+		if($data['days'] === 1) {
+			$message = '<b>Hi '.$manager.'!</b><br /><br />
+
+					I would like to file a vacation leave for '.$data['days'].' day, '.$data['start'].'. Grateful if you can approve my request.<br /><br />
+
+					Regards,<br />
+					'.$res['fullname'];
+		} else {
+			$message = '<b>Hi '.$manager.'!</b><br /><br />
+
+					I would like to file a vacation leave for '.$data['days'].' day/s, from '.$data['start'].' to '.$data['end'].'. Grateful if you can approve my request.<br /><br />
+
+					Regards,<br />
+					'.$res['fullname'];
+		}
+
+		$this->email->from($from_email,'Leave Form'); 
+		$this->email->to($recipient['email']);
+		$this->email->subject($res['fullname'].' Leave');
+		$this->email->message($message);
+		$this->email->reply_to($res['email']);
+	}
+
 	public function trigerSend() {
 
 		if($this->email->send()) {
 
-			$this->session->set_flashdata('success',"<div class='col-sm-8 offset-md-3'><div class='row'><div class='alert alert-success alert-dismissible text-center'><button type='button' class='close' data-dismiss='alert'>&times;</button>We've sent you an email with password reset instructions.</div></div></div>");
-				redirect(base_url());
+			$this->session->set_flashdata('success',"<div class='alert alert-success'>We sent you an email with password reset instructions.</div>");
+			redirect('login');
 
 		} else {
-			$this->session->set_flashdata('success','<div class="col-sm-8 offset-md-3"><div class="row"><div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Oops, Email not sent</div></div></div>');
+			$this->session->set_flashdata('success','<div class="alert alert-danger">Oops, Email not sent</div>');
 		}
+	}
+
+	public function emailSetting() {
+		$config = Array(
+			'protocol' => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_port' => 465,
+			'smtp_user' => 'mswdummy2017@gmail.com',
+			'smtp_pass' => 'mwsdummy2017',
+			'charset'   => 'iso-8859-1'
+		);
+		$this->load->library('email', $config);
+		$this->email->set_mailtype("html");
 	}
 }
 

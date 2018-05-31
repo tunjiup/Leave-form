@@ -13,13 +13,25 @@ class M_employee extends CI_Model {
 	*/
 	public function getLeave() {
 
-		$this->db->select('e.name, l.vacationleave, l.sickleave, l.birthleave, u.username');
+		$this->db->select('e.name, l.vacationleave, l.sickleave, l.birthleave, u.username, e.id');
 		$this->db->from('employee e');
 		$this->db->join('leavebalance l','l.employee_id = e.id');
 		$this->db->join('users u','u.employee_id = e.id');
 		$res = $this->db->get();
 		return $res->result();
 
+	}
+
+	public function getEmployeesData($id) {
+		$data = array();
+		$where = array('employee_id' => $id);
+		$this->db->where($where);
+		$res = $this->db->get('users');
+		if($res->num_rows() > 0){
+			$data = $res->row_array();
+		}
+		$res->free_result();
+		return $data;
 	}
 
 	public function vacationLeaveBalance($total) {

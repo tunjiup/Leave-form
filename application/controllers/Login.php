@@ -9,7 +9,7 @@ class Login extends MY_Controller {
 
 	public function index() {
 		
-		if($this->session->userdata('logged_in')) redirect('dashboard');
+		if($this->session->userdata('logged_in')) redirect(base_url());
 
 		$config = $this->config->item('login');
 
@@ -29,6 +29,10 @@ class Login extends MY_Controller {
 					if($res['activate'] != 0) {
 
 						if($res['resetpasskey'] != NULL) {
+							$sess = array(
+								'userid' => $res['userid']
+							);
+							$this->session->set_userdata($sess);
 							redirect('change-password');
 						} else {
 							$sess = array(
@@ -80,9 +84,7 @@ class Login extends MY_Controller {
 
 			$res = $this->login->checkEmail($email);
 
-			$pass = $this->genCode(10);
 			$reset = $this->genCode(50);
-			$data['password'] = password_hash($pass,1);
 			$data['resetpasskey'] = $reset;
 			$data['resetdate'] = date("Y-m-d H:i:s");
 
@@ -91,16 +93,12 @@ class Login extends MY_Controller {
 				$this->resetEmailTemplate($res,$reset);
 
 				if($this->login->updateData($data,$res['userid'])) {
-					
-					$this->session->set_flashdata('msg','<div class="alert alert-success alert-dismissible fade in text-center" role="alert"></button>Your New password is <strong>'.$pass.'</strong></div>');
 
 					$this->trigerSend();
-
-					redirect('login');
 				}
 
 			} else {
-				$this->session->set_flashdata('success', '<p class="text-danger">Email does not exist.</p>');
+				$this->session->set_flashdata('error', '<div class="alert alert-danger"> Email does not exist </div>');
 			}
 
 
@@ -120,20 +118,34 @@ class Login extends MY_Controller {
 
 		if($codeCheck > 0) {
 
-			$this->updatePassword();
+			$config = $this->config->item('changepass');
 
+			$this->require_validation($config);
+
+			if($this->form_validation->run()) {
+				$pass = $this->input->post('password');
+				$data['password'] = password_hash($pass,1);
+				$data['resetpasskey'] = NULL;
+
+				if($this->login->updateData($data,$code)) {
+
+					$this->session->set_flashdata('success','<div class="alert alert-success">Password successfully Change</div>');
+					
+					redirect('login');
+
+				}
+			}
 			$this->load->view('change-pass');
+
 		} else {
 			show_error('Invalid Code');
 		}
 
 	}
 
-	public function updateMyPassword() {
-		$this->updatePassword();
-	}
-
 	public function updatePassword() {
+
+		$code = $this->session->userdata('userid');
 
 		$config = $this->config->item('changepass');
 
@@ -146,12 +158,13 @@ class Login extends MY_Controller {
 
 			if($this->login->updateData($data,$code)) {
 
-				$this->session->set_flashdata('success','<div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Password successfully Change</strong></div>');
+				$this->session->set_flashdata('success','<div class="alert alert-success">Password successfully Change</div>');
 				
-				redirect(base_url());
+				redirect('login');
 
 			}
 		}
+		$this->load->view('change-pass');
 	}
 
 	//logout function

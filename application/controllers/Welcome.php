@@ -101,13 +101,13 @@ class Welcome extends MY_Controller {
 				$sl = $_sl[1];
 			}
 			if($this->session->userdata('uname') == $val->username) {
-				$modal = 'data-toggle="modal" data-target="#editProfile"';
+				$modal = 'class="leave-wrapper-inactive" data-toggle="modal" data-target="#editProfile"';
 			} else {
-				$modal = '';
+				$modal = 'class="leave-wrapper" data-id="'.$val->id.'"';
 			}
 			$output .= '
 				<div class="col-sm">
-					<div class="leave-wrapper" '.$modal.'>
+					<div '.$modal.'>
 						<div class="lv-name">'.$val->username.'</div>
 						<div class="lv-info">
 							<div class="lv-label">VL</div>
@@ -155,6 +155,28 @@ class Welcome extends MY_Controller {
 		}
 
 		return $output;
+	}
+
+	public function modalDir($id = NULL) {
+
+		$data = $this->employee->getEmployeesData($id);
+
+		$output = '
+			<label>
+				Fullname<input type="text" class="form-control" value="'.$data['fullname'].'"  readonly>
+			</label>
+			<label>
+				Address<input type="text" class="form-control" value="'.$data['address'].'"  readonly>
+			</label>
+			<label>
+				Email<input type="email" class="form-control" value="'.$data['email'].'"  readonly>
+			</label>
+			<label>
+				Phone<input type="text" class="form-control" value="'.$data['cp_no'].'" readonly/>
+			</label>';
+
+		echo $output;
+		
 	}
 }
 

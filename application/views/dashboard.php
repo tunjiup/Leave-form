@@ -18,25 +18,18 @@
 		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		  <a href="<?php echo base_url('leave-form'); ?>">Request Leave</a>
 		  <a href="#" data-toggle="modal" data-target="#editProfile">Profile</a>
-		  <a href="#">Logout</a>
+		  <a href="<?php echo base_url('logout'); ?>">Logout</a>
 		</div>
-		
 		<div class="row main-container" id="main">
 			<div class="btn-fix" onclick="openNav()">
 				<span>Menu</span>
 			</div>
 			<div class="col-sm body-container">
-				<!-- <div class="req">
-					<a href="<?php echo base_url('leave-form'); ?>">
-						<div class="requestBtn">
-						Request Leave
-						</div>
-					</a>
-				</div> -->
 				<?php echo $this->session->flashdata('success'); ?>
 				<div class="row leave-container">
 					<?php echo $employee; ?>
 				</div>
+    			<!-- <canvas id="canvas"></canvas> -->
 				<div class="row middle-container">
 					<div class="col-sm cal-contain">
 						<div id='calendar'></div>
@@ -83,6 +76,21 @@
 			</div>
 		</div>
 
+		<!-- Modal -->
+		<div class="modal fade" id="profileDir" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editProfileLabel">Profile Directory </h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body" id="employeeDir">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<!-- Modal Change Password -->
 		<div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -109,6 +117,7 @@
     <script src="<?php echo base_url('assets/'); ?>js/gcal.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/modalFunction.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
+	<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
 
 	<script>
 
@@ -164,7 +173,6 @@
 			});
 
 		});
-
 		function openNav() {
 		    document.getElementById("mySidenav").style.width = "190px";
 		    document.getElementById("main").style.marginLeft = "190px";

@@ -1,0 +1,1 @@
+[30-May-2018 13:52:28 Asia/Manila] PHP Fatal error:  Call to undefined method M_login::checkEmail() in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Login.php on line 81

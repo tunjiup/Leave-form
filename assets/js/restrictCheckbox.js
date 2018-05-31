@@ -99,10 +99,9 @@ $( function() {
 
 	function leaveTypes() {
 		var numberOfChecked = $('input.leaveTypes:checkbox:checked').length;
-		if (numberOfChecked == 0) {
+		if (numberOfChecked === 0) {
 			$(this).prop('checked', false);
 			$('#dateFunction').html('');
-			console.log('Working');
 		}
 	}
 
