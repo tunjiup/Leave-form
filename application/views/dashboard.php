@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/dataTables.min.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/fullcalendar.min.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 	</head>
 	<body>
 		<div id="mySidenav" class="sidenav">
@@ -25,7 +26,6 @@
 				<span>Menu</span>
 			</div>
 			<div class="col-sm body-container">
-				<?php echo $this->session->flashdata('success'); ?>
 				<div class="row leave-container">
 					<?php echo $employee; ?>
 				</div>
@@ -118,6 +118,7 @@
     <script src="<?php echo base_url('assets/'); ?>js/modalFunction.js"></script>
     <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
 	<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 	<script>
 
@@ -153,6 +154,19 @@
 					}
 				}
 			});
+			
+			<?php if($this->session->flashdata('success')): ?>
+				toastr.success('Your data has been updated', 'Success', {timeOut: 8000})
+			<?php endif; ?>
+			
+			<?php if($this->session->flashdata('sent')): ?>
+				toastr.success('Email sent to your manager', 'Success', {timeOut: 8000})
+			<?php endif; ?>
+			
+			<?php if($this->session->flashdata('complete')): ?>
+				$("#editProfile").modal({backdrop: "static"});
+				toastr.info('Please complete your information', 'Information', {timeOut: 8000})
+			<?php endif; ?>
 
 			$('#cpass').on('blur', function(){
 				var cpass = $(this).val();

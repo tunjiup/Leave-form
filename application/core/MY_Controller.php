@@ -99,11 +99,11 @@ class MY_Controller extends CI_Controller {
 
 		if($this->email->send()) {
 
-			$this->session->set_flashdata('success',"<div class='alert alert-success'>We sent you an email with password reset instructions.</div>");
+			$this->session->set_flashdata('sent',"<div class='alert alert-success'>We sent you an email with password reset instructions.</div>");
 			redirect('login');
 
 		} else {
-			$this->session->set_flashdata('success','<div class="alert alert-danger">Oops, Email not sent</div>');
+			$this->session->set_flashdata('notsent','<div class="alert alert-danger">Oops, Email not sent</div>');
 		}
 	}
 

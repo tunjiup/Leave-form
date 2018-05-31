@@ -45,6 +45,9 @@ class Login extends MY_Controller {
 								'logged_in' => TRUE
 							);
 							$this->session->set_userdata($sess);
+							if($res['fullname'] == NULL) {
+								$this->session->set_flashdata('complete','Please complete your deatils');
+							}
 							redirect(base_url());
 						}
 						

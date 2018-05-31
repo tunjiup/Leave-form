@@ -102,13 +102,15 @@ class Welcome extends MY_Controller {
 			}
 			if($this->session->userdata('uname') == $val->username) {
 				$modal = 'class="leave-wrapper-inactive" data-toggle="modal" data-target="#editProfile"';
+				$active = '<span class="dot"></span>';
 			} else {
 				$modal = 'class="leave-wrapper" data-id="'.$val->id.'"';
+				$active = '';
 			}
 			$output .= '
 				<div class="col-sm">
 					<div '.$modal.'>
-						<div class="lv-name">'.$val->username.'</div>
+						<div class="lv-name">'.$active.$val->username.'</div>
 						<div class="lv-info">
 							<div class="lv-label">VL</div>
 							<div class="lv-details"><span>'.$v_l.'</span>/'.$vl.'</div>
