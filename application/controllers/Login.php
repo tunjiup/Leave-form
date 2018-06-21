@@ -45,6 +45,7 @@ class Login extends MY_Controller {
 								'logged_in' => TRUE
 							);
 							$this->session->set_userdata($sess);
+							$this->login->getOnline($res['userid']);
 							if($res['fullname'] == NULL) {
 								$this->session->set_flashdata('complete','Please complete your deatils');
 							}
@@ -174,10 +175,33 @@ class Login extends MY_Controller {
 	public function logout(){
 
 		$id = $this->session->userdata('userid');
+		$this->login->getOffline($id);
 		$sess = array('userid' => '', 'key' => '', 'uname' => '', 'email' => '', 'fullname' => '', 'logged_in' => FALSE);
 		$this->session->unset_userdata($sess);
 		$this->session->sess_destroy();
 		redirect('login');
+	}
+
+	public function googleCaptcha($str='') {
+		$google_url="https://www.google.com/recaptcha/api/siteverify";
+		$secret ='6Leqn18UAAAAAL-Il108Fsg-8QLAUuXWYaq5Wwxz';
+		$ip = $_SERVER['REMOTE_ADDR'];
+		$url = $google_url."?secret=".$secret."&response=".$str."&remoteip=".$ip;
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+		$res = curl_exec($curl);
+		curl_close($curl);
+		$res= json_decode($res, true);
+
+		//reCaptcha success check
+		if($res['success']) {
+			return TRUE;
+		} else {
+			$this->form_validation->set_message('googleCaptcha', 'The reCAPTCHA field is telling me that you are a robot. Shall we give it another try?');
+			return FALSE;
+		}
 	}
 
 }

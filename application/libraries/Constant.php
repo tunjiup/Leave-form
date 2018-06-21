@@ -13,6 +13,13 @@ class Constant {
 	const L_BIRTHDAY = 'Birthday Leave';
 	const L_HOSPITALIZATION = 'Hospitalization Leave';
 
+	//MSW Department
+	const D_WEBDEV = 'MSW - Webdev';
+
+	//Class Name
+	const CN_PENDING = "Pending";
+	const CN_APPROVED = "Approved";
+	const CN_REJECT = "Rejected";
 }
 
 ?>

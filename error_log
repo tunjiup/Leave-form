@@ -1,1 +1,12 @@
 [30-May-2018 13:52:28 Asia/Manila] PHP Fatal error:  Call to undefined method M_login::checkEmail() in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Login.php on line 81
+[05-Jun-2018 23:35:49 America/New_York] PHP Fatal error:  Class 'MY_Controller' not found in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Login.php on line 3
+[11-Jun-2018 14:19:07 Asia/Manila] PHP Fatal error:  require_once(): Failed opening required '/home/jenner/public_html/msw-dev-leave-sites//vendor/autoload.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/jenner/public_html/msw-dev-leave-sites/application/core/MY_Controller.php on line 18
+[20-Jun-2018 02:38:50 America/New_York] PHP Parse error:  syntax error, unexpected 'X' (T_STRING) in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 763
+[20-Jun-2018 02:38:53 America/New_York] PHP Parse error:  syntax error, unexpected 'X' (T_STRING) in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 763
+[20-Jun-2018 02:38:54 America/New_York] PHP Parse error:  syntax error, unexpected 'X' (T_STRING) in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 763
+[20-Jun-2018 02:39:24 America/New_York] PHP Parse error:  syntax error, unexpected 'X' (T_STRING) in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 762
+[20-Jun-2018 02:40:00 America/New_York] PHP Parse error:  syntax error, unexpected 'X' (T_STRING) in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 762
+[20-Jun-2018 02:40:03 America/New_York] PHP Parse error:  syntax error, unexpected 'X' (T_STRING) in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 762
+[20-Jun-2018 02:58:59 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 179
+[20-Jun-2018 03:00:50 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 179
+[20-Jun-2018 03:24:50 America/New_York] PHP Parse error:  syntax error, unexpected ''' (T_ENCAPSED_AND_WHITESPACE) in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Leaveform.php on line 569

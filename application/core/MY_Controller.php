@@ -4,6 +4,8 @@ class MY_Controller extends CI_Controller {
 	
 	private $_validate_fields = FALSE;
 	private $_ci = null;
+	public $pdf;
+	public $_savePDF;
 
 	function __construct() {
 		parent::__construct();
@@ -13,14 +15,57 @@ class MY_Controller extends CI_Controller {
 		$this->load->helper('cs_password');
 		$this->load->config('validations');
 		$this->load->helper('cs_dropdown');
+		require_once FCPATH . '/vendor/autoload.php';
 		$this->emailSetting();
-		$this->_ci =& get_instance();
 		$this->_ci->load->model('M_leave','leave');
+
+		$this->pdf = $this->pdf();
+		$this->_savePDF = $this->savePDF();
 	}
 
+	/**
+	* Set Mpdf Libraries and Set bond paper
+	* @return True;
+	*/
+	public function pdf() {
+
+		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
+
+		return $mpdf;
+	}
 
 	/**
-     * Tell the controller to load the form validation library and set delimiter.
+	* Set mpdf file save function
+	* @return True
+	*/
+	public function savePDF() {
+
+		$save = \Mpdf\Output\Destination::FILE;
+
+		return $save;
+	}
+
+	/**
+	* Set API Holiday
+	* @return Array String
+	*/
+	public function displayHoliday() {
+		$year = date('Y');
+		$month = date('m');
+    	$url = "https://holidayapi.com/v1/holidays?key=bc4cb088-50df-45c0-9cd8-e540f5cee2f8&country=PH&year=".$year."&month=".$month;
+    	$curl = curl_init();
+    	curl_setopt($curl, CURLOPT_URL, $url);
+    	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    	curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+    	$res = curl_exec($curl);
+	    curl_close($curl);
+	    $holiday = json_decode($res, true);
+	    return $holiday;
+    }
+
+	/**
+     * Tell the controller to load the
+     * form validation library and set delimiter.
      * @param array $rules
      */
 	public function require_validation($rules = null) {
@@ -35,7 +80,7 @@ class MY_Controller extends CI_Controller {
 	}
 
 	/**
-	* Generate Activation code
+	* Generate Alpha-numeric string with lower and uppercase characters.
 	* @return String
 	*/
 	public function genCode($int) {
@@ -46,7 +91,20 @@ class MY_Controller extends CI_Controller {
 	}
 
 	/**
+	* Generate Numeric string.
+	* @return String
+	*/
+	public function genNum($int) {
+
+		$code = random_string('numeric', $int);
+
+		return $code;
+	}
+
+	/**
 	* Email Template Leave
+	* @param String
+	* @return True
 	*/
 	public function resetEmailTemplate($res,$reset){
 		$sitename = strtolower($_SERVER['SERVER_NAME']);
@@ -55,7 +113,7 @@ class MY_Controller extends CI_Controller {
 			
 		$message = '<b>Hi '.$res['username'].'!</b><br /><br />
 
-					To change yourpassword please click the link below <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To change yourpassword please click the link below <br />
 					<br /> <a href="'.base_url('verify/').$reset.'" style="width: 100px; padding: 5px 10px; font-size: 12px; line-height: 1.5; border-radius: 3px; background-color: #337ab7; border: 1px solid #2e6da4; text-align: center; color: #fff; text-decoration: none; ">Verify Account</a><br />
 					<br /> or Copy this link and paste to browser '.base_url('verify/').$reset;
 
@@ -65,24 +123,36 @@ class MY_Controller extends CI_Controller {
 		$this->email->message($message);
 	}
 
-	public function sentManager($res,$data){
+	/**
+	* Notify immediate supervisor that his/her subordinate has leave.
+	* @param String
+	* @return True
+	*/
+	public function sentManager($res,$data,$token){
 
 		$manager = $res['manager'];
 		$recipient = $this->leave->getManagerEmail($manager);
 		$sitename = strtolower($_SERVER['SERVER_NAME']);
 		$from_email = 'leave-form@'.$sitename;
 
-		if($data['days'] === 1) {
+		if($data['days'] == 1) {
 			$message = '<b>Hi '.$manager.'!</b><br /><br />
 
-					I would like to file a vacation leave for '.$data['days'].' day, '.$data['start'].'. Grateful if you can approve my request.<br /><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I would like to file a '.$data['title'].' for '.$data['days'].' day, '.date('M d, Y',strtotime($data['start'])).'. Grateful if you can approve my request.<br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('approved/').$token.'" style="width: 100px; padding: 5px 10px; font-size: 12px; line-height: 1.5; border-radius: 3px; background-color: #337ab7; border: 1px solid #2e6da4; text-align: center; color: #fff; text-decoration: none; ">Approved</a>&nbsp;&nbsp;
+					<a href="'.base_url('rejected/').$token.'" style="width: 100px; padding: 5px 10px; font-size: 12px; line-height: 1.5; border-radius: 3px; background-color: #d82b14; border: 1px solid #d82b14; text-align: center; color: #fff; text-decoration: none; ">Reject</a><br /><br />
+
 
 					Regards,<br />
 					'.$res['fullname'];
 		} else {
 			$message = '<b>Hi '.$manager.'!</b><br /><br />
 
-					I would like to file a vacation leave for '.$data['days'].' day/s, from '.$data['start'].' to '.$data['end'].'. Grateful if you can approve my request.<br /><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I would like to file a '.$data['title'].' for '.$data['days'].' day/s, from '.date('M d, Y',strtotime($data['start'])).' to '.date('M d, Y',strtotime($data['end'])).'. Grateful if you can approve my request.<br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('approved/').$token.'" style="width: 100px; padding: 5px 10px; font-size: 12px; line-height: 1.5; border-radius: 3px; background-color: #337ab7; border: 1px solid #2e6da4; text-align: center; color: #fff; text-decoration: none; ">Approved</a>&nbsp;&nbsp;
+					<a href="'.base_url('rejected/').$token.'" style="width: 100px; padding: 5px 10px; font-size: 12px; line-height: 1.5; border-radius: 3px; background-color: #d82b14; border: 1px solid #d82b14; text-align: center; color: #fff; text-decoration: none; ">Reject</a><br /><br />
 
 					Regards,<br />
 					'.$res['fullname'];
@@ -90,11 +160,100 @@ class MY_Controller extends CI_Controller {
 
 		$this->email->from($from_email,'Leave Form'); 
 		$this->email->to($recipient['email']);
-		$this->email->subject($res['fullname'].' Leave');
+		$this->email->subject('For approval '.$data['title']);
 		$this->email->message($message);
 		$this->email->reply_to($res['email']);
 	}
 
+	/**
+	* Notify requestor that his/her leave has been apporved.
+	* @param String
+	* @return True
+	*/
+	public function approvedMail($data,$verify) {
+		$manager = $res['manager'];
+		$sitename = strtolower($_SERVER['SERVER_NAME']);
+		$from_email = 'leave-approved@'.$sitename;
+
+		if($verify['days'] == 1) {
+			$message = '<b>Hi '.$data['fullname'].'!</b><br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your '.$verify['title'].' for '.$verify['days'].' day, '.date('M d, Y',strtotime($verify['start'])).' has been approved.<br /><br />
+
+					Regards<br />';
+		} else {
+			$message = '<b>Hi '.$data['fullname'].'!</b><br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your '.$verify['title'].' for '.$verify['days'].' day/s, from '.date('M d, Y',strtotime($verify['start'])).' to '.date('M d, Y',strtotime($verify['end'])).'. has been approved.<br /><br />
+
+					Regards<br />';
+		}
+
+		$this->email->from($from_email,'Leave '.Constant::CN_APPROVED); 
+		$this->email->to($data['email']);
+		$this->email->subject($verify['title'].' '.Constant::CN_APPROVED);
+		$this->email->message($message);
+
+		if($this->email->send()) {
+
+			$this->session->set_flashdata('approved','Yess');
+			redirect(base_url());
+
+		} else {
+			$this->session->set_flashdata('notsent','<div class="alert alert-danger">Oops, Email not sent</div>');
+		}
+	}
+
+	/**
+	* Notify requestor that his/her leave has rejected apporved.
+	* @param String
+	* @return True
+	*/
+	public function rejectMail($data,$verify,$reject_msg) {
+		$manager = $res['manager'];
+		$sitename = strtolower($_SERVER['SERVER_NAME']);
+		$from_email = 'leave-rejected@'.$sitename;
+
+		if($verify['days'] == 1) {
+			$message = '<b>Hi '.$data['fullname'].'!</b><br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your '.$verify['title'].' for '.$verify['days'].' day, '.date('M d, Y',strtotime($verify['start'])).' has been rejected.<br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbspReason Why: <br><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$reject_msg.'</b><br /><br />
+
+
+					Regards<br />';
+		} else {
+			$message = '<b>Hi '.$data['fullname'].'!</b><br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your '.$verify['title'].' for '.$verify['days'].' day/s, from '.date('M d, Y',strtotime($verify['start'])).' to '.date('M d, Y',strtotime($verify['end'])).'. has been rejected.<br /><br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbspReason Why:
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$reject_msg.'<br /><br />
+					Regards<br />';
+		}
+
+		$this->email->from($from_email,'Leave Rejected'); 
+		$this->email->to($data['email']);
+		$this->email->subject($verify['title'].' Rejected');
+		$this->email->message($message);
+
+		if($this->email->send()) {
+
+			$this->session->set_flashdata('rejectSuccess','Yess');
+			redirect(base_url());
+
+		} else {
+			$this->session->set_flashdata('notsent','<div class="alert alert-danger">Oops, Email not sent</div>');
+			redirect(base_url());
+		}
+	}
+
+	/**
+	* Triger to sent mail message
+	* False comes if mail server is offline
+	* @return True or False
+	*/
 	public function trigerSend() {
 
 		if($this->email->send()) {
@@ -107,6 +266,10 @@ class MY_Controller extends CI_Controller {
 		}
 	}
 
+	/**
+	* Set mailer account for sending mail
+	* google account, call email libraries (built-in)
+	*/
 	public function emailSetting() {
 		$config = Array(
 			'protocol' => 'smtp',
@@ -118,6 +281,23 @@ class MY_Controller extends CI_Controller {
 		);
 		$this->load->library('email', $config);
 		$this->email->set_mailtype("html");
+	}
+
+	/**
+	* Set Login Checking
+	* @return True
+	*/
+	public function check_if_logged_in() {
+
+		if(!$this->session->userdata('logged_in')) {
+			$this->session->set_flashdata('error','<div class="alert alert-warning">You need to login first</div>');
+			redirect('login');
+		}
+	}
+
+	public function setNewSession($val) {
+		$sess = array('token' => $val);
+		$this->_ci->session->set_userdata($sess);
 	}
 }
 

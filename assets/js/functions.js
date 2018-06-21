@@ -49,26 +49,43 @@ $(document).ready(function(){
 						toastr.error('Reason for Leave are empty ', 'Error Alert', {timeOut: 8000});
 					} else {
 						if(contLeave == 'Sick') {
-							if(sl == 0) {
-								toastr.error('You have a zero sick leave', 'Error Alert', {timeOut: 8000});
+
+							if(regular == "LW/OP") {
+								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 							} else {
-								if(dateFrom == '' || dateTo == '' || reason == '' || regular == '' || noDays == '') {
-									toastr.error('Required fileds', 'Error Alert', {timeOut: 8000});
+								if(sl == 0) {
+									toastr.error('You have a zero sick leave', 'Error Alert', {timeOut: 8000});
+								} else {
+									if(dateFrom == '' || dateTo == '' || reason == '' || regular == '' || noDays == '') {
+										toastr.error('Required fileds', 'Error Alert', {timeOut: 8000});
+									} else {
+										saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+									}
+								}
+							}
+							
+						} else if(contLeave == 'Birthday') {
+
+							if(regular == "LW/OP") {
+								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+							} else {
+								if(bl == 0) {
+									toastr.error('You have a zero birthday leave', 'Error Alert', {timeOut: 8000});
 								} else {
 									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 								}
 							}
-						} else if(contLeave == 'Birthday') {
-							if(bl == 0) {
-								toastr.error('You have a zero birthday leave', 'Error Alert', {timeOut: 8000});
-							} else {
-								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
-							}
+								
 						} else {
-							if(vl == 0) {
-								toastr.error('You have a zero vacation leave', 'Error Alert', {timeOut: 8000});
-							} else{
+							
+							if(regular == "LW/OP") {
 								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+							} else {
+								if(vl == 0) {
+									toastr.error('You have a zero vacation leave', 'Error Alert', {timeOut: 8000});
+								} else{
+									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+								}
 							}
 						}
 					}
@@ -84,9 +101,9 @@ $(document).ready(function(){
 			type: "POST",
 			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
-				toastr.success(data, 'Success Alert', {timeOut: 8000});
+				toastr.success('Successfully created', 'Success Alert', {timeOut: 8000});
 				print();
-				window.setTimeout(function(){window.location.href = "http://localhost:8080/dev-leave-form/" }, 8000);
+				window.setTimeout(function(){window.location.href = "https://media.megasportsworld.com/msw-dev-leave-sites/" }, 8000);
 			},
 			error:function(data) {
 				toastr.error(data, 'Error Alert', {timeOut: 8000});

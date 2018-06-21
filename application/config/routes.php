@@ -26,3 +26,11 @@ $route['employee/profile/(:any)'] = 'Welcome/modalDir/$1';
 //LeaveForm
 $route['leave-form'] = 'Leaveform';
 $route['leave-form/add'] = 'Leaveform/add';
+
+//Download Form
+$route['download-leave'] = 'Leaveform/downloadForm';
+
+//Leave Status
+$route['approved/(:any)'] = 'Leaveform/approvedLeave/$1';
+$route['rejected/(:any)'] = 'Leaveform/rejectLeave/$1';
+$route['reject-form'] = 'Leaveform/rejectForm';

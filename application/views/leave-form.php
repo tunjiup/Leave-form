@@ -96,7 +96,7 @@
 														<td class="space"></td>
 														<td class="subinpt"><input type="checkbox" class="withorwithoutpay" id="ckbox10" value="LWP" /> <label for="ckbox10"></label></td>
 														<td style="width: 1.2in">LWP</td>
-														<td class="subinpt"><input type="checkbox" class="withorwithoutpay" id="ckbox11" value="lW/OP" /> <label for="ckbox11"></td>
+														<td class="subinpt"><input type="checkbox" class="withorwithoutpay" id="ckbox11" value="LW/OP" /> <label for="ckbox11"></td>
 														<td style="width: 0.8in">LW/OP</td>
 														<td style="width: 1.75in">TOTAL NUMBER OF DAYS:</td>
 														<td style="width: 0.2in;"><input type="text" name="noDays" id="noDays" style=" text-align: center;" /></td>
@@ -242,5 +242,6 @@
 		<script src="<?php echo base_url('assets/'); ?>js/restrictCheckbox.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
     	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    	<?php $this->load->view('auto-logout'); ?>
 	</body>
 </html>

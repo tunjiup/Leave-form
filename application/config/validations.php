@@ -58,6 +58,11 @@ $config = array(
 			'field' => 'password',
 			'label' => 'Password',
 			'rules' => 'trim|required|xss_clean'
+		),
+		array(
+			'field' => 'g-recaptcha-response',
+			'label' => 'Captcha',
+			'rules' => 'trim|required|xss_clean|callback_googleCaptcha'
 		)
 	),
 	'edit' => array(
@@ -109,6 +114,13 @@ $config = array(
 			'field' => 'confirmpassword',
 			'label' => 'Confirm Password',
 			'rules' => 'trim|required|xss_clean|matches[password]'
+		)
+	),
+	'rejectReason' => array(
+		array(
+			'field' => 'reasons',
+			'label' => 'Reasons',
+			'rules' => 'trim|required|xss_clean'
 		)
 	)
 

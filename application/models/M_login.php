@@ -22,6 +22,20 @@ class M_login extends CI_Model {
 		$res->free_result();
 		return $data;
 	}
+	
+	public function getOnline($id) {
+		$where = array('userid' => $id);
+		$data = array('active' => 1);
+		$this->db->where($where);
+		return $this->db->update('users',$data);
+	}
+
+	public function getOffline($id) {
+		$where = array('userid' => $id);
+		$data = array('active' => 0);
+		$this->db->where($where);
+		return $this->db->update('users',$data);
+	}
 
 	public function checkEmail($email) {
 		$data = array();
