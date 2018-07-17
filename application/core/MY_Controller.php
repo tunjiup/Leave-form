@@ -1,5 +1,5 @@
 <?php
-require_once FCPATH . '/vendor/autoload.php';
+require_once APPPATH . 'third_party/vendor/autoload.php';
 
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
