@@ -83,8 +83,15 @@
 									</tr>
 								</table>
 								<table>
-									<tr id="dateFunction">
-										
+									<tr>
+										<td class="lbl" style="width: 1.68in">Dates of Leave From: </td>
+										<td class="inpt text-center" style="width: 2.44in">
+											<input type="text" name="dateTimeFrom" id="dateTimePickerFrom" data-toggle="datetimepicker" data-target="#dateTimePickerFrom" class=" datetimepicker-input" data-date-start-date="0d"/>
+										</td>
+										<td class="lbl" style="width: 0.28in">to</td>
+										<td class="inpt text-center" style="width: 2.61in">
+											<input type="text" name="dateTimeTo" id="dateTimePickerTo" data-date-start-date="0d" data-toggle="datetimepicker" data-target="#dateTimePickerTo" class=" datetimepicker-input"/>
+										</td>
 									</tr>
 									<tr>
 										<td colspan="4" class="lv-container">
@@ -186,19 +193,19 @@
 										<td class="ap-lbl-row">Requested by: Employee Name</td>
 										<td class="ap-lbl-row"><input type="text" value="<?php echo $mydata['fullname']; ?>" readonly/></td>
 										<td class="ap-lbl-row"></td>
-										<td class="ap-lbl-row"><input type="text" value="<?php echo date('M d, Y'); ?>" /></td>
+										<td class="ap-lbl-row"><input type="text" id="datePass" readonly/></td>
 									</tr>
 									<tr>
 										<td class="ap-lbl-row">Recommended by: Immediate Supervisor</td>
 										<td class="ap-lbl-row"><input type="text" value="<?php echo $mydata['manager']; ?>" readonly/></td>
 										<td class="ap-lbl-row"></td>
-										<td class="ap-lbl-row"><input type="text" /></td>
+										<td class="ap-lbl-row"><input type="text" readonly/></td>
 									</tr>
 									<tr>
 										<td class="ap-lbl-row">Approved by: Department Head/COO</td>
 										<td class="ap-lbl-row"><input type="text" value="<?php echo $mydata['departmenthead']; ?>" readonly/></td>
 										<td class="ap-lbl-row"></td>
-										<td class="ap-lbl-row"><input type="text" /></td>
+										<td class="ap-lbl-row"><input type="text" readonly/></td>
 									</tr>
 									<tr>
 										<td class="ap-lbl-row">Checked and Verified: HR Department</td>
@@ -242,6 +249,6 @@
 		<script src="<?php echo base_url('assets/'); ?>js/restrictCheckbox.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
     	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    	<?php $this->load->view('auto-logout'); ?>
+    	<?php $this->load->view('includes/auto-logout'); ?>
 	</body>
 </html>

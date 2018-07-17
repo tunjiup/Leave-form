@@ -21,7 +21,9 @@ function print() {
 	html2pdf(element, opt);
 }
 
-$(document).ready(function(){
+$(function(){
+
+	$('[data-toggle="tooltip"]').tooltip()
 	
 	$('#saveto').click(function(){
 		var dateTimeFrom = $('#dateTimePickerFrom').val();
@@ -37,16 +39,16 @@ $(document).ready(function(){
 		var bl = $('#bL').val();
 
 		if(contLeave == '') {
-			toastr.error('Type of Leave Requested are empty', 'Error Alert', {timeOut: 8000});
+			toastr.error('Type of Leave Requested are empty', 'Error', {timeOut: 8000});
 		} else {
 			if(noDays == '') {
-				toastr.error('Total number of days are empty', 'Error Alert', {timeOut: 8000});
+				toastr.error('Total number of days are empty', 'Error', {timeOut: 8000});
 			} else {
 				if(regular == '') {
-					toastr.error('Please choose LWP / LWOP ', 'Error Alert', {timeOut: 8000});
+					toastr.error('Please choose LWP / LWOP ', 'Error', {timeOut: 8000});
 				} else {
 					if(reason == '') {
-						toastr.error('Reason for Leave are empty ', 'Error Alert', {timeOut: 8000});
+						toastr.error('Reason for Leave are empty ', 'Error', {timeOut: 8000});
 					} else {
 						if(contLeave == 'Sick') {
 
@@ -54,10 +56,10 @@ $(document).ready(function(){
 								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 							} else {
 								if(sl == 0) {
-									toastr.error('You have a zero sick leave', 'Error Alert', {timeOut: 8000});
+									toastr.error('You have a zero sick leave', 'Error', {timeOut: 8000});
 								} else {
 									if(dateFrom == '' || dateTo == '' || reason == '' || regular == '' || noDays == '') {
-										toastr.error('Required fileds', 'Error Alert', {timeOut: 8000});
+										toastr.error('Required fileds', 'Error', {timeOut: 8000});
 									} else {
 										saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 									}
@@ -70,7 +72,7 @@ $(document).ready(function(){
 								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 							} else {
 								if(bl == 0) {
-									toastr.error('You have a zero birthday leave', 'Error Alert', {timeOut: 8000});
+									toastr.error('You have a zero birthday leave', 'Error', {timeOut: 8000});
 								} else {
 									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 								}
@@ -82,7 +84,7 @@ $(document).ready(function(){
 								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 							} else {
 								if(vl == 0) {
-									toastr.error('You have a zero vacation leave', 'Error Alert', {timeOut: 8000});
+									toastr.error('You have a zero vacation leave', 'Error', {timeOut: 8000});
 								} else{
 									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 								}
@@ -97,24 +99,98 @@ $(document).ready(function(){
 	function saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays) {
 
 		$.ajax({
-			url:"https://media.megasportsworld.com/msw-dev-leave-sites/leave-form/add",
+			url:"http://localhost:8080/leaveform/leave-form/add",
 			type: "POST",
 			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
-				toastr.success('Successfully created', 'Success Alert', {timeOut: 8000});
-				print();
-				window.setTimeout(function(){window.location.href = "https://media.megasportsworld.com/msw-dev-leave-sites/" }, 8000);
+				toastr.success('Successfully created', 'Success', {timeOut: 8000});
+				
+				window.setTimeout(function(){window.location.href = "http://localhost:8080/leaveform/" }, 8000);
 			},
-			error:function(data) {
-				toastr.error(data, 'Error Alert', {timeOut: 8000});
+			error:function() {
+				toastr.error('Oops, Duplicate Entry', 'Error', {timeOut: 8000});
 			}
 		});
 	}
 
+	$('form#formComment').submit(function(e){
+
+		e.preventDefault();
+
+		var formData = new FormData($(this)[0]);
+
+		$.ajax({
+			url: "http://localhost:8080/leaveform/submit-comment",
+			type: "POST",
+			data: formData,
+			async: true,
+			cache: false,
+			contentType:false,
+			processData:false,
+			success: function(data){
+				toastr.success('Feedback successfully sent', 'Success', {timeOut: 8000});
+				$('#commentbox').val('');
+			},
+			error:function() {
+				toastr.error(data, 'Error', {timeOut: 8000});
+			}
+		})
+	});
+
+	$('form#CreateNewSubordinate').submit(function(e){
+
+		e.preventDefault();
+
+		var formData = new FormData($(this)[0]);
+
+		$.ajax({
+			url: "http://localhost:8080/leaveform/employees/create",
+			type: "POST",
+			data: formData,
+			async: true,
+			cache: false,
+			contentType:false,
+			processData:false,
+			success: function(data){
+				$('#createNew').modal('hide');
+				toastr.success('Employee successfully created', 'Success', {timeOut: 8000});
+				window.setTimeout(function(){window.location.href = "http://localhost:8080/leaveform/" }, 8000);
+				$('form#CreateNewSubordinate')[0].reset();
+			},
+			error:function() {
+				toastr.error(data, 'Error', {timeOut: 8000});
+			}
+		})
+	});
+
+	$('form#balanceLeave').submit(function(e){
+
+		e.preventDefault();
+
+		var formData = new FormData($(this)[0]);
+		var id = $('#empID').val();
+		$.ajax({
+			url: "http://localhost:8080/leaveform/update-leave-balance/" + id,
+			type: "POST",
+			data: formData,
+			async: true,
+			cache: false,
+			contentType:false,
+			processData:false,
+			success: function(data){
+				toastr.success('Change date has been save', 'Success', {timeOut: 8000});
+				$('form#balanceLeave')[0].reset();
+			},
+			error:function() {
+				toastr.error('Oops! Email Not sent', 'Error', {timeOut: 8000});
+			}
+		})
+	});
+
 	$('.leave-wrapper').on('click',function(){
 		var id = $(this).attr('data-id');
 		$.ajax({
-			url:"https://media.megasportsworld.com/msw-dev-leave-sites/employee/profile/" + id,
+			url:"http://localhost:8080/leaveform/employee/profile/" + id,
 			type: "POST",
 			data: {id:id},
 			success: function(data) {
@@ -124,4 +200,171 @@ $(document).ready(function(){
 		});
 
 	});
+
+	$('.commentView').on('click',function(){
+		var id = $(this).attr('data-id');
+		$.ajax({
+			url:"http://localhost:8080/leaveform/view-comment/" + id,
+			type: "POST",
+			data: {id:id},
+			success: function(data) {
+				$('#displayComment').html(data);
+				$('#feed_back').css("z-index", "100");
+				$('#comment_view').modal('show');
+			}
+		});
+
+	});
+
+	$('#import_csv').on('submit', function(e){
+		e.preventDefault();
+		var formData = new FormData($(this)[0]);
+		$.ajax({
+			url:"http://localhost:8080/leaveform/bulk-upload/import",
+			method:"POST",
+			data:formData,
+			async: true,
+			cache: false,
+			contentType:false,
+			processData:false,
+			beforeSend:function(){
+				$('#import_csv_btn').html('Importing...');
+			},
+			success:function(data){
+				$('#import_csv')[0].reset();
+				$('#bulk_upload').modal('hide');
+				toastr.success('Bulk Upload Successfully save', 'Success', {timeOut: 8000});
+			}
+		})
+	});
+
+	_countFeed();
+
+	$('#feedAnchor').click(function() {
+		$.ajax({
+			url:"http://localhost:8080/leaveform/comment-seen",
+			method:"POST",
+			success: function(data) {
+				_getFeedBack();
+				$('#feedBadge').removeClass('badge badge-danger');
+				$('#feedBadge').html('');
+			}
+		});
+	});
+
+	function _countFeed() {
+		$.ajax({
+			url:"http://localhost:8080/leaveform/feedback-count",
+			method:"POST",
+			success: function(data) {
+				
+				if(data == 0) {
+					$('#feedBadge').removeClass('badge badge-danger');
+					$('#feedBadge').html('');
+				} else {
+					$('#feedBadge').addClass('badge badge-danger');
+					$('#feedBadge').html(data);
+				}
+				
+			}
+		});
+	}
+
+	function _getFeedBack() {
+		$.ajax({
+			url:"http://localhost:8080/leaveform/feeds",
+			method:"POST",
+			success: function(data) {
+				$('.feedtbody').html(data);
+			}
+		});
+	}
+
+	function feedCount() {
+		feed = $('#clientsFeed').val();
+		if(feed != '0') {
+			$('#feedBadge').addClass('badge badge-danger');
+			$('#feedBadge').html(feed);
+		} else {
+			$('#feedBadge').removeClass('badge badge-danger');
+			$('#feedBadge').html('');
+		}
+
+	}
+
+	$('.optimization').on('click', function(){
+		var table = $(this).attr('data-id');
+		$.ajax({
+			url:"http://localhost:8080/leaveform/database/table/optimize/" + table,
+			method:"POST",
+			data: {table:table},
+			success: function(data) {
+				toastr.success(table+' has been optimize', 'Success', {timeOut: 8000});
+			}
+		});
+	});
+
+	$('.repair').on('click', function(){
+		var table = $(this).attr('data-id');
+		$.ajax({
+			url:"http://localhost:8080/leaveform/database/table/repair/" + table,
+			method:"POST",
+			data: {table:table},
+			success: function(data) {
+				toastr.success(table+' has been repair', 'Success', {timeOut: 8000});
+			}
+		});
+	});
+
+	$('.tableBackup').on('click', function(){
+		var table = $(this).attr('data-id');
+		$.ajax({
+			url:"http://localhost:8080/leaveform/database/table/backup/" + table,
+			method:"POST",
+			data: {table:table},
+			success: function(data) {
+				toastr.success('Backup '+table+' done', 'Success', {timeOut: 8000});
+			}
+		});
+	});
+
+	$('.tableData').on('click', function(){
+		var table = $(this).attr('data-id');
+		$.ajax({
+			url:"http://localhost:8080/leaveform/database/backup/data/" + table,
+			method:"POST",
+			data: {table:table},
+			success: function(data) {
+				toastr.success('Backup '+table+' done', 'Success', {timeOut: 8000});
+			}
+		});
+	});
+	$('#dbAll').on('click', function(){
+		$.ajax({
+			url:"http://localhost:8080/leaveform/database/backup",
+			method:"POST",
+			success: function(data) {
+				toastr.success('Backup Database done', 'Success', {timeOut: 8000});
+			}
+		});
+	});
+
+	$('.tableStructure').on('click', function(){
+		var table = $(this).attr('data-id');
+		$.ajax({
+			url:"http://localhost:8080/leaveform/database/describe/" + table,
+			method:"POST",
+			data: {table:table},
+			success: function(data) {
+				$('#dbtableStructure').html(data);
+				$('#strucTable').html(table);
+				$('#StructureDB').modal('show');
+				$('#database').css("z-index", "100");
+			}
+		});
+	});
+
+	$('.dbClose').on('click', function(){
+		$('#database').css("z-index", "1050");
+	})
 });

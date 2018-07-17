@@ -7,15 +7,41 @@ class M_login extends CI_Model {
 	}
 
 	/**
+	* Insert loin activity data
+	* @param String $username date
+	* @return Boolean
+	*/
+	public function insert_logs($data) {
+		return $this->db->insert('login_history',$data);
+	}
+
+	/**
+	* Insert activity logs data
+	* @param String
+	* @return Boolean
+	*/
+	public function activityLogs($data) {
+		return $this->db->insert('activity_logs',$data);
+	}
+
+	public function updateLogin_logs($data) {
+		$where = array('username' => $this->session->userdata('uname'), 'logout_date' => NULL);
+		$this->db->where($where);
+		return $this->db->update('login_history',$data);
+	}
+
+	/**
 	* Get Data
 	* @param String $username
 	* @return String User's Details
 	*/
 	public function getUserDetails($username) {
 		$data = array();
-		$where = array('username' => $username);
-		$this->db->where($where);
-		$res = $this->db->get('users');
+		$this->db->select('e.*, u.*');
+		$this->db->from('employee e');
+		$this->db->join('users u','u.employee_id = e.id');
+		$this->db->where("u.username = '$username' OR e.name = '$username'");
+		$res = $this->db->get();
 		if($res->num_rows() > 0){
 			$data = $res->row_array();
 		}

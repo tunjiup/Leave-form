@@ -37,15 +37,19 @@ class Login extends MY_Controller {
 						} else {
 							$sess = array(
 								'userid' => $res['userid'],
+								'role' => $res['role'],
 								'key' => $res['resetpasskey'],
 								'empid' => $res['employee_id'],
 								'uname' => $res['username'],
 								'email' => $res['email'],
 								'fullname' => $res['fullname'],
+								'position' => $res['position'],
 								'logged_in' => TRUE
 							);
 							$this->session->set_userdata($sess);
+							save_login();
 							$this->login->getOnline($res['userid']);
+							$this->set_Cookies($res['fullname']);
 							if($res['fullname'] == NULL) {
 								$this->session->set_flashdata('complete','Please complete your deatils');
 							}
@@ -164,7 +168,7 @@ class Login extends MY_Controller {
 
 				$this->session->set_flashdata('success','<div class="alert alert-success">Password successfully Change</div>');
 				
-				redirect('login');
+				redirect(base_url());
 
 			}
 		}
@@ -175,8 +179,11 @@ class Login extends MY_Controller {
 	public function logout(){
 
 		$id = $this->session->userdata('userid');
+		$name = $this->session->userdata('fullname');
+		$this->delete_Cookies($name);
 		$this->login->getOffline($id);
-		$sess = array('userid' => '', 'key' => '', 'uname' => '', 'email' => '', 'fullname' => '', 'logged_in' => FALSE);
+		save_login();
+		$sess = array('userid' => '', 'role' => '', 'key' => '', 'empid' => '', 'uname' => '', 'email' => '', 'fullname' => '', 'position' => '', 'logged_in' => FALSE);
 		$this->session->unset_userdata($sess);
 		$this->session->sess_destroy();
 		redirect('login');
@@ -184,7 +191,8 @@ class Login extends MY_Controller {
 
 	public function googleCaptcha($str='') {
 		$google_url="https://www.google.com/recaptcha/api/siteverify";
-		$secret ='6Leqn18UAAAAAL-Il108Fsg-8QLAUuXWYaq5Wwxz';
+		/*$secret ='6Leqn18UAAAAAL-Il108Fsg-8QLAUuXWYaq5Wwxz';*/
+		$secret ='6Lei1l8UAAAAAPBwtbx5mqZVOImNcTNTudVRjW08';
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$url = $google_url."?secret=".$secret."&response=".$str."&remoteip=".$ip;
 		$curl = curl_init();

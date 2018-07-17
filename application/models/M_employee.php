@@ -6,6 +6,10 @@ class M_employee extends CI_Model {
 		parent::__construct();
 	}
 
+	public function insertNew($data) {
+		return $this->db->insert('employee',$data);
+	}
+
 	/**
 	* Get Leave Balance
 	* @return String
@@ -80,6 +84,7 @@ class M_employee extends CI_Model {
 	public function getdob($dept) {
 
 		$this->db->where("MONTH(dob) = MONTH(NOW()) AND department = '$dept'");
+		$this->db->order_by('DAY(dob)', 'ASC');
 		$res = $this->db->get('employee');
 		return $res->result();
 
@@ -101,7 +106,7 @@ class M_employee extends CI_Model {
 	*/
 	public function getEvents($start, $end, $dept) {
 
-		$where = array('start >=' => $start, 'end <=' => $end, 'e.department' => $dept);
+		$where = array('l.start >=' => $start, 'l.end <=' => $end, 'e.department' => $dept, 'l.active' => 1);
 		$this->db->select('u.username, l.*');
 		$this->db->from('users u');
 		$this->db->join('leavehistory l','u.employee_id = l.employee_id','LEFT');

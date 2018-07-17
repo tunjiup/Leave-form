@@ -13,6 +13,10 @@ class Constant {
 	const L_BIRTHDAY = 'Birthday Leave';
 	const L_HOSPITALIZATION = 'Hospitalization Leave';
 
+	//With or without pay
+	const LWP = 'LWP';
+	const LWOP = 'LW/OP';
+
 	//MSW Department
 	const D_WEBDEV = 'MSW - Webdev';
 
@@ -20,6 +24,29 @@ class Constant {
 	const CN_PENDING = "Pending";
 	const CN_APPROVED = "Approved";
 	const CN_REJECT = "Rejected";
+
+	//Move leave Date
+	const M_LEAVE = "Move Leave Date";
+
+	//Module
+	const MODULE_DASHBOARD = 'Dashboard';
+	const MODULE_LEAVE = 'Leave Form';
+	const MODULE_LOGIN = 'Login';
+
+	//Action
+	const A_EDIT = 'Update';
+	const A_ADD = 'Add';
+	const A_DOWNLOAD = 'Download';
+
+	//Manager
+	const PROJECT_MANAGER = 'Project manager';
+
+	//Folder Name
+	const FOLDER_DB = 'database/';
+
+	//Comment Status
+	const C_SEEN = 'seen';
+	const C_HIDE = 'hide';
 }
 
 ?>

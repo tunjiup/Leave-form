@@ -26,7 +26,15 @@
 
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
 
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap-datetimepicker.min.css">
+
     	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+
+    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+    	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/'); ?>css/offline-theme-slide.min.css">
+    	
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/offline-language-english.min.css" />
 
 	</head>
 
@@ -34,30 +42,67 @@
 
 		<div id="mySidenav" class="sidenav">
 
-		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
-		  <a href="<?php echo base_url('leave-form'); ?>">Request Leave</a>
+			<a href="<?php echo base_url('leave-form'); ?>">Request Leave <i class="fas fa-paper-plane"></i></a>
 
-		  <a href="#" data-toggle="modal" data-target="#editProfile">Profile</a>
+			<a href="#" class="navClose" data-toggle="modal" data-target="#editProfile">Profile <i class="fas fa-user-alt"></i></a>
 
-		  <a href="<?php echo base_url('logout'); ?>">Logout</a>
+			<a href="#" class="navClose" data-toggle="modal" data-target="#historyfiles">History <i class="fas fa-history"></i></a>
+
+			<?php if($this->session->userdata('role') == '1'): ?>
+			<a href="#" class="navClose" id="feedAnchor" data-toggle="modal" data-target="#feed_back">Feedback <i class="fa fa-comments" aria-hidden="true"></i> <span id="feedBadge"></span></a>
+			<a href="#" class="navClose" data-toggle="modal" data-target="#database">Database <i class="fas fa-database"></i></a>
+			<a href="#" class="dropdown-btn">Team <i class="fas fa-users"></i> <i class="fas fa-caret-right" id="changeCaret"></i></a>
+			<div class="dropdown-container">
+				<a href="#createNew" class="navClose" data-toggle="modal">New <i class="fas fa-user-plus"></i></a>
+				<a href="#" class="navClose" data-toggle="modal" data-target="#bulk_upload">Bulk Upload <i class="fab fa-shirtsinbulk"></i></a>
+			</div>
+			<?php endif; ?>
+			<?php if($this->session->userdata('position') == Constant::PROJECT_MANAGER): ?>
+			
+			<a href="#" class="dropdown-btn">Team <i class="fas fa-users"></i> <i class="fas fa-caret-right" id="changeCaret"></i></a>
+			<div class="dropdown-container">
+				<a href="#createNew" class="navClose" data-toggle="modal">New <i class="fas fa-user-plus"></i></a>
+				<a href="#" class="navClose" data-toggle="modal" data-target="#bulk_upload">Bulk Upload <i class="fab fa-shirtsinbulk"></i></a>
+			</div>
+			<?php endif; ?>
+			<a href="<?php echo base_url('logout'); ?>">Logout <i class="fas fa-sign-out-alt"></i></a>
 
 		</div>
 
 		<div class="row main-container" id="main">
-
+			
 			<div class="btn-fix" onclick="openNav()">
 
 				<span>Menu</span>
 
 			</div>
 
+			<?php if($this->session->userdata('role') == '1'): ?>
+			<?php else: ?>
+			<div class="st-actionContainer right-bottom">
+				<div class="st-panel">
+					<div class="st-panel-header"><i class="fa fa-comment" aria-hidden="true"></i> Feedback</div>
+					<div id="clearfix"></div>
+					<div class="grid">
+						<form method="POST" action="" id="formComment">
+							<textarea id="commentbox" name="commentbox" class="form-control" placeholder="comment.." required></textarea>
+							<br>
+							<input type="submit" name="submit" class="btn btn-primary comment-button" value="submit">
+						</form>
+					</div>
+				</div>
+				<div class="st-btn-container right-bottom">
+					<div class="st-button-main"><i class="fa fa-comments" aria-hidden="true"></i></div>
+				</div>
+			</div>
+			<?php endif; ?>
+
 			<div class="col-sm body-container">
 
 				<div class="row leave-container">
-
-					<?php echo $employee; ?>
-
+					<?php echo $employees; ?>
 				</div>
 
     			<!-- <canvas id="canvas"></canvas> -->
@@ -75,13 +120,13 @@
 						<div class="paper-container">
 
 							<div class="paper">
-
+								
 								<br>
-
+								
 								<div class="headline">
+									<input type="text" id="myrole" value="<?php echo ($this->session->userdata('role') ? $this->session->userdata('role') : '0'); ?>">
 
 									Special Events <span>corner</span>
-
 								</div>
 
 								<div class="sp-events">
@@ -108,391 +153,149 @@
 
 		</div>
 
+		<?php $this->load->view('includes/modal'); ?>
 
+	    <script src="<?php echo base_url('assets/'); ?>js/jquery.min.js"></script>
 
-		<!-- Modal -->
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 
-		<div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
+	    <script src="<?php echo base_url('assets/'); ?>js/popper.min.js"></script>
 
-			<div class="modal-dialog" role="document">
+	    <script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
 
-				<div class="modal-content">
+	    <script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
 
-					<div class="modal-header">
+	    <script src="<?php echo base_url('assets/'); ?>js/fullcalendar.min.js"></script>
 
-						<h5 class="modal-title" id="editProfileLabel">Edit Profile </h5>
+	    <script src="<?php echo base_url('assets/'); ?>js/gcal.js"></script>
 
-						<a href="#" id="modalChangePass">Change Password</a>
+	    <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
+		
+		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datetimepicker.js"></script>
 
-					</div>
+		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
+		
+		<script src="<?php echo base_url('assets/'); ?>js/action.js"></script>
 
-					<div class="modal-body">
+		<script src="<?php echo base_url('assets/'); ?>js/admin.js"></script>
 
-						<form method="post" action="<?php echo base_url('profile/update'); ?>">
+		<script src="<?php echo base_url('assets/'); ?>js/dashboard.js"></script>
 
-							<label>Username<input type="text" placeholder="username" name="username" class="form-control"  value="<?php echo $mydata['username']; ?>" required/></label>
+	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-							<label>Gender<?php echo form_dropdown('gender', gender(), (isset($mydata['gender'])) ? $mydata['gender']: '', 'class="form-control" required'); ?></label>
+	    <script src="<?php echo base_url('assets/'); ?>js/offline.min.js"></script>
 
-							<label>Fullname<input type="text" placeholder="Juan Dela Cruz" name="fullname" class="form-control" value="<?php echo $mydata['fullname']; ?>"  required></label>
+	    <?php $this->load->view('includes/auto-logout'); ?>
 
-							<label>Address<input type="text" placeholder="Address" name="address" class="form-control" value="<?php echo $mydata['address']; ?>"  required></label>
+		<script>
 
-							<label>Email<input type="email" placeholder="juan@sample.com" name="email" class="form-control" value="<?php echo $mydata['email']; ?>"  required></label>
+			Offline.options = {checks: {xhr: {url: '/assets/css/style.css'}}};
 
-							<label>Phone<input type="text" placeholder="+6309312458214" name="phone" class="form-control" value="<?php echo $mydata['cp_no']; ?>" required/></label>
+			$(document).ready(function() {
 
-							<input type="submit" class="form-control btn btn-default pull-right">
-
-						</form>
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-
-
-		<!-- Modal -->
-
-		<div class="modal fade" id="profileDir" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
-
-			<div class="modal-dialog" role="document">
-
-				<div class="modal-content">
-
-					<div class="modal-header">
-
-						<h5 class="modal-title" id="editProfileLabel">Profile Directory </h5>
-
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-
-					</div>
-
-					<div class="modal-body" id="employeeDir">
-
-						
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-
-
-		<!-- Modal -->
-
-		<div class="modal fade" id="rejectedLeave" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
-
-			<div class="modal-dialog" role="document">
-
-				<div class="modal-content">
-
-					<div class="modal-header">
-
-						<h5 class="modal-title" id="editProfileLabel">Reasons</h5>
-
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-
-					</div>
-
-					<div class="modal-body" id="rejected">
-
-						<form method="post" action="<?php echo base_url('reject-form'); ?>">
-
-							<textarea name="reasons"></textarea>
-
-							<input type="submit" class="form-control btn btn-default pull-right">
-
-						</form>
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-
-
-		<!-- Modal Change Password -->
-
-		<div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-labelledby="editProfileLabel" aria-hidden="true">
-
-			<div class="modal-dialog" role="document">
-
-				<div class="modal-content">
-
-					<div class="modal-header">
-
-						<h5 class="modal-title" id="editProfileLabel">Change Password</h5>
-
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-
-					</div>
-
-					<div class="modal-body">
-
-						<form method="post" action="<?php echo base_url('change-password'); ?>">
-
-							<label>New Password<input type="password" placeholder="Password" name="password" id="pass" class="form-control" required/></label>
-
-							<label>Confirm New Password<input type="password" placeholder="Confirm New Password" name="confirmpassword" id="cpass" class="form-control" required/></label>
-
-							<input type="submit" class="form-control btn btn-default pull-right" id="changeMyPass">
-
-						</form>
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
-
-    <script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
-
-    <script src="<?php echo base_url('assets/'); ?>js/fullcalendar.min.js"></script>
-
-    <script src="<?php echo base_url('assets/'); ?>js/gcal.js"></script>
-
-    <script src="<?php echo base_url('assets/'); ?>js/modalFunction.js"></script>
-
-    <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
-
-	<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
-    <?php $this->load->view('auto-logout'); ?>
-
-	<script>
-
-
-
-		$(document).ready(function() {
-
-
-
-			//Calendar Output
-
-			$('#calendar').fullCalendar({
-
-				defaultDate: '<?php echo date("Y-m-d") ?>',
-
-				editable: false,
-
-				eventLimit: true,
-
-				events: {
-
-					url: '<?php echo base_url('events'); ?>',
-
-					error: function() {
-
-						$('#script-warning').show();
-
+				//Calendar Output
+				$('#calendar').fullCalendar({
+					defaultDate: '<?php echo date("Y-m-d") ?>',
+					editable: false,
+					eventLimit: true,
+					events: {
+						url: '<?php echo base_url('events'); ?>',
+						error: function() {
+							$('#script-warning').show();
+						}
+					},
+					eventRender: function(event, element) {
+						if (event.className == 'Rejected') {
+							element.css({
+								'background-color': '#ef0a05',
+								'border-color': '#ef0a05'
+							});
+						} else if(event.className == 'Pending'){
+							element.css({
+								'background-color': '#f0ad4e',
+								'border-color': '#f0ad4e'
+							});
+						}
 					}
+				});
 
-				},
+				<?php if($this->session->flashdata('success')): ?>
 
-				eventRender: function(event, element) {
+					toastr.success('Your data has been updated', 'Success', {timeOut: 8000})
 
-					if (event.className == 'Rejected') {
+				<?php elseif($this->session->flashdata('rejectSuccess')): ?>
 
-						element.css({
+					toastr.success('Leave has been rejected', 'Success', {timeOut: 8000})
 
-							'background-color': '#ef0a05',
+				<?php elseif($this->session->flashdata('rejected')): ?>
 
-							'border-color': '#ef0a05'
+					$("#rejectedLeave").modal({backdrop: "static"});
 
-						});
+					toastr.success('Please state your reasons', 'Success', {timeOut: 8000})
 
-					} else if(event.className == 'Pending'){
+				<?php elseif($this->session->flashdata('approved')): ?>
 
-						element.css({
+					toastr.success('Leave has been approved', 'Success', {timeOut: 8000})
 
-							'background-color': '#f0ad4e',
+				<?php elseif($this->session->flashdata('sent')): ?>
 
-							'border-color': '#f0ad4e'
+					toastr.success('Email sent to your manager', 'Success', {timeOut: 8000})
 
-						});
+				<?php elseif($this->session->flashdata('complete')): ?>
 
-					}
+					$("#editProfile").modal({backdrop: "static"});
 
-				}
+					toastr.info('Please complete your information', 'Information', {timeOut: 8000})
+
+				<?php elseif($this->session->flashdata('notsent')): ?>
+
+					toastr.error('Email Not sent', 'Error', {timeOut: 8000})
+
+				<?php elseif($this->session->flashdata('movedate')): ?>
+
+					$("#moveDate").modal({backdrop: "static"});
+
+					toastr.info('Change your leave date', 'Info', {timeOut: 8000})
+
+				<?php elseif($this->session->flashdata('movedateSuccess')): ?>
+
+					toastr.success('Successfully change leave date', 'Success', {timeOut: 8000})
+
+				<?php elseif($this->session->flashdata('rejectSuccess')): ?>
+
+					toastr.success('Leave has been rejected', 'Success', {timeOut: 8000})
+
+				<?php elseif($this->session->flashdata('leavecancel')): ?>
+
+					toastr.success('Leave has been cancelled', 'Success', {timeOut: 8000})
+					$('#historyfiles').modal('show');
+
+				<?php elseif($this->session->flashdata('HideComment')): ?>
+
+					toastr.success('Feedback has been hide', 'Success', {timeOut: 8000})
+					$('#feed_back').modal('show');
+
+				<?php endif; ?>
 
 			});
 
+			function openNav() {
+				document.getElementById("mySidenav").style.width = "190px";
+				document.getElementById("main").style.marginLeft = "190px";
+			}
 
+			function closeNav() {
+				document.getElementById("mySidenav").style.width = "0";
+				document.getElementById("main").style.marginLeft= "0";
+			}
 
-			$('#pass').on('blur', function(){
-
-				var pass = $(this).val();
-
-				var cpass = $('#cpass').val();
-
-				if($('#cpass').val() == '') {
-
-					$('#changeMyPass').attr('disabled','disabled');
-
-				} else {
-
-					if(cpass == pass) {
-
-						$(this).css({"border-color": ""});
-
-						$('#cpass').css({"border-color": ""});
-
-						$('#changeMyPass').removeAttr('disabled','disabled');
-
-					} else {
-
-						$(this).css({"border-color": "#dc3545"});
-
-						$('#cpass').css({"border-color": "#dc3545"});
-
-						$('#changeMyPass').attr('disabled','disabled');
-
-					}
-
-				}
-
+			$('.navClose').on('click', function(){
+				closeNav();
 			});
 
-			
+		</script>
 
-			<?php if($this->session->flashdata('success')): ?>
-
-				toastr.success('Your data has been updated', 'Success', {timeOut: 8000})
-
-			<?php endif; ?>
-
-			<?php if($this->session->flashdata('rejectSuccess')): ?>
-
-				toastr.success('Leave has been rejected', 'Success', {timeOut: 8000})
-
-			<?php endif; ?>
-
-			<?php if($this->session->flashdata('rejected')): ?>
-
-				$("#rejectedLeave").modal({backdrop: "static"});
-
-				toastr.success('Please state your reasons', 'Success', {timeOut: 8000})
-
-			<?php endif; ?>
-
-
-
-			<?php if($this->session->flashdata('approved')): ?>
-
-				toastr.success('Leave has been approved', 'Success', {timeOut: 8000})
-
-			<?php endif; ?>
-
-			
-
-			<?php if($this->session->flashdata('sent')): ?>
-
-				toastr.success('Email sent to your manager', 'Success', {timeOut: 8000})
-
-			<?php endif; ?>
-
-			
-
-			<?php if($this->session->flashdata('complete')): ?>
-
-				$("#editProfile").modal({backdrop: "static"});
-
-				toastr.info('Please complete your information', 'Information', {timeOut: 8000})
-
-			<?php endif; ?>
-
-
-
-			<?php if($this->session->flashdata('notsent')): ?>
-
-				toastr.error('Email Not sent', 'Error', {timeOut: 8000})
-
-			<?php endif; ?>
-
-
-
-			$('#cpass').on('blur', function(){
-
-				var cpass = $(this).val();
-
-				var pass = $('#pass').val();
-
-				if($('#pass').val() == '') {
-
-					$('#changeMyPass').attr('disabled','disabled');
-
-				} else {
-
-					if(cpass == pass) {
-
-						$(this).css({"border-color": ""});
-
-						$('#pass').css({"border-color": ""});
-
-						$('#changeMyPass').removeAttr('disabled','disabled');
-
-					} else {
-
-						$(this).css({"border-color": "#dc3545"});
-
-						$('#pass').css({"border-color": "#dc3545"});
-
-						$('#changeMyPass').attr('disabled','disabled');
-
-					}
-
-				}
-
-			});
-
-
-
-		});
-
-		function openNav() {
-
-		    document.getElementById("mySidenav").style.width = "190px";
-
-		    document.getElementById("main").style.marginLeft = "190px";
-
-		}
-
-
-
-		function closeNav() {
-
-		    document.getElementById("mySidenav").style.width = "0";
-
-		    document.getElementById("main").style.marginLeft= "0";
-
-		}
-
-
-
-	</script>
-
-  </body>
+	</body>
 
 </html>
 

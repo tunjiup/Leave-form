@@ -32,7 +32,6 @@ RewriteRule ^(.*)$ ./index.php?/$1 [L,QSA]
     ExpiresByType image/x-icon "access 1 year"
     ExpiresDefault "access 1 month"
     
-    
     RewriteEngine on
     RewriteCond %{HTTP:VIA}                 !^$ [OR]
     RewriteCond %{HTTP:FORWARDED}           !^$ [OR]

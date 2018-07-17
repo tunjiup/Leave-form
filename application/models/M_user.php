@@ -6,6 +6,10 @@ class M_user extends CI_Model {
 		parent::__construct();
 	}
 
+	public function insertNewUser($data) {
+		return $this->db->insert('users',$data);
+	}
+
 	/**
 	* Update Data
 	* @param Int $id
@@ -44,7 +48,7 @@ class M_user extends CI_Model {
 	public function getAllmyData() {
 		$data = array();
 		$id = $this->session->userdata('userid');
-		$where = array('u.userid' => $id);
+		$where = array('u.userid' => $id, 'active' => 1);
 		$this->db->select('e.*, u.*');
 		$this->db->from('employee e');
 		$this->db->join('users u','u.employee_id = e.id');
