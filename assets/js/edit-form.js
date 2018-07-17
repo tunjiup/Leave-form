@@ -112,7 +112,7 @@ $( function() {
 		var id = $('#EditCode').val();
 		var from = $('#fromEdit').val();
 		$.ajax({
-			url:"http://localhost:8080/leaveform/edit-leave-action/" + id,
+			url:"http://172.104.162.155/edit-leave-action/" + id,
 			type: "POST",
 			data: {from:from, regular:regular, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
