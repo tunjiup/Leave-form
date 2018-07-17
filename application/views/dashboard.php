@@ -189,7 +189,7 @@
 
 		<script>
 
-			Offline.options = {checks: {xhr: {url: '/assets/css/style.css'}}};
+			Offline.options = {checks: {xhr: {url: '/css/style.css'}}};
 
 			$(document).ready(function() {
 
@@ -273,6 +273,13 @@
 				<?php elseif($this->session->flashdata('HideComment')): ?>
 
 					toastr.success('Feedback has been hide', 'Success', {timeOut: 8000})
+					$.ajax({
+						url:"http://172.104.162.155/feeds",
+						method:"POST",
+						success: function(data) {
+							$('.feedtbody').html(data);
+						}
+					});
 					$('#feed_back').modal('show');
 
 				<?php endif; ?>
