@@ -27,7 +27,7 @@
 	 					<a href="<?php echo base_url('forgot-password'); ?>" class="fpass">Forget Password / Request Password</a>
 	 					<br>
 	 					<br>
-	 					<center><div class="g-recaptcha" data-sitekey="6Lei1l8UAAAAAIIfrwYyohsPInLjj_HiuCQsSN1A"></div><?php echo form_error('g-recaptcha-response'); ?></center>
+	 					<center><div class="g-recaptcha" data-sitekey="6Leuk2QUAAAAAFP6SZE7CnIsmkzy72uBB7XHOYf2"></div><?php echo form_error('g-recaptcha-response'); ?></center>
 	 					<!-- For Prod use only -->
 	 					<!-- <center><div class="g-recaptcha" data-sitekey="6Leqn18UAAAAAP9H1HZG7PckjT9lSsuQ6dnuFHCf"></div><?php echo form_error('g-recaptcha-response'); ?></center> -->
 	 					<input type="submit" class="btn btn-info btn-block login" value="Login">
