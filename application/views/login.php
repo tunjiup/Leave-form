@@ -11,6 +11,7 @@
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 		<link href="<?php echo base_url('assets/'); ?>css/bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo base_url('assets/'); ?>css/style.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</head>
 	<body class="loginMain">
@@ -27,7 +28,8 @@
 	 					<a href="<?php echo base_url('forgot-password'); ?>" class="fpass">Forget Password / Request Password</a>
 	 					<br>
 	 					<br>
-	 					<center><div class="g-recaptcha" data-sitekey="6Leuk2QUAAAAAFP6SZE7CnIsmkzy72uBB7XHOYf2"></div><?php echo form_error('g-recaptcha-response'); ?></center>
+	 					<center><div class="g-recaptcha" data-sitekey="6LfbYWQUAAAAAMzsDCo_w5tA9tfTZZovh-1Pk9zL"></div><?php echo form_error('g-recaptcha-response'); ?></center>
+	 					<!-- <center><div class="g-recaptcha" data-sitekey="6Lei1l8UAAAAAIIfrwYyohsPInLjj_HiuCQsSN1A"></div><?php echo form_error('g-recaptcha-response'); ?></center> -->
 	 					<!-- For Prod use only -->
 	 					<!-- <center><div class="g-recaptcha" data-sitekey="6Leqn18UAAAAAP9H1HZG7PckjT9lSsuQ6dnuFHCf"></div><?php echo form_error('g-recaptcha-response'); ?></center> -->
 	 					<input type="submit" class="btn btn-info btn-block login" value="Login">
@@ -35,5 +37,15 @@
 	 			</div>
 	 		</div>
 	 	</div>
+	 	<script src="<?php echo base_url('assets/'); ?>js/jquery.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/admin.js"></script>
+	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/offline.min.js"></script>
+	    <script type="text/javascript">
+	    	Offline.options = {checks: {xhr: {url: '/css/style.css'}}};
+	    </script>
 	</body>
 </html>

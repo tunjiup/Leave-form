@@ -207,7 +207,7 @@ class Welcome extends MY_Controller {
 			}
 
 			if($val->active == 1) {
-				$active = '<span class="dot"></span>';
+				$active = '<span class="user-details-'.$val->username.' dot"></span>';
 			} else {
 				$active = '';
 			}

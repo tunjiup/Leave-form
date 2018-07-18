@@ -118,7 +118,7 @@ $( function() {
 			success: function(data) {
 				toastr.success('Successfully created', 'Success', {timeOut: 8000});
 				
-				window.setTimeout(function(){window.location.href = "http://localhost:8080:8080/dev-leave-form/" }, 8000);
+				window.setTimeout(function(){window.location.href = "http://172.104.162.155/" }, 8000);
 			},
 			error:function() {
 				toastr.error('Duplicate Entry', 'Error', {timeOut: 8000});

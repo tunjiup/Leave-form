@@ -19,4 +19,12 @@ $(function(){
 		}
 	});
 
+	socket.on("online", function(data) {
+		$('.user-details-'+data.uname).addClass("dot");
+	});
+
+	socket.on("offline", function(data) {
+		$('.user-details-'+data.uname).removeClass("dot");
+	});
+
 });

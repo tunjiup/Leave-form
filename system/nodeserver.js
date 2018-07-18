@@ -39,6 +39,18 @@ function emitNewOrder(http_server) {
 
 		});
 
+		socket.on("offline", function(data) {
+
+			io.emit("offline",data);
+
+		});
+
+		socket.on("online", function(data) {
+
+			io.emit("online",data);
+
+		});
+
 	});
 }
 

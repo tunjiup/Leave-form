@@ -48,8 +48,13 @@ class Login extends MY_Controller {
 							);
 							$this->session->set_userdata($sess);
 							save_login();
-							$this->login->getOnline($res['userid']);
+							if($this->login->getOnline($res['userid'])) {
+								$this->client->initialize();
+								$this->client->emit("online",$sess);
+								$this->client->close();
+							}
 							$this->set_Cookies($res['fullname']);
+
 							if($res['fullname'] == NULL) {
 								$this->session->set_flashdata('complete','Please complete your deatils');
 							}
@@ -181,7 +186,12 @@ class Login extends MY_Controller {
 		$id = $this->session->userdata('userid');
 		$name = $this->session->userdata('fullname');
 		$this->delete_Cookies($name);
-		$this->login->getOffline($id);
+		$offline = array('uname' => $this->session->userdata('uname'));
+		if($this->login->getOffline($id)){
+			$this->client->initialize();
+			$this->client->emit("offline",$offline);
+			$this->client->close();
+		}
 		save_login();
 		$sess = array('userid' => '', 'role' => '', 'key' => '', 'empid' => '', 'uname' => '', 'email' => '', 'fullname' => '', 'position' => '', 'logged_in' => FALSE);
 		$this->session->unset_userdata($sess);
@@ -192,7 +202,8 @@ class Login extends MY_Controller {
 	public function googleCaptcha($str='') {
 		$google_url="https://www.google.com/recaptcha/api/siteverify";
 		/*$secret ='6Leqn18UAAAAAL-Il108Fsg-8QLAUuXWYaq5Wwxz';*/
-		$secret ='6Leuk2QUAAAAAHJys5UvqWQqsEk5esEiAwowo7Sw';
+		/*$secret ='6Lei1l8UAAAAAPBwtbx5mqZVOImNcTNTudVRjW08';*/
+		$secret = '6LfbYWQUAAAAAJszeRgFfvf9Mw0T--ZD35TOaHry';
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$url = $google_url."?secret=".$secret."&response=".$str."&remoteip=".$ip;
 		$curl = curl_init();
