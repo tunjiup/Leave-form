@@ -103,6 +103,7 @@ $(document).ready(function() {
 	})
 
 	$('#empdob').datetimepicker({format: 'MM/DD/YYYY'});
+	$('#empdob').datetimepicker('hide');
 
 	$('#datefrom').datetimepicker({format: 'MM/DD/YYYY'});
 	$('#dateto').datetimepicker({

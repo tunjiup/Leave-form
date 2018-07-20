@@ -28,6 +28,10 @@ class Subordinate extends MY_Controller {
 			$data['manager'] = $this->input->post('manager');
 			$data['departmenthead'] = $this->input->post('departmenthead');
 			$data['created_at'] = date("Y-m-d H:i:s");
+			$first = strtolower(substr($this->input->post('name'), 0, 1));
+			$x = explode(' ', $this->input->post('name'));
+			$_count = count($x) - 1;
+			$dp = $first.strtolower($x[$_count]);
 
 			if($this->employee->insertNew($data)) {
 				$empid = $this->db->insert_id();
@@ -45,7 +49,7 @@ class Subordinate extends MY_Controller {
 				$user['created_by'] = $this->session->userdata('uname');
 
 
-				$new = array('uname' => $uname,'vl' => $leave['vacationleave'],'sl' => $leave['sickleave'],'bl' => $leave['birthleave'], 'id' => $this->db->insert_id());
+				$new = array('uname' => $dp,'vl' => $leave['vacationleave'],'sl' => $leave['sickleave'],'bl' => $leave['birthleave'], 'id' => $this->db->insert_id());
 
 				if($this->user->insertNewUser($user)) {
 

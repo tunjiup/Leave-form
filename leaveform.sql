@@ -382,8 +382,8 @@ CREATE TABLE `lvf_users` (
 --
 
 INSERT INTO `lvf_users` (`userid`, `employee_id`, `username`, `password`, `fullname`, `address`, `email`, `cp_no`, `gender`, `role`, `activation_key`, `activate`, `resetpasskey`, `resetdate`, `active`, `lastactivity`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-(1, 1, 'mnaluz', '$2y$10$tMEat0EAjt46nwzMpcZsJONR3BlettqfgzO1AEp8W8V82sHjIfyqS', 'Mark Anthony Naluz', 'Barangka Itaas, Mandaluyong City', 'MarkAnthony.Naluz@megasportsworld.com', '09063171476', 'male', 1, NULL, 1, NULL, '2018-05-30 14:02:27', 1, NULL, NULL, NULL, NULL, NULL),
-(2, 2, 'alizajoy', '$2y$10$1T4zwcjylkS7KhtgATskre7Has6W0YxUp2e4TZCAqt4HlcdNstJ7G', 'Aliza Joy Solomon', 'Parañaque', 'alizajoy.solomon@megasportsworld.com', '+639054648927', 'female', 0, NULL, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
+(1, 1, 'mnaluz', '$2y$10$OKtfBOQhNEJTK99QbOYdlue94jRASkv2nWMHMXnAWrrTT6EhFoymu', 'Mark Anthony Naluz', 'Barangka Itaas, Mandaluyong City', 'MarkAnthony.Naluz@megasportsworld.com', '09063171476', 'male', 1, NULL, 1, NULL, '2018-05-30 14:02:27', 1, NULL, NULL, NULL, NULL, NULL),
+(2, 2, 'alizajoy', '$2y$10$oR5UM7FDArgNsH9WO/fkAuHC/QVGe1ZTv/jvjP2ogLKaGyD43TQHq', 'Aliza Joy Solomon', 'Parañaque', 'alizajoy.solomon@megasportsworld.com', '+639054648927', 'female', 0, NULL, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
 (3, 3, 'kristal', NULL, NULL, NULL, 'Kristallynn.Tolentino@megasportsworld.com', NULL, NULL, 0, NULL, 1, '1b6EWCAGtdRiFBoSqT34KzNrpHQxf9DksmJa2g8cMOjXnh75Pw', NULL, 0, NULL, NULL, NULL, NULL, NULL),
 (4, 4, 'resty', NULL, NULL, NULL, 'RestyJay.Alejo@megasportsworld.com', NULL, NULL, 0, NULL, 1, 'Gx4pskTNWbSoh8KRm65ctOgIXEraQAqZed29FnjfHLuJ7DUB1z', NULL, 0, NULL, NULL, NULL, NULL, NULL),
 (5, 5, 'jai28', NULL, NULL, NULL, 'Jai-Ann.Sotto@megasportsworld.com', NULL, NULL, 0, NULL, 1, '3Rkclf8qErCgzIOda9DAQFsiWyGuXSb15eTjM6oLJvZxwt7UYn', NULL, 0, NULL, NULL, NULL, NULL, NULL),
