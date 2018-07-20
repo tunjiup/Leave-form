@@ -43,8 +43,12 @@
 		<!-- End Change Password -->
 
 		<!-- Modal For Profile Directory -->
-		<?php if($this->session->userdata('position') == Constant::PROJECT_MANAGER): ?>
-			<?php $link = '<a href="#leaveBal" id="EditEmployeesLeave" data-toggle="modal" ><i class="fas fa-user-edit"></i> Leave</a>'; ?>
+		<?php if($this->session->userdata('role') == 4): ?>
+			<?php if($year['year'] != date('Y')): ?>
+				<?php $link = '<a href="#leaveBal" id="EditEmployeesLeave" data-toggle="modal" ><i class="fas fa-user-edit"></i> Leave</a>'; ?>
+			<?php else: ?>
+				<?php $link = '<button type="button" class="close" data-dismiss="modal">&times;</button>'; ?>
+			<?php endif; ?>
 		<?php else: ?>
 			<?php $link = '<button type="button" class="close" data-dismiss="modal">&times;</button>'; ?>
 		<?php endif; ?>
@@ -206,7 +210,7 @@
 							<label>Gender<?php echo form_dropdown('gender', gender(),  set_value('gender'), 'class="form-control" required'); ?></label>
 							<label>Fullname<input type="text" name="name" placeholder="Juan Dela Cruz" class="form-control" required></label>
 							<label>Birthdate<input type="text" name="dob" id="empdob" data-toggle="datetimepicker" data-target="#empdob" placeholder="mm/dd/YYYY" class="form-control" required></label>
-							<label>Position<input type="text" name="position" placeholder="Office Staff" class="form-control" required></label>
+							<label>Position<?php echo form_dropdown('position', position(),  set_value('position'), 'class="form-control" required'); ?></label>
 							<label>Department<input type="text" name="department" placeholder="Department" class="form-control" required></label>
 							<label>Immediate Supervisor<input type="text" name="manager" placeholder="Immediate Supervisor" class="form-control" required></label>
 							<label>Depart. Head<input type="text" name="departmenthead" placeholder="Deparment Head" class="form-control" required></label>

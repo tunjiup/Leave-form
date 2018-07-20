@@ -18,8 +18,8 @@ class Welcome extends MY_Controller {
 	* index Page
 	*/
 	public function index($val = NULL) {
-		
-		$data['countFeed'] = $this->comment->getFeedBack();
+
+		$data['year'] = $this->leave->getUpdateLeaveYear();
 		$data['mydata'] = $this->user->getMydata();
 		$data['leaveHistory'] = $this->leave->getAllLeave();
 		$data['dob'] = $this->getEmployeedob();
@@ -121,14 +121,18 @@ class Welcome extends MY_Controller {
 		$end = $this->input->get("end");
 		$empid = $this->session->userdata('empid');
 		$res = $this->user->getAllmyData();
-		$dept = $res['department'];
-		$events = $this->employee->getEvents($start, $end, $dept);
+		if($this->session->userdata('role') == 3) {
+			$clause = $res['manager'];
+		} else {
+			$clause = $res['department'];
+		}
+		$events = $this->employee->getEvents($start, $end, $clause);
 
 		$allEvents = array();
 
 		foreach ($events as $event) {
 
-			
+
 				if($this->session->userdata('empid') == $event->employee_id) {
 					if($event->classname == Constant::CN_APPROVED) {
 						$url = base_url('download-leave/').$event->code;
@@ -183,10 +187,18 @@ class Welcome extends MY_Controller {
 
 		$output = NULL;
 		$res = $this->user->getAllmyData();
-		$dept = $res['department'];
-		$data = $this->employee->getLeave($dept);
+		if($this->session->userdata('role') == 3) {
+			$clause = $res['manager'];
+		} else {
+			$clause = $res['department'];
+		}
+
+		$data = $this->employee->getLeave($clause);
 
 		foreach ($data as $val) {
+
+			$first = strtolower(substr($val->name, 0, 1));
+			$dp = $first.strtolower($val->lastname);
 
 			if($val->vacationleave == 0) {
 				$v_l = 0;
@@ -207,7 +219,7 @@ class Welcome extends MY_Controller {
 			}
 
 			if($val->active == 1) {
-				$active = '<span class="user-details-'.$val->username.' dot"></span>';
+				$active = ' dot';
 			} else {
 				$active = '';
 			}
@@ -222,7 +234,7 @@ class Welcome extends MY_Controller {
 
 				<div class="col-sm">
 					<div '.$modal.'>
-						<div class="lv-name">'.$val->username.$active.'</div>
+						<div class="lv-name">'.$dp.'<span class="user-details-'.$val->username.$active.'"></span></div>
 						<div class="lv-info">
 							<div class="lv-label">VL</div>
 							<div class="lv-details"><span>'.$v_l.'</span>/'.$vl.'</div>
@@ -335,4 +347,3 @@ class Welcome extends MY_Controller {
 
 
 ?>
-

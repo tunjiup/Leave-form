@@ -10,7 +10,7 @@ if($prod != $host) {
 	define('_DB_DATABASE_','leaveform');
 	
 } else {
-	define('_BASE_URL_','http://localhost:8080/leaveform/');
+	define('_BASE_URL_','http://localhost:8080/leave-form/');
 	define('_DB_USERNAME_','root');
 	define('_DB_PASSWORD_','');
 	define('_DB_HOST_','localhost');

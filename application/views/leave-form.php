@@ -8,11 +8,18 @@
 		<meta name="author" content="MegaSportWorld">
 		<meta name="robots" content="noindex,nofollow">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+		<link rel='dns-prefetch' href='//use.fontawesome.com' />
+		<link rel='dns-prefetch' href='//ucdnjs.cloudflare.com' />
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap.min.css">
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/dataTables.min.css">
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/fullcalendar.min.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap-datetimepicker.min.css">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/'); ?>css/offline-theme-slide.min.css">
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/offline-language-english.min.css" />
 	</head>
 	<body>
 		<div class="wrapper">
@@ -243,12 +250,25 @@
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/html2pdf.bundle.min.js"></script>
-		<script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
-		<script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
-		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datetimepicker.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/restrictCheckbox.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/popper.min.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/fullcalendar.min.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/gcal.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datetimepicker.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
-    	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/action.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/admin.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/dashboard.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/offline.min.js"></script>
     	<?php $this->load->view('includes/auto-logout'); ?>
+
+    	<script type="text/javascript">
+    		Offline.options = {checks: {xhr: {url: '/css/style.css'}}};
+    	</script>
 	</body>
 </html>

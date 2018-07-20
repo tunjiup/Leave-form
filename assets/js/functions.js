@@ -24,7 +24,7 @@ function print() {
 $(function(){
 
 	$('[data-toggle="tooltip"]').tooltip()
-	
+
 	$('#saveto').click(function(){
 		var dateTimeFrom = $('#dateTimePickerFrom').val();
 		var dateTimeTo = $('#dateTimePickerTo').val();
@@ -37,61 +37,67 @@ $(function(){
 		var vl = parseFloat($('#vL').val());
 		var sl = parseFloat($('#sL').val());
 		var bl = $('#bL').val();
+		var dpf = $('#dateTimePickerFrom').val();
+		var dpt = $('#dateTimePickerTo').val();
 
 		if(contLeave == '') {
 			toastr.error('Type of Leave Requested are empty', 'Error', {timeOut: 8000});
 		} else {
-			if(noDays == '') {
-				toastr.error('Total number of days are empty', 'Error', {timeOut: 8000});
+			if(dpf == '' || dpt == '') {
+				toastr.error('Date of leave are empty', 'Error', {timeOut: 8000});
 			} else {
-				if(regular == '') {
-					toastr.error('Please choose LWP / LWOP ', 'Error', {timeOut: 8000});
+				if(noDays == '') {
+					toastr.error('Total number of days are empty', 'Error', {timeOut: 8000});
 				} else {
-					if(reason == '') {
-						toastr.error('Reason for Leave are empty ', 'Error', {timeOut: 8000});
+					if(regular == '') {
+						toastr.error('Please choose LWP / LWOP ', 'Error', {timeOut: 8000});
 					} else {
-						if(contLeave == 'Sick') {
+						if(reason == '') {
+							toastr.error('Reason for Leave are empty ', 'Error', {timeOut: 8000});
+						} else {
+							if(contLeave == 'Sick') {
 
-							if(regular == "LW/OP") {
-								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
-							} else {
-								if(sl == 0) {
-									toastr.error('You have a zero sick leave', 'Error', {timeOut: 8000});
+								if(regular == "LW/OP") {
+									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 								} else {
-									if(dateFrom == '' || dateTo == '' || reason == '' || regular == '' || noDays == '') {
-										toastr.error('Required fileds', 'Error', {timeOut: 8000});
+									if(sl == 0) {
+										toastr.error('You have a zero sick leave', 'Error', {timeOut: 8000});
+									} else {
+										if(dateFrom == '' || dateTo == '' || reason == '' || regular == '' || noDays == '') {
+											toastr.error('Required fileds', 'Error', {timeOut: 8000});
+										} else {
+											saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+										}
+									}
+								}
+								
+							} else if(contLeave == 'Birthday') {
+
+								if(regular == "LW/OP") {
+									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+								} else {
+									if(bl == 0) {
+										toastr.error('You have a zero birthday leave', 'Error', {timeOut: 8000});
 									} else {
 										saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
 									}
 								}
-							}
-							
-						} else if(contLeave == 'Birthday') {
-
-							if(regular == "LW/OP") {
-								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+									
 							} else {
-								if(bl == 0) {
-									toastr.error('You have a zero birthday leave', 'Error', {timeOut: 8000});
-								} else {
-									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
-								}
-							}
 								
-						} else {
-							
-							if(regular == "LW/OP") {
-								saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
-							} else {
-								if(vl == 0) {
-									toastr.error('You have a zero vacation leave', 'Error', {timeOut: 8000});
-								} else{
+								if(regular == "LW/OP") {
 									saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+								} else {
+									if(vl == 0) {
+										toastr.error('You have a zero vacation leave', 'Error', {timeOut: 8000});
+									} else{
+										saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays)
+									}
 								}
 							}
 						}
 					}
-				}
+				}	
 			}
 		}
 	});
@@ -99,13 +105,13 @@ $(function(){
 	function saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays) {
 
 		$.ajax({
-			url:"http://172.104.162.155/leave-form/add",
+			url:"http://localhost:8080/leave-form/leave-form/add",
 			type: "POST",
 			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
 				toastr.success('Successfully created', 'Success', {timeOut: 8000});
 				
-				window.setTimeout(function(){window.location.href = "http://172.104.162.155/" }, 8000);
+				window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 8000);
 			},
 			error:function() {
 				toastr.error('Oops, Duplicate Entry', 'Error', {timeOut: 8000});
@@ -120,7 +126,7 @@ $(function(){
 		var formData = new FormData($(this)[0]);
 
 		$.ajax({
-			url: "http://172.104.162.155/submit-comment",
+			url: "http://localhost:8080/leave-form/submit-comment",
 			type: "POST",
 			data: formData,
 			async: true,
@@ -144,7 +150,7 @@ $(function(){
 		var formData = new FormData($(this)[0]);
 
 		$.ajax({
-			url: "http://172.104.162.155/employees/create",
+			url: "http://localhost:8080/leave-form/employees/create",
 			type: "POST",
 			data: formData,
 			async: true,
@@ -154,7 +160,7 @@ $(function(){
 			success: function(data){
 				$('#createNew').modal('hide');
 				toastr.success('Employee successfully created', 'Success', {timeOut: 8000});
-				window.setTimeout(function(){window.location.href = "http://172.104.162.155/" }, 8000);
+				window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 8000);
 				$('form#CreateNewSubordinate')[0].reset();
 			},
 			error:function() {
@@ -170,7 +176,7 @@ $(function(){
 		var formData = new FormData($(this)[0]);
 		var id = $('#empID').val();
 		$.ajax({
-			url: "http://172.104.162.155/update-leave-balance/" + id,
+			url: "http://localhost:8080/leave-form/update-leave-balance/" + id,
 			type: "POST",
 			data: formData,
 			async: true,
@@ -190,7 +196,7 @@ $(function(){
 	$('.leave-wrapper').on('click',function(){
 		var id = $(this).attr('data-id');
 		$.ajax({
-			url:"http://172.104.162.155/employee/profile/" + id,
+			url:"http://localhost:8080/leave-form/employee/profile/" + id,
 			type: "POST",
 			data: {id:id},
 			success: function(data) {
@@ -204,7 +210,7 @@ $(function(){
 	$('.commentView').on('click',function(){
 		var id = $(this).attr('data-id');
 		$.ajax({
-			url:"http://172.104.162.155/view-comment/" + id,
+			url:"http://localhost:8080/leave-form/view-comment/" + id,
 			type: "POST",
 			data: {id:id},
 			success: function(data) {
@@ -220,7 +226,7 @@ $(function(){
 		e.preventDefault();
 		var formData = new FormData($(this)[0]);
 		$.ajax({
-			url:"http://172.104.162.155/bulk-upload/import",
+			url:"http://localhost:8080/leave-form/bulk-upload/import",
 			method:"POST",
 			data:formData,
 			async: true,
@@ -242,7 +248,7 @@ $(function(){
 
 	$('#feedAnchor').click(function() {
 		$.ajax({
-			url:"http://172.104.162.155/comment-seen",
+			url:"http://localhost:8080/leave-form/comment-seen",
 			method:"POST",
 			success: function(data) {
 				_getFeedBack();
@@ -254,7 +260,7 @@ $(function(){
 
 	function _countFeed() {
 		$.ajax({
-			url:"http://172.104.162.155/feedback-count",
+			url:"http://localhost:8080/leave-form/feedback-count",
 			method:"POST",
 			success: function(data) {
 				
@@ -272,7 +278,7 @@ $(function(){
 
 	function _getFeedBack() {
 		$.ajax({
-			url:"http://172.104.162.155/feeds",
+			url:"http://localhost:8080/leave-form/feeds",
 			method:"POST",
 			success: function(data) {
 				$('.feedtbody').html(data);
@@ -295,7 +301,7 @@ $(function(){
 	$('.optimization').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://172.104.162.155/database/table/optimize/" + table,
+			url:"http://localhost:8080/leave-form/database/table/optimize/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -307,7 +313,7 @@ $(function(){
 	$('.repair').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://172.104.162.155/database/table/repair/" + table,
+			url:"http://localhost:8080/leave-form/database/table/repair/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -319,7 +325,7 @@ $(function(){
 	$('.tableBackup').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://172.104.162.155/database/table/backup/" + table,
+			url:"http://localhost:8080/leave-form/database/table/backup/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -331,7 +337,7 @@ $(function(){
 	$('.tableData').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://172.104.162.155/database/backup/data/" + table,
+			url:"http://localhost:8080/leave-form/database/backup/data/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -341,7 +347,7 @@ $(function(){
 	});
 	$('#dbAll').on('click', function(){
 		$.ajax({
-			url:"http://172.104.162.155/database/backup",
+			url:"http://localhost:8080/leave-form/database/backup",
 			method:"POST",
 			success: function(data) {
 				toastr.success('Backup Database done', 'Success', {timeOut: 8000});
@@ -352,7 +358,7 @@ $(function(){
 	$('.tableStructure').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://172.104.162.155/database/describe/" + table,
+			url:"http://localhost:8080/leave-form/database/describe/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {

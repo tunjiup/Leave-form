@@ -1,6 +1,6 @@
 $(function(){
 
-	var socket = io.connect("http://172.104.162.155:5001");
+	var socket = io.connect("http://localhost:5001");
 	var role = $('#myrole').val();
 
 	socket.on("new_employee", function(data) {
@@ -14,7 +14,7 @@ $(function(){
 		$('.feedtbody').prepend('<tr><td>'+data.date+'</td><td>'+data.message+'</td><td>'+data.from+'</td><td><a href="#" class="commentView" data-id="'+data.id+'"><i class="far fa-eye"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://localhost:8080/leaveform/comment-hide/'+data.id+'" class="commentHide"><i class="fas fa-toggle-on"></i></a></td></tr>');
 		$('#feedBadge').addClass('badge badge-danger');
 		$('#feedBadge').html(data.count);
-		if(role == 1) {
+		if(role == 1 || role == 2) {
 			toastr.info('You have a '+data.count+' message/s', 'Notifications', {timeOut: 8000});
 		}
 	});

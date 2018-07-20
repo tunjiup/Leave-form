@@ -5,35 +5,23 @@
 	<head>
 
 		<title>Leave Forms</title>
-
 		<meta charset="utf-8">
-
 		<meta name="description" content="MSW automated leave filling">
-
 		<meta name="keywords" content="MSW Leave Form">
-
 		<meta name="author" content="MegaSportWorld">
-
 		<meta name="robots" content="noindex,nofollow">
-
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-
+		<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+		<link rel='dns-prefetch' href='//use.fontawesome.com' />
+		<link rel='dns-prefetch' href='//ucdnjs.cloudflare.com' />
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap.min.css">
-
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/dataTables.min.css">
-
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/fullcalendar.min.css">
-
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
-
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap-datetimepicker.min.css">
-
-    	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-
-    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-
-    	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/'); ?>css/offline-theme-slide.min.css">
-    	
+	    	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+	    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+	    	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/'); ?>css/offline-theme-slide.min.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/offline-language-english.min.css" />
 
 	</head>
@@ -48,31 +36,38 @@
 
 			<a href="#" class="navClose" data-toggle="modal" data-target="#editProfile">Profile <i class="fas fa-user-alt"></i></a>
 
-			<a href="#" class="navClose" data-toggle="modal" data-target="#historyfiles">History <i class="fas fa-history"></i></a>
+			<a href="#" class="navClose" data-toggle="modal" data-target="#historyfiles">Upcoming Leave <i class="fas fa-history"></i></a>
 
 			<?php if($this->session->userdata('role') == '1'): ?>
-			<a href="#" class="navClose" id="feedAnchor" data-toggle="modal" data-target="#feed_back">Feedback <i class="fa fa-comments" aria-hidden="true"></i> <span id="feedBadge"></span></a>
+
+			<a href="#" class="navClose" id="feedAnchor" data-toggle="modal" data-target="#feed_back">Message <i class="fa fa-comments" aria-hidden="true"></i> <span id="feedBadge"></span></a>
 			<a href="#" class="navClose" data-toggle="modal" data-target="#database">Database <i class="fas fa-database"></i></a>
 			<a href="#" class="dropdown-btn">Team <i class="fas fa-users"></i> <i class="fas fa-caret-right" id="changeCaret"></i></a>
 			<div class="dropdown-container">
 				<a href="#createNew" class="navClose" data-toggle="modal">New <i class="fas fa-user-plus"></i></a>
 				<a href="#" class="navClose" data-toggle="modal" data-target="#bulk_upload">Bulk Upload <i class="fab fa-shirtsinbulk"></i></a>
 			</div>
-			<?php endif; ?>
-			<?php if($this->session->userdata('position') == Constant::PROJECT_MANAGER): ?>
-			
+
+			<?php elseif($this->session->userdata('role') == '2'): ?>
+
+			<a href="#" class="navClose" id="feedAnchor" data-toggle="modal" data-target="#feed_back">Feedback <i class="fa fa-comments" aria-hidden="true"></i> <span id="feedBadge"></span></a>
+			<a href="#" class="navClose" data-toggle="modal" data-target="#database">Database <i class="fas fa-database"></i></a>
+
+			<?php elseif($this->session->userdata('role') == '3' || $this->session->userdata('role') == '4'): ?>
+
 			<a href="#" class="dropdown-btn">Team <i class="fas fa-users"></i> <i class="fas fa-caret-right" id="changeCaret"></i></a>
 			<div class="dropdown-container">
 				<a href="#createNew" class="navClose" data-toggle="modal">New <i class="fas fa-user-plus"></i></a>
 				<a href="#" class="navClose" data-toggle="modal" data-target="#bulk_upload">Bulk Upload <i class="fab fa-shirtsinbulk"></i></a>
 			</div>
 			<?php endif; ?>
+
 			<a href="<?php echo base_url('logout'); ?>">Logout <i class="fas fa-sign-out-alt"></i></a>
 
 		</div>
 
 		<div class="row main-container" id="main">
-			
+
 			<div class="btn-fix" onclick="openNav()">
 
 				<span>Menu</span>
@@ -120,9 +115,9 @@
 						<div class="paper-container">
 
 							<div class="paper">
-								
+
 								<br>
-								
+
 								<div class="headline">
 									<input type="text" id="myrole" value="<?php echo ($this->session->userdata('role') ? $this->session->userdata('role') : '0'); ?>">
 
@@ -156,33 +151,19 @@
 		<?php $this->load->view('includes/modal'); ?>
 
 	    <script src="<?php echo base_url('assets/'); ?>js/jquery.min.js"></script>
-
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-
 	    <script src="<?php echo base_url('assets/'); ?>js/popper.min.js"></script>
-
 	    <script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
-
 	    <script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
-
 	    <script src="<?php echo base_url('assets/'); ?>js/fullcalendar.min.js"></script>
-
 	    <script src="<?php echo base_url('assets/'); ?>js/gcal.js"></script>
-
 	    <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
-		
 		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datetimepicker.js"></script>
-
 		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
-		
 		<script src="<?php echo base_url('assets/'); ?>js/action.js"></script>
-
 		<script src="<?php echo base_url('assets/'); ?>js/admin.js"></script>
-
 		<script src="<?php echo base_url('assets/'); ?>js/dashboard.js"></script>
-
-	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 	    <script src="<?php echo base_url('assets/'); ?>js/offline.min.js"></script>
 
 	    <?php $this->load->view('includes/auto-logout'); ?>

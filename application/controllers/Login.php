@@ -201,9 +201,7 @@ class Login extends MY_Controller {
 
 	public function googleCaptcha($str='') {
 		$google_url="https://www.google.com/recaptcha/api/siteverify";
-		/*$secret ='6Leqn18UAAAAAL-Il108Fsg-8QLAUuXWYaq5Wwxz';*/
-		/*$secret ='6Lei1l8UAAAAAPBwtbx5mqZVOImNcTNTudVRjW08';*/
-		$secret = '6LfbYWQUAAAAAJszeRgFfvf9Mw0T--ZD35TOaHry';
+		$secret = '6Lei1l8UAAAAAPBwtbx5mqZVOImNcTNTudVRjW08';
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$url = $google_url."?secret=".$secret."&response=".$str."&remoteip=".$ip;
 		$curl = curl_init();

@@ -15,13 +15,12 @@ class M_employee extends CI_Model {
 	* @return String
 	* @return Int
 	*/
-	public function getLeave($dept) {
-		$where = array('e.department' => $dept);
-		$this->db->select('e.name, l.vacationleave, l.sickleave, l.birthleave, u.username, e.id, u.active');
+	public function getLeave($clause) {
+		$this->db->select("e.name, l.vacationleave, l.sickleave, l.birthleave, u.username, e.id, u.active, SUBSTRING_INDEX(SUBSTRING_INDEX(e.name, ' ', 2 ),' ',1) AS firstname, SUBSTRING_INDEX(SUBSTRING_INDEX(e.name, ' ', -1 ),' ',2) AS lastname");
 		$this->db->from('employee e');
 		$this->db->join('leavebalance l','l.employee_id = e.id');
 		$this->db->join('users u','u.employee_id = e.id');
-		$this->db->where($where);
+		$this->db->where("e.manager = '$clause' OR e.department = '$clause'");
 		$res = $this->db->get();
 		return $res->result();
 
@@ -104,14 +103,15 @@ class M_employee extends CI_Model {
 	* @param Date
 	* @return String
 	*/
-	public function getEvents($start, $end, $dept) {
+	public function getEvents($start, $end, $clause) {
 
-		$where = array('l.start >=' => $start, 'l.end <=' => $end, 'e.department' => $dept, 'l.active' => 1);
+		//$where = array('l.start >=' => $start, 'l.end <=' => $end, 'e.manager' => $clause, 'l.active' => 1);
 		$this->db->select('u.username, l.*');
 		$this->db->from('users u');
 		$this->db->join('leavehistory l','u.employee_id = l.employee_id','LEFT');
 		$this->db->join('employee e','u.employee_id = e.id','LEFT');
-		$this->db->where($where);
+		//$this->db->where($where);
+		$this->db->where("l.start >= '$start' AND l.end <= '$end' AND l.active = 1 AND (e.manager = '$clause' OR e.department = '$clause')");
 		$res = $this->db->get();
 		return $res->result();
 
