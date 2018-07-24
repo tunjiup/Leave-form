@@ -113,13 +113,13 @@ $( function() {
 		var from = $('#fromEdit').val();
 		
 		$.ajax({
-			url:"http://localhost:8080/leave-form/edit-leave-action/" + id,
+			url:"http://172.104.162.155/edit-leave-action/" + id,
 			type: "POST",
 			data: {from:from, regular:regular, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
 				toastr.success('Successfully created', 'Success', {timeOut: 8000});
 				
-				window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 8000);
+				window.setTimeout(function(){window.location.href = "http://172.104.162.155/" }, 8000);
 			},
 			error:function() {
 				toastr.error('Duplicate Entry', 'Error', {timeOut: 8000});

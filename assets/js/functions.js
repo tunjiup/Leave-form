@@ -105,13 +105,13 @@ $(function(){
 	function saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays) {
 
 		$.ajax({
-			url:"http://localhost:8080/leave-form/leave-form/add",
+			url:"http://172.104.162.155/leave-form/add",
 			type: "POST",
 			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
 				toastr.success('Successfully created', 'Success', {timeOut: 8000});
 				
-				window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 8000);
+				window.setTimeout(function(){window.location.href = "http://172.104.162.155/" }, 8000);
 			},
 			error:function() {
 				toastr.error('Oops, Duplicate Entry', 'Error', {timeOut: 8000});
@@ -126,7 +126,7 @@ $(function(){
 		var formData = new FormData($(this)[0]);
 
 		$.ajax({
-			url: "http://localhost:8080/leave-form/submit-comment",
+			url: "http://172.104.162.155/submit-comment",
 			type: "POST",
 			data: formData,
 			async: true,
@@ -150,7 +150,7 @@ $(function(){
 		var formData = new FormData($(this)[0]);
 
 		$.ajax({
-			url: "http://localhost:8080/leave-form/employees/create",
+			url: "http://172.104.162.155/employees/create",
 			type: "POST",
 			data: formData,
 			async: true,
@@ -160,7 +160,7 @@ $(function(){
 			success: function(data){
 				$('#createNew').modal('hide');
 				toastr.success('Employee successfully created', 'Success', {timeOut: 8000});
-				window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 8000);
+				window.setTimeout(function(){window.location.href = "http://172.104.162.155/" }, 8000);
 				$('form#CreateNewSubordinate')[0].reset();
 			},
 			error:function() {
@@ -181,7 +181,7 @@ $(function(){
 		var splitVL = vl.split('/');
 
 		$.ajax({
-			url: "http://localhost:8080/leave-form/update-leave-balance/" + id,
+			url: "http://172.104.162.155/update-leave-balance/" + id,
 			type: "POST",
 			data: formData,
 			async: true,
@@ -204,7 +204,7 @@ $(function(){
 	$('.leave-wrapper').on('click',function(){
 		var id = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/employee/profile/" + id,
+			url:"http://172.104.162.155/employee/profile/" + id,
 			type: "POST",
 			data: {id:id},
 			success: function(data) {
@@ -223,7 +223,7 @@ $(function(){
 		e.preventDefault();
 		var formData = new FormData($(this)[0]);
 		$.ajax({
-			url:"http://localhost:8080/leave-form/bulk-upload/import",
+			url:"http://172.104.162.155/bulk-upload/import",
 			method:"POST",
 			data:formData,
 			async: true,
@@ -245,7 +245,7 @@ $(function(){
 
 	$('#feedAnchor').click(function() {
 		$.ajax({
-			url:"http://localhost:8080/leave-form/comment-seen",
+			url:"http://172.104.162.155/comment-seen",
 			method:"POST",
 			success: function(data) {
 				_getFeedBack();
@@ -258,7 +258,7 @@ $(function(){
 	$('.optimization').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/table/optimize/" + table,
+			url:"http://172.104.162.155/database/table/optimize/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -270,7 +270,7 @@ $(function(){
 	$('.repair').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/table/repair/" + table,
+			url:"http://172.104.162.155/database/table/repair/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -282,7 +282,7 @@ $(function(){
 	$('.tableBackup').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/table/backup/" + table,
+			url:"http://172.104.162.155/database/table/backup/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -294,7 +294,7 @@ $(function(){
 	$('.tableData').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/backup/data/" + table,
+			url:"http://172.104.162.155/database/backup/data/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -304,7 +304,7 @@ $(function(){
 	});
 	$('#dbAll').on('click', function(){
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/backup",
+			url:"http://172.104.162.155/database/backup",
 			method:"POST",
 			success: function(data) {
 				toastr.success('Backup Database done', 'Success', {timeOut: 8000});
@@ -315,7 +315,7 @@ $(function(){
 	$('.tableStructure').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/describe/" + table,
+			url:"http://172.104.162.155/database/describe/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -334,7 +334,7 @@ $(function(){
 
 function _getFeedBack() {
 	$.ajax({
-		url:"http://localhost:8080/leave-form/feeds",
+		url:"http://172.104.162.155/feeds",
 		method:"POST",
 		success: function(data) {
 			$('.feedtbody').html(data);
@@ -344,7 +344,7 @@ function _getFeedBack() {
 
 function msgView(id) {
 	$.ajax({
-		url:"http://localhost:8080/leave-form/view-comment/" + id,
+		url:"http://172.104.162.155/view-comment/" + id,
 		type: "POST",
 		data: {id:id},
 		success: function(data) {
@@ -358,19 +358,19 @@ function msgView(id) {
 
 function leaveCancel(id) {
 	$.ajax({
-		url:"http://localhost:8080/leave-form/leave-cancel/" + id,
+		url:"http://172.104.162.155/leave-cancel/" + id,
 		method:"POST",
 		success: function(data) {
 			toastr.success('Leave has been cancelled', 'Success', {timeOut: 8000})
 			upcomingLeave();
-			window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 5000);
+			window.setTimeout(function(){window.location.href = "http://172.104.162.155/" }, 5000);
 		}
 	});
 }
 
 function upcomingLeave() {
 	$.ajax({
-		url:"http://localhost:8080/leave-form/upcoming-leave",
+		url:"http://172.104.162.155/upcoming-leave",
 		method:"POST",
 		success: function(data) {
 			$('.leavetbody').html(data);
@@ -380,7 +380,7 @@ function upcomingLeave() {
 
 function msgHide(id) {
 	$.ajax({
-		url:"http://localhost:8080/leave-form/comment-hide/" + id,
+		url:"http://172.104.162.155/comment-hide/" + id,
 		method:"POST",
 		success: function(data) {
 			_getFeedBack();
@@ -391,7 +391,7 @@ function msgHide(id) {
 
 function _countFeed() {
 	$.ajax({
-		url:"http://localhost:8080/leave-form/feedback-count",
+		url:"http://172.104.162.155/feedback-count",
 		method:"POST",
 		success: function(data) {
 				
