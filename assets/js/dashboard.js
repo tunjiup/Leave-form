@@ -75,9 +75,8 @@ $(document).ready(function() {
 
 	});
 
-	
-
-	$('#EditEmployeesLeave').on('click',function(){
+	$('#EditEmployeesLeave').on('click',function(e){
+		e.preventDefault();
 		$('#profileDir').css("z-index", "100");
 		$('#empID').val($('#employeeid').val());
 	});

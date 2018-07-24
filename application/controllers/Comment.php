@@ -12,6 +12,8 @@ class Comment extends MY_Controller {
 	public function view($id) {
 		$res = $this->comment->getComment($id);
 
+		save_action(array('module' => Constant::M_COMMENT, 'action' => Constant::A_VIEW, 'object_id' => $id));
+
 		if(count($res) > 0) {
 			$output = '
 				<p class="feedFrom">From: '.$res['username'].'</p>
@@ -46,7 +48,11 @@ class Comment extends MY_Controller {
 			$data = array('status' => Constant::C_HIDE);
 
 			if($this->comment->commentHide($id,$data)) {
+				
 				$this->session->set_flashdata('HideComment','Yess');
+
+				save_action(array('module' => Constant::M_COMMENT, 'action' => Constant::A_HIDE, 'object_id' => $id));
+
 				redirect(base_url());
 			}
 

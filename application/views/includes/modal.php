@@ -43,12 +43,8 @@
 		<!-- End Change Password -->
 
 		<!-- Modal For Profile Directory -->
-		<?php if($this->session->userdata('role') == 4): ?>
-			<?php if($year['year'] != date('Y')): ?>
-				<?php $link = '<a href="#leaveBal" id="EditEmployeesLeave" data-toggle="modal" ><i class="fas fa-user-edit"></i> Leave</a>'; ?>
-			<?php else: ?>
-				<?php $link = '<button type="button" class="close" data-dismiss="modal">&times;</button>'; ?>
-			<?php endif; ?>
+		<?php if($this->session->userdata('role') == 4 || $this->session->userdata('role') == 3): ?>
+			<?php $link = '<a href="#leaveBal" id="EditEmployeesLeave" data-toggle="modal" ><i class="fas fa-user-edit"></i> Leave</a>'; ?>
 		<?php else: ?>
 			<?php $link = '<button type="button" class="close" data-dismiss="modal">&times;</button>'; ?>
 		<?php endif; ?>
@@ -90,7 +86,7 @@
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="historyLogs"><i class="fa fa-comments" aria-hidden="true"></i> Feedback</h5>
+						<h5 class="modal-title" id="historyLogs"><i class="fa fa-comments" aria-hidden="true"></i> Message</h5>
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 					<div class="modal-body">
@@ -132,8 +128,8 @@
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="historyLogs"><i class="fas fa-history"></i> Leave History</h5>
-						<a href="<?php echo base_url('download-history-leave'); ?>" id="historyDL"><i class="far fa-file-archive"></i> Download</a>
+						<h5 class="modal-title" id="historyLogs"><i class="fas fa-history"></i> Upcoming Leave/s</h5>
+						<a href="<?php echo base_url('download-history-leave'); ?>" id="historyDL"><i class="far fa-file-archive"></i> Download History</a>
 					</div>
 					<div class="modal-body">
 						<table class="responsive-table table">
@@ -148,26 +144,7 @@
 								</tr>
 							</thead>
 							<tbody class="leavetbody">
-								<?php foreach ($leaveHistory as $val): ?>
-									<?php if($val->start == date('Y-m-d')): ?>
-										<?php $action = '<a href="'.base_url('download-leave/'.$val->code).'" class="downloadFiles"><i class="fas fa-cloud-download-alt"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('leave-cancel/'.$val->code).'" class="downloadFiles"><i class="fas fa-times"></i></a>'; ?>
-									<?php else: ?>
-										<?php $action = '<a href="'.base_url('edit-leave-form/'.$val->code).'" class="EditHistory"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('download-leave/'.$val->code).'" class="downloadFiles"><i class="fas fa-cloud-download-alt"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('leave-cancel/'.$val->code).'" class="downloadFiles"><i class="fas fa-times"></i></a>'; ?>
-									<?php endif; ?>
-									<?php if($val->days > 1): ?>
-										<?php $date = date('M j',strtotime($val->start)).' - '.date('M j, Y',strtotime($val->end)); ?>
-									<?php else: ?>
-										<?php $date = date('M j, Y',strtotime($val->start)); ?>
-									<?php endif; ?>
-									<tr>
-										<td><?php echo $date; ?></td>
-										<td><?php echo $val->title; ?></td>
-										<td><?php echo $val->types; ?></td>
-										<td><?php echo $val->classname; ?></td>
-										<td><?php echo $val->mstatus; ?></td>
-										<td><?php echo $action; ?></td>
-									</tr>
-								<?php endforeach; ?>
+								
 							</tbody>
 						</table>
 					</div>
@@ -233,8 +210,8 @@
 					<div class="modal-body">
 						<form method="post" action="" id="balanceLeave">
 							<input type="hidden" id="empID">
-							<label>Vacation<input type="text"  placeholder="13.88/13.88" name="vacation" class="form-control" required/></label>
-							<label>Sick<input type="text" placeholder="10/10" name="sick" class="form-control" required/></label>
+							<label>Vacation<input type="text" id="vl_leave" placeholder="13.88/13.88" name="vacation" class="form-control" required/></label>
+							<label>Sick<input type="text" id="sl_leave" placeholder="10/10" name="sick" class="form-control" required/></label>
 							<input type="submit" class="form-control btn btn-info pull-right" value="Update">
 						</form>
 					</div>

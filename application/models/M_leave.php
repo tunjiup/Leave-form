@@ -20,17 +20,6 @@ class M_leave extends CI_Model {
 		return $this->db->update('leavebalance',$data);
 	}
 
-	public function getUpdateLeaveYear() {
-		$data = array();
-		$this->db->select('YEAR(`updated_at`) as year');
-		$res = $this->db->get('leavebalance');
-		if($res->num_rows() > 0){
-			$data = $res->row_array();
-		}
-		$res->free_result();
-		return $data;
-	}
-
 	/**
 	* Get Data
 	* @param String $username
@@ -41,9 +30,15 @@ class M_leave extends CI_Model {
 	}
 
 	public function getTrackCode($code) {
+		$data = array();
 		$where = array('code' => $code);
 		$this->db->where($where);
-		return $this->db->count_all_results('leavehistory');
+		$res = $this->db->get('leavehistory');
+		if($res->num_rows() > 0){
+			$data = $res->row_array();
+		}
+		$res->free_result();
+		return $data;
 	}
 
 	public function checkToken($token) {

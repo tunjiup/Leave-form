@@ -44,6 +44,7 @@ class Mydatabase extends MY_Controller {
 				$backup = $this->dbutil->csv_from_result($query);
 				$loc = $this->file_location().$table.'.csv';
 				write_file($loc, $backup);
+				save_action(array('module' => Constant::M_MYDATABASE, 'action' => Constant::A_BACKUP.' Table Data '.$table));
 			}
 		}
 	}
@@ -51,6 +52,9 @@ class Mydatabase extends MY_Controller {
 	public function tableRepair($table) {
 		
 		if($this->dbutil->repair_table($table)) {
+
+			save_action(array('module' => Constant::M_MYDATABASE, 'action' => Constant::A_REPAIR.' Table '.$table));
+
 			$this->session->set_flashdata('repair','Successfully Repaired');
 		}
 	}
@@ -58,6 +62,9 @@ class Mydatabase extends MY_Controller {
 	public function tableOptimize($table) {
 
 		if($this->dbutil->optimize_table($table)) {
+
+			save_action(array('module' => Constant::M_MYDATABASE, 'action' => Constant::A_OPTIMIZE.' Table '.$table));
+
 			$this->session->set_flashdata('optimize','Successfully Optimize');
 		}
 
@@ -68,6 +75,7 @@ class Mydatabase extends MY_Controller {
 		if($table != NULL) {
 			$mytable = array($table);
 			$this->preference($mytable);
+			save_action(array('module' => Constant::M_MYDATABASE, 'action' => Constant::A_BACKUP.' Table '.$table));
 		} else {
 			show_error('Page Not Found');
 		}
@@ -99,6 +107,8 @@ class Mydatabase extends MY_Controller {
 		$loc = $this->file_location().$filename;
 
 		write_file($loc, $backup);
+
+		save_action(array('module' => Constant::M_MYDATABASE, 'action' => Constant::A_BACKUP.' Entire Database'));
 	}
 
 }

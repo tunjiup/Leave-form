@@ -22,6 +22,9 @@
 	<body class="loginMain">
 	 	<div class="container">
 	 		<div class="login-container">
+	 			<div class="logo-login">
+	 				<img src="<?php echo base_url('assets/'); ?>img/logo.png" style="width: 85%;">
+	 			</div>
 	 			<div id="output"></div>
 	 			<div class="form-box login-form">
 	 				<?php echo $this->session->flashdata('error'); ?>

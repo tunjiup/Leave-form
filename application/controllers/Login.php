@@ -107,6 +107,8 @@ class Login extends MY_Controller {
 
 				if($this->login->updateData($data,$res['userid'])) {
 
+					save_action(array('module' => Constant::M_Login, 'action' => Constant::A_FORGOT, 'object_id' => $res['userid']));
+
 					$this->trigerSend();
 				}
 
@@ -129,7 +131,7 @@ class Login extends MY_Controller {
 
 		$codeCheck = $this->login->checkCode($code);
 
-		if($codeCheck > 0) {
+		if(count($codeCheck) > 0) {
 
 			$config = $this->config->item('changepass');
 
@@ -141,6 +143,8 @@ class Login extends MY_Controller {
 				$data['resetpasskey'] = NULL;
 
 				if($this->login->updateData($data,$code)) {
+
+					save_action(array('module' => Constant::M_Login, 'action' => Constant::A_CHANGEPASSWORD, 'object_id' => $codeCheck['userid']));
 
 					$this->session->set_flashdata('success','<div class="alert alert-success">Password successfully Change</div>');
 					
@@ -170,6 +174,8 @@ class Login extends MY_Controller {
 			$data['resetpasskey'] = NULL;
 
 			if($this->login->updateData($data,$code)) {
+
+				save_action(array('module' => Constant::M_Login, 'action' => Constant::A_UPDATE.' Password'));
 
 				$this->session->set_flashdata('success','<div class="alert alert-success">Password successfully Change</div>');
 				

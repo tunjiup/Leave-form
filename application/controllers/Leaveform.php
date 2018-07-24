@@ -29,7 +29,7 @@ class Leaveform extends MY_Controller {
 		$code = $this->genNum(6);
 		$tracked = $this->leave->getTrackCode($code);
 
-		if($tracked > 0) {
+		if(count($token) > 0) {
 			$tracking = $this->genNum(7);
 		} else {
 			$tracking = $code;
@@ -78,6 +78,8 @@ class Leaveform extends MY_Controller {
 			} else {
 				if($this->leave->insertLeave($data)) {
 
+					save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_ADD, 'object_id' => $this->db->insert_id()));
+
 					$this->sentManager($res,$data,$token);
 
 					$this->trigerSend();
@@ -95,7 +97,7 @@ class Leaveform extends MY_Controller {
 
 			$code = $this->leave->getTrackCode($id);
 
-			if($code > 0) {
+			if(count($code) > 0) {
 
 				$data['leave'] = $this->employee->getMyleave();
 				$data['mydata'] = $this->user->getAllmyData();
@@ -104,6 +106,7 @@ class Leaveform extends MY_Controller {
 				$data['bl'] = $this->zeroBirthLeave();
 				$data['edit'] = $this->leave->checkToken($id);
 				$this->parser->parse('edit-leave-form',$data);
+
 				
 			} else {
 				show_error('The page you requested was not found.');
@@ -146,12 +149,20 @@ class Leaveform extends MY_Controller {
 			
 			if($from != date('Y-m-d',strtotime($timefrom))) {
 				if(date('Y-m-d',strtotime($_leave['start'])) == date('Y-m-d',strtotime($timefrom))) {
+
 					show_error('Duplicate');
+
 				} else {
+
 					$this->_check_Code($data,$verify,$res);
+
+					save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_UPDATE, 'object_id' => $id));
 				}
 			} else {
+
 				$this->_check_Code($data,$verify,$res);
+
+				save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_UPDATE, 'object_id' => $id));
 			}
 			
 			
@@ -188,10 +199,6 @@ class Leaveform extends MY_Controller {
 			$this->moveLeave($data,$verify,$res,$_res);
 			
 		}
-
-		$sess = array('token' => '');
-				
-		$this->session->unset_userdata($sess);
 	}
 
 	/**
@@ -285,6 +292,8 @@ class Leaveform extends MY_Controller {
 			$this->_leaveTypes($verify);
 
 			$this->getApprovedfile($verify);
+
+			save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_APPROVED, 'object_id' => $verify['id']));
 			
 		} else {
 			show_error('The page you requested was not found.');
@@ -299,6 +308,7 @@ class Leaveform extends MY_Controller {
 	public function getApprovedfile($verify) {
 
 		$empid = $verify['employee_id'];
+
 		$data = $this->leave->getEmployeesEmail($empid);
 
 		$this->approvedMail($data,$verify);
@@ -331,9 +341,7 @@ class Leaveform extends MY_Controller {
 
 			$this->getRejectedfile($verify,$reject_msg);
 
-			$sess = array('token' => '');
-
-			$this->session->unset_userdata($sess);
+			save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_REJECT, 'object_id' => $verify['id']));
 
 		}
 	}
@@ -367,6 +375,8 @@ class Leaveform extends MY_Controller {
 
 			$this->leave->updateLeaveHistory($res['leavecode'],$data);
 
+			save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_APPROVED.'Moved Leave', 'object_id' => $emp['id']));
+
 			$update = array('classname' => Constant::CN_APPROVED, 'update_at' => date("Y-m-d H:i:s"));
 
 			$this->leave->updateMoveDate($res['leavecode'],$update);
@@ -390,6 +400,8 @@ class Leaveform extends MY_Controller {
 			$_res = $this->leave->getEmployeesEmail($emp['employee_id']);
 			
 			$update = array('classname' => Constant::CN_REJECT, 'update_at' => date("Y-m-d H:i:s"));
+
+			save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_REJECT.'Moved Leave', 'object_id' => $emp['id']));
 
 			$this->leave->updateMoveDate($res['leavecode'],$update);
 
@@ -436,11 +448,13 @@ class Leaveform extends MY_Controller {
 
 		$token = $this->leave->getTrackCode($code);
 
-		if($token > 0) {
+		if(count($token) > 0) {
 			$data = array('active' => 0, 'token' => NULL, 'update_at' => date("Y-m-d H:i:s"));
 			if($this->leave->updateLeaveHistory($code,$data)) {
 
 				$this->session->set_flashdata('leavecancel','Yess');
+
+				save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_CANCEL.' '.Constant::A_MOVELEAVE, 'object_id' => $token['id']));
 
 				redirect(base_url());
 			}
@@ -486,6 +500,8 @@ class Leaveform extends MY_Controller {
 
 		$this->pdf->Output($filename, "D");
 
+		save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_DOWNLOAD, 'object_id' => $id));
+
 	}
 
 	/**
@@ -501,6 +517,7 @@ class Leaveform extends MY_Controller {
 		$filename = $this->session->userdata('uname').'-leave.csv';
 		$res = $this->dbutil->csv_from_result($query, $delimiter, $newline, $enclosure);
 		force_download($filename, $res);
+		save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_DOWNLOAD.'All Leave'));
 	}
 
 	/**
@@ -510,6 +527,7 @@ class Leaveform extends MY_Controller {
 	public function outputHTML($id) {
 
 		$res = $this->leave->getLeavedata($id);
+
 		if(Constant::L_SICK == $res['title']) {
 			$sick = 'checked="checked"';
 		} else {

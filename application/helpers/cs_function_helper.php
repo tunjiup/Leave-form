@@ -51,7 +51,7 @@ if (!function_exists('save_action')) {
 				'action' => $params['action'],
 				'object_id' => isset($params['object_id']) ? $params['object_id'] : '0',
 				'object_ids' => isset($params['object_ids']) ? $params['object_ids'] : '0',
-				'processed_date' => date('Y-m-d H:i:s'),
+				'created_at' => date('Y-m-d H:i:s'),
 			);
 
 			$ci->login->activityLogs($data);

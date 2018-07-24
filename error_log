@@ -1,4 +1,0 @@
-[03-Jul-2018 03:15:26 America/New_York] PHP Fatal error:  Class 'MY_Controller' not found in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Login.php on line 3
-[04-Jul-2018 03:29:41 America/New_York] PHP Parse error:  syntax error, unexpected end of file in /home/jenner/public_html/msw-dev-leave-sites/application/controllers/Welcome.php on line 90
-[06-Jul-2018 11:06:09 Asia/Manila] PHP Fatal error:  Call to a member function result() on boolean in /home/jenner/public_html/msw-dev-leave-sites/application/models/M_leave.php on line 121
-[10-Jul-2018 23:45:02 America/New_York] PHP Parse error:  syntax error, unexpected ''no-repl' (T_ENCAPSED_AND_WHITESPACE) in /home/jenner/public_html/msw-dev-leave-sites/application/core/MY_Controller.php on line 117

@@ -17,6 +17,8 @@
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/dataTables.min.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/fullcalendar.min.css">
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/slick.css">
+		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/slick-theme.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/style.css">
 		<link rel="stylesheet" href="<?php echo base_url('assets/'); ?>css/bootstrap-datetimepicker.min.css">
 	    	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
@@ -36,7 +38,7 @@
 
 			<a href="#" class="navClose" data-toggle="modal" data-target="#editProfile">Profile <i class="fas fa-user-alt"></i></a>
 
-			<a href="#" class="navClose" data-toggle="modal" data-target="#historyfiles">Upcoming Leave <i class="fas fa-history"></i></a>
+			<a href="#" class="navClose" data-toggle="modal" id="leaveUpcoming" data-target="#historyfiles">Upcoming Leave <i class="fas fa-history"></i></a>
 
 			<?php if($this->session->userdata('role') == '1'): ?>
 
@@ -156,6 +158,7 @@
 	    <script src="<?php echo base_url('assets/'); ?>js/bootstrap.min.js"></script>
 	    <script src="<?php echo base_url('assets/'); ?>js/moment.min.js"></script>
 	    <script src="<?php echo base_url('assets/'); ?>js/fullcalendar.min.js"></script>
+	    <script src="<?php echo base_url('assets/'); ?>js/slick.min.js"></script>
 	    <script src="<?php echo base_url('assets/'); ?>js/gcal.js"></script>
 	    <script src="<?php echo base_url('assets/'); ?>js/jquery.dataTables.min.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/bootstrap-datetimepicker.js"></script>
@@ -173,6 +176,44 @@
 			Offline.options = {checks: {xhr: {url: '/css/style.css'}}};
 
 			$(document).ready(function() {
+
+				$('.leave-container').slick({
+					slidesToShow: 10,
+					slidesToScroll: 1,
+					autoplay: true,
+					autoplaySpeed: 3000,
+					dots: true,
+					prevArrow: false,
+					nextArrow: false,
+					swipeToSlide: true,
+					responsive: [
+						{
+							breakpoint: 1800,
+							settings: {
+								slidesToShow: 8
+							}
+						},
+						{
+							breakpoint: 1400,
+							settings: {
+								slidesToShow: 6
+							}
+						},
+						{
+							breakpoint: 1000,
+							settings: {
+								slidesToShow: 4
+							}
+						},
+						{
+							breakpoint: 650,
+							settings: {
+								slidesToShow: 3
+							}
+						}
+
+					]
+				});
 
 				//Calendar Output
 				$('#calendar').fullCalendar({
@@ -246,23 +287,6 @@
 
 					toastr.success('Leave has been rejected', 'Success', {timeOut: 8000})
 
-				<?php elseif($this->session->flashdata('leavecancel')): ?>
-
-					toastr.success('Leave has been cancelled', 'Success', {timeOut: 8000})
-					$('#historyfiles').modal('show');
-
-				<?php elseif($this->session->flashdata('HideComment')): ?>
-
-					toastr.success('Feedback has been hide', 'Success', {timeOut: 8000})
-					$.ajax({
-						url:"http://172.104.162.155/feeds",
-						method:"POST",
-						success: function(data) {
-							$('.feedtbody').html(data);
-						}
-					});
-					$('#feed_back').modal('show');
-
 				<?php endif; ?>
 
 			});
@@ -280,6 +304,18 @@
 			$('.navClose').on('click', function(){
 				closeNav();
 			});
+
+			function msgview(id) {
+				msgView(id);
+			}
+
+			function msghide(id) {
+				msgHide(id);
+			}
+
+			function cancelLeave(id) {
+				leaveCancel(id);
+			}
 
 		</script>
 

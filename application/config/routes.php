@@ -1,15 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'Dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //Events
-$route['events'] = 'Welcome/showEvents';
+$route['events'] = 'Dashboard/showEvents';
+$route['upcoming-leave'] = 'Dashboard/leave_history';
 
 //Employee
-$route['team-member'] = 'Welcome/getEmployee';
+$route['team-member'] = 'Dashboard/getEmployee';
 
 //Login
 $route['login'] = 'Login';
@@ -23,8 +24,8 @@ $route['verify/(:any)'] = 'Login/changepass/$1';
 $route['change-password'] = 'Login/updatePassword';
 
 //User
-$route['profile/update'] = 'Welcome/edit';
-$route['employee/profile/(:any)'] = 'Welcome/modalDir/$1';
+$route['profile/update'] = 'Dashboard/edit';
+$route['employee/profile/(:any)'] = 'Dashboard/modalDir/$1';
 $route['employees/create'] = 'Subordinate/formAction';
 
 //LeaveForm
@@ -47,12 +48,12 @@ $route['update-leave-balance/(:num)'] = 'Subordinate/leaveUpdateBalance/$1';
 $route['leave-cancel/(:num)'] = 'Leaveform/leaveCancel/$1';
 
 //comment section
-$route['submit-comment'] = 'Welcome/form';
+$route['submit-comment'] = 'Dashboard/form';
 $route['view-comment/(:num)'] = 'Comment/view/$1';
 $route['comment-seen'] = 'Comment/seenComment';
 $route['resolve-comment/(:num)'] = 'Comment/resolveComment/$1';
 $route['comment-hide/(:num)'] = 'Comment/hideComment/$1';
-$route['feeds'] = 'Welcome/Allfeedback';
+$route['feeds'] = 'Dashboard/Allfeedback';
 $route['feedback-count'] = 'Comment/countnewFeed';
 
 //Generate report History

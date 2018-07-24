@@ -232,7 +232,7 @@
 						<div class="footer-text right">HRD-LEF002</div>
 					</div>
 				</div>
-				<input type="submit" class="print" id="editSave" value="Save this">
+				<input type="submit" class="print" id="saveto" value="Request Leave">
 			<!-- </form> -->
 		</div>
 
@@ -265,6 +265,7 @@
 		<script src="<?php echo base_url('assets/'); ?>js/functions.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/action.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/admin.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/edit-form.js"></script>
 		<script src="<?php echo base_url('assets/'); ?>js/dashboard.js"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 	    <script src="<?php echo base_url('assets/'); ?>js/offline.min.js"></script>

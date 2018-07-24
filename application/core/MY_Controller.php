@@ -61,9 +61,43 @@ class MY_Controller extends CI_Controller {
 					<td>'.date('M j, Y',strtotime($val->created_at)).'</td>
 					<td>'.$val->message.'</td>
 					<td>'.$val->username.'</td>
-					<td><a href="#" class="commentView" data-id="'.$val->id.'"><i class="far fa-eye"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('comment-hide/'.$val->id).'" class="commentHide"><i class="fas fa-toggle-on"></i></a></td>
+					<td><a href="#" class="commentView" onclick="msgview('.$val->id.')"><i class="far fa-eye"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="#" class="commentHide" onclick="msghide('.$val->id.')"><i class="fas fa-toggle-on"></i></a></td>
 				</tr>';
 		}
+		return $output;
+	}
+
+	public function upcoming_leave() {
+
+		$leaveHistory = $this->leave->getAllLeave();
+		$output = NULL;
+
+		foreach ($leaveHistory as $val) {
+
+			$action = '<a href="'.base_url('edit-leave-form/'.$val->code).'" class="EditHistory"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="'.base_url('download-leave/'.$val->code).'" class="downloadFiles"><i class="fas fa-cloud-download-alt"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" class="downloadFiles" onclick="cancelLeave('.$val->code.')"><i class="fas fa-times"></i></a>';
+
+			if($val->days > 1) {
+				$date = date('M j',strtotime($val->start)).' - '.date('M j, Y',strtotime($val->end));
+			} else {
+				$date = date('M j, Y',strtotime($val->start));
+			}
+
+			$output .= '
+				<tr>
+					<td>'.$date.'</td>
+					<td>'.$val->title.'</td>
+					<td>'.$val->types.'</td>
+					<td>'.$val->classname.'</td>
+					<td>'.$val->mstatus.'</td>
+					<td>'.$action.'</td>
+				</tr>
+			';
+
+		}
+
 		return $output;
 	}
 

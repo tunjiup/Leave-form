@@ -6,6 +6,19 @@ class M_employee extends CI_Model {
 		parent::__construct();
 	}
 
+	/**
+	* Use for activity Logs
+	* Get New Insert Id
+	* @return Int
+	*/
+	public function getNewInsert() {
+		$where = array('created_at' => date('Y-m-d H:i:s'));
+		$this->db->select('id');
+		$this->db->where($where);
+		$res = $this->db->get('employee');
+		return $res->result();
+	}
+
 	public function insertNew($data) {
 		return $this->db->insert('employee',$data);
 	}
@@ -16,7 +29,7 @@ class M_employee extends CI_Model {
 	* @return Int
 	*/
 	public function getLeave($clause) {
-		$this->db->select("e.name, l.vacationleave, l.sickleave, l.birthleave, u.username, e.id, u.active, SUBSTRING_INDEX(SUBSTRING_INDEX(e.name, ' ', 2 ),' ',1) AS firstname, SUBSTRING_INDEX(SUBSTRING_INDEX(e.name, ' ', -1 ),' ',2) AS lastname");
+		$this->db->select("e.name, u.employee_id, l.vacationleave, l.sickleave, l.birthleave, u.username, e.id, u.active, SUBSTRING_INDEX(SUBSTRING_INDEX(e.name, ' ', 2 ),' ',1) AS firstname, SUBSTRING_INDEX(SUBSTRING_INDEX(e.name, ' ', -1 ),' ',2) AS lastname, YEAR(l.updated_at) as year");
 		$this->db->from('employee e');
 		$this->db->join('leavebalance l','l.employee_id = e.id');
 		$this->db->join('users u','u.employee_id = e.id');
@@ -31,6 +44,21 @@ class M_employee extends CI_Model {
 		$where = array('employee_id' => $id);
 		$this->db->where($where);
 		$res = $this->db->get('users');
+		if($res->num_rows() > 0){
+			$data = $res->row_array();
+		}
+		$res->free_result();
+		return $data;
+	}
+
+	public function getUpdateLeaveYear($id = NULL) {
+		$where = array('employee_id' => $id);
+		$data = array();
+		$this->db->select('YEAR(`updated_at`) as year');
+		if($id != NULL) {
+			$this->db->where($where);
+		}
+		$res = $this->db->get('leavebalance');
 		if($res->num_rows() > 0){
 			$data = $res->row_array();
 		}
@@ -105,12 +133,10 @@ class M_employee extends CI_Model {
 	*/
 	public function getEvents($start, $end, $clause) {
 
-		//$where = array('l.start >=' => $start, 'l.end <=' => $end, 'e.manager' => $clause, 'l.active' => 1);
 		$this->db->select('u.username, l.*');
 		$this->db->from('users u');
 		$this->db->join('leavehistory l','u.employee_id = l.employee_id','LEFT');
 		$this->db->join('employee e','u.employee_id = e.id','LEFT');
-		//$this->db->where($where);
 		$this->db->where("l.start >= '$start' AND l.end <= '$end' AND l.active = 1 AND (e.manager = '$clause' OR e.department = '$clause')");
 		$res = $this->db->get();
 		return $res->result();

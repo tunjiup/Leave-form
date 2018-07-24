@@ -105,13 +105,13 @@ $(function(){
 	function saveData(regular,dateFrom,dateTo,reason,dateTimeFrom,dateTimeTo,contLeave,noDays) {
 
 		$.ajax({
-			url:"http://localhost:8080/leave-form/leave-form/add",
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/leave-form/add",
 			type: "POST",
 			data: {regular:regular, dateFrom:dateFrom, dateTo:dateTo, reason:reason, dateTimeFrom:dateTimeFrom, dateTimeTo:dateTimeTo, contLeave:contLeave, noDays:noDays},
 			success: function(data) {
 				toastr.success('Successfully created', 'Success', {timeOut: 8000});
 				
-				window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 8000);
+				window.setTimeout(function(){window.location.href = "https://media.megasportsworld.com/msw-dev-leave-sites/" }, 8000);
 			},
 			error:function() {
 				toastr.error('Oops, Duplicate Entry', 'Error', {timeOut: 8000});
@@ -126,7 +126,7 @@ $(function(){
 		var formData = new FormData($(this)[0]);
 
 		$.ajax({
-			url: "http://localhost:8080/leave-form/submit-comment",
+			url: "https://media.megasportsworld.com/msw-dev-leave-sites/submit-comment",
 			type: "POST",
 			data: formData,
 			async: true,
@@ -150,7 +150,7 @@ $(function(){
 		var formData = new FormData($(this)[0]);
 
 		$.ajax({
-			url: "http://localhost:8080/leave-form/employees/create",
+			url: "https://media.megasportsworld.com/msw-dev-leave-sites/employees/create",
 			type: "POST",
 			data: formData,
 			async: true,
@@ -160,7 +160,7 @@ $(function(){
 			success: function(data){
 				$('#createNew').modal('hide');
 				toastr.success('Employee successfully created', 'Success', {timeOut: 8000});
-				window.setTimeout(function(){window.location.href = "http://localhost:8080/leave-form/" }, 8000);
+				window.setTimeout(function(){window.location.href = "https://media.megasportsworld.com/msw-dev-leave-sites/" }, 8000);
 				$('form#CreateNewSubordinate')[0].reset();
 			},
 			error:function() {
@@ -175,8 +175,13 @@ $(function(){
 
 		var formData = new FormData($(this)[0]);
 		var id = $('#empID').val();
+		var sl = $('#sl_leave').val();
+		var vl = $('#vl_leave').val();
+		var splitSL = sl.split('/');
+		var splitVL = vl.split('/');
+
 		$.ajax({
-			url: "http://localhost:8080/leave-form/update-leave-balance/" + id,
+			url: "https://media.megasportsworld.com/msw-dev-leave-sites/update-leave-balance/" + id,
 			type: "POST",
 			data: formData,
 			async: true,
@@ -185,10 +190,13 @@ $(function(){
 			processData:false,
 			success: function(data){
 				toastr.success('Change date has been save', 'Success', {timeOut: 8000});
-				$('form#balanceLeave')[0].reset();
+				$('.vl-'+id).html('<span>'+splitVL[0]+'</span>'+splitVL[1]);
+				$('.sl-'+id).html('<span>'+splitSL[0]+'</span>'+splitSL[1]);
+				$('#balanceLeave')[0].reset();
 			},
 			error:function() {
-				toastr.error('Oops! Email Not sent', 'Error', {timeOut: 8000});
+				toastr.error("Can't Update due to restriction", 'Error', {timeOut: 8000});
+				$('#balanceLeave')[0].reset();
 			}
 		})
 	});
@@ -196,7 +204,7 @@ $(function(){
 	$('.leave-wrapper').on('click',function(){
 		var id = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/employee/profile/" + id,
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/employee/profile/" + id,
 			type: "POST",
 			data: {id:id},
 			success: function(data) {
@@ -207,26 +215,15 @@ $(function(){
 
 	});
 
-	$('.commentView').on('click',function(){
-		var id = $(this).attr('data-id');
-		$.ajax({
-			url:"http://localhost:8080/leave-form/view-comment/" + id,
-			type: "POST",
-			data: {id:id},
-			success: function(data) {
-				$('#displayComment').html(data);
-				$('#feed_back').css("z-index", "100");
-				$('#comment_view').modal('show');
-			}
-		});
-
+	$('#leaveUpcoming').on('click', function() {
+		upcomingLeave();
 	});
 
 	$('#import_csv').on('submit', function(e){
 		e.preventDefault();
 		var formData = new FormData($(this)[0]);
 		$.ajax({
-			url:"http://localhost:8080/leave-form/bulk-upload/import",
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/bulk-upload/import",
 			method:"POST",
 			data:formData,
 			async: true,
@@ -248,7 +245,7 @@ $(function(){
 
 	$('#feedAnchor').click(function() {
 		$.ajax({
-			url:"http://localhost:8080/leave-form/comment-seen",
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/comment-seen",
 			method:"POST",
 			success: function(data) {
 				_getFeedBack();
@@ -258,50 +255,10 @@ $(function(){
 		});
 	});
 
-	function _countFeed() {
-		$.ajax({
-			url:"http://localhost:8080/leave-form/feedback-count",
-			method:"POST",
-			success: function(data) {
-				
-				if(data == 0) {
-					$('#feedBadge').removeClass('badge badge-danger');
-					$('#feedBadge').html('');
-				} else {
-					$('#feedBadge').addClass('badge badge-danger');
-					$('#feedBadge').html(data);
-				}
-				
-			}
-		});
-	}
-
-	function _getFeedBack() {
-		$.ajax({
-			url:"http://localhost:8080/leave-form/feeds",
-			method:"POST",
-			success: function(data) {
-				$('.feedtbody').html(data);
-			}
-		});
-	}
-
-	function feedCount() {
-		feed = $('#clientsFeed').val();
-		if(feed != '0') {
-			$('#feedBadge').addClass('badge badge-danger');
-			$('#feedBadge').html(feed);
-		} else {
-			$('#feedBadge').removeClass('badge badge-danger');
-			$('#feedBadge').html('');
-		}
-
-	}
-
 	$('.optimization').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/table/optimize/" + table,
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/database/table/optimize/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -313,7 +270,7 @@ $(function(){
 	$('.repair').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/table/repair/" + table,
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/database/table/repair/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -325,7 +282,7 @@ $(function(){
 	$('.tableBackup').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/table/backup/" + table,
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/database/table/backup/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -337,7 +294,7 @@ $(function(){
 	$('.tableData').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/backup/data/" + table,
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/database/backup/data/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -347,7 +304,7 @@ $(function(){
 	});
 	$('#dbAll').on('click', function(){
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/backup",
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/database/backup",
 			method:"POST",
 			success: function(data) {
 				toastr.success('Backup Database done', 'Success', {timeOut: 8000});
@@ -358,7 +315,7 @@ $(function(){
 	$('.tableStructure').on('click', function(){
 		var table = $(this).attr('data-id');
 		$.ajax({
-			url:"http://localhost:8080/leave-form/database/describe/" + table,
+			url:"https://media.megasportsworld.com/msw-dev-leave-sites/database/describe/" + table,
 			method:"POST",
 			data: {table:table},
 			success: function(data) {
@@ -374,3 +331,89 @@ $(function(){
 		$('#database').css("z-index", "1050");
 	})
 });
+
+function _getFeedBack() {
+	$.ajax({
+		url:"https://media.megasportsworld.com/msw-dev-leave-sites/feeds",
+		method:"POST",
+		success: function(data) {
+			$('.feedtbody').html(data);
+		}
+	});
+}
+
+function msgView(id) {
+	$.ajax({
+		url:"https://media.megasportsworld.com/msw-dev-leave-sites/view-comment/" + id,
+		type: "POST",
+		data: {id:id},
+		success: function(data) {
+			$('#displayComment').html(data);
+			$('#feed_back').css("z-index", "100");
+			$('#comment_view').modal('show');
+		}
+	});
+
+}
+
+function leaveCancel(id) {
+	$.ajax({
+		url:"https://media.megasportsworld.com/msw-dev-leave-sites/leave-cancel/" + id,
+		method:"POST",
+		success: function(data) {
+			toastr.success('Leave has been cancelled', 'Success', {timeOut: 8000})
+			upcomingLeave();
+			window.setTimeout(function(){window.location.href = "https://media.megasportsworld.com/msw-dev-leave-sites/" }, 5000);
+		}
+	});
+}
+
+function upcomingLeave() {
+	$.ajax({
+		url:"https://media.megasportsworld.com/msw-dev-leave-sites/upcoming-leave",
+		method:"POST",
+		success: function(data) {
+			$('.leavetbody').html(data);
+		}
+	});
+}
+
+function msgHide(id) {
+	$.ajax({
+		url:"https://media.megasportsworld.com/msw-dev-leave-sites/comment-hide/" + id,
+		method:"POST",
+		success: function(data) {
+			_getFeedBack();
+			toastr.success('Feedback has been hide', 'Success', {timeOut: 8000})
+		}
+	});
+}
+
+function _countFeed() {
+	$.ajax({
+		url:"https://media.megasportsworld.com/msw-dev-leave-sites/feedback-count",
+		method:"POST",
+		success: function(data) {
+				
+			if(data == 0) {
+				$('#feedBadge').removeClass('badge badge-danger');
+				$('#feedBadge').html('');
+			} else {
+				$('#feedBadge').addClass('badge badge-danger');
+				$('#feedBadge').html(data);
+			}
+				
+		}
+	});
+}
+
+function feedCount() {
+	feed = $('#clientsFeed').val();
+	if(feed != '0') {
+		$('#feedBadge').addClass('badge badge-danger');
+		$('#feedBadge').html(feed);
+	} else {
+		$('#feedBadge').removeClass('badge badge-danger');
+		$('#feedBadge').html('');
+	}
+}

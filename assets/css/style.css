@@ -47,10 +47,10 @@ html, body{
 }
 
 body{
-
-  background: url(../img/cork.png) #a28974;
-
+background: url(../img/cork.png) #9c9086;
 }
+
+
 
 .dot {
 
@@ -92,31 +92,19 @@ body{
 
 
 .main.formPaper{
-
-  width: 210mm;
-
-  height: 290mm;
-
-  background: #fff;
-
-  margin: 10px auto;
-
-  padding: 0in 0.65in 1in;
-
-  position: relative;
-
-  color: #000;
-
-  opacity: 1;
-
-  font-family: Arial ,serif;
-
-  border: 1px solid #cecece;
-
-  border-top: 0;
-
-  border-bottom: 0;
-
+width: 210mm;
+height: 290mm;
+background: #fff;
+margin: 10px auto;
+padding: 0in 0.65in 1in;
+position: relative;
+color: #000;
+opacity: 1;
+font-family: Arial ,serif;
+border: 1px solid #cecece;
+border-top: 0;
+border-bottom: 0;
+box-shadow: 1px 1px 10px 0px #444444;
 }
 
 
@@ -541,15 +529,7 @@ input[type="text"], input[type="email"]{
 
 
 
-.print{
-
-  position: fixed;
-
-  top: 10px;
-
-  right: 10px;
-
-}
+.print{/* position: fixed; *//* top: 10px; *//* right: 10px; */margin: 15px auto;display: block;font-size: 16px;background: #409fe4;border: 1px solid #226ca2;color: #fff;padding: 5px 20px;border-radius: 5px;font-weight: 600; cursor: pointer;}
 
 
 
@@ -674,29 +654,24 @@ body > .row.main-container{
 
 
 .leave-wrapper, .leave-wrapper-inactive{
-
-  background: #fff89a;
-
-  border: 1px solid #cdbc89;
-
-  padding: 15px;
-
-  font-size: 18px;
-
-  margin-top: 10px;
+background: #fff89a;
+border: 1px solid #cdbc89;
+padding: 5px;
+font-size: 16px;
+margin-top: 10px;
 
 /* Firefox */
-
-  -moz-box-shadow: 1px 5px 7px rgba(33,33,33,1);    /* Safari+Chrome */
-
-  -webkit-box-shadow: 1px 5px 7px rgba(33,33,33,.7);    /* Opera */
-
-  box-shadow: 1px 5px 7px rgba(33, 33, 33, 0.27);
-
-  cursor: pointer;
-
+-moz-box-shadow: 1px 5px 7px rgba(33,33,33,1);    /* Safari+Chrome */
+-webkit-box-shadow: 1px 5px 7px rgba(33,33,33,.7);    /* Opera */
+box-shadow: 1px 5px 7px rgba(33, 33, 33, 0.27);
+cursor: pointer;
+height: 160px;
 }
 
+.leave-wrapper.warning, .leave-wrapper-inactive.warning{
+  background: #ef7676;
+  border: 1px solid #b34b4b;
+}
 
 
 .leave-wrapper:hover, .leave-wrapper-inactive:hover{
@@ -707,57 +682,50 @@ body > .row.main-container{
 
 }
 
+.leave-wrapper.warning:hover, .leave-wrapper-inactive.warning:hover{
+  background: #ef7676;
+  box-shadow: 0 0 20px 0px #f3afaf, 1px 5px 7px rgba(33, 33, 33, 0.27);
+}
+
+
 
 
 .lv-name{
-
-  font-size: 1.3vw;
-
+  font-size: 1.1em;
   font-weight: 600;
-
   font-style: italic;
-
-  padding: 5px 0;
-
+  border-bottom: 1px solid #50505073;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 
 
 .lv-info{
+  display: inline-block;
+  width: 50%;
+  box-sizing: border-box;
+  float: left;
+  text-align: center;
+  margin: 3px 0;
+  text-align: left;
+}
 
+.lv-info:nth-child(2){
   display: block;
-
+  width: 100%;
+  float: none;
 }
 
-
-
-.lv-label{
-
-  display: inline-block;
-
-}
+.lv-label{display: block;font-size: 14px;text-align: left;}
 
 
 
-.lv-details{
-
-  display: inline-block;
-
-  float: right;
-
-  font-size: 12px;
-
-}
+.lv-details{display: block;/* float: right; *//* font-size: 12px; */}
 
 
 
-.lv-details > span{
-
-  font-weight: 600;
-
-  font-size: 18px;
-
-}
+.lv-details > span{font-weight: 600;font-size: 1.1em;}
 
 
 
@@ -1007,9 +975,7 @@ body > .row.main-container{
 
 
 /*.sp-events li:not(:first-child){
-
   opacity: 0.7;
-
 }*/
 
 
@@ -1171,7 +1137,7 @@ a:hover, a:focus{
 
     width: 60%;
 
-    margin: 20% auto;
+    margin: 10% auto;
 
     padding: 40px;
 
@@ -1259,8 +1225,6 @@ a:hover, a:focus{
 
 }
 
-
-
 .login-form input:focus{
 
     outline: 0;
@@ -1268,8 +1232,6 @@ a:hover, a:focus{
     background: #eee;
 
 }
-
-
 
 .login-form label{
 
@@ -1281,8 +1243,6 @@ a:hover, a:focus{
 
 }
 
-
-
 .login-form a.fpass{
 
   text-align: left;
@@ -1292,8 +1252,6 @@ a:hover, a:focus{
   color: #ca4c4c;
 
 }
-
-
 
 .login-form input[type="submit"]{
 
@@ -1315,8 +1273,6 @@ a:hover, a:focus{
 
 }
 
-
-
 .loginMain{
 
   top: 0;
@@ -1331,15 +1287,11 @@ a:hover, a:focus{
 
 }
 
-
-
 .login-form .text-danger{
 
   opacity: 0.8;
 
 }
-
-
 
 .login-form > .labl{
 
@@ -1351,13 +1303,7 @@ a:hover, a:focus{
 
 }
 
-
-
-
-
 /*Sidebar*/
-
-
 
 .btn-fix{
 
@@ -1395,8 +1341,6 @@ a:hover, a:focus{
 
 }
 
-
-
 .sidenav {
 
     height: 100%;
@@ -1421,8 +1365,6 @@ a:hover, a:focus{
 
 }
 
-
-
 .sidenav a {
 
     padding: 8px 8px 8px 32px;
@@ -1439,15 +1381,11 @@ a:hover, a:focus{
 
 }
 
-
-
 .sidenav a:hover {
 
     color: #f1f1f1;
 
 }
-
-
 
 .sidenav .closebtn {
 
@@ -1463,8 +1401,6 @@ a:hover, a:focus{
 
 }
 
-
-
 #main {
 
     transition: margin-left .5s;
@@ -1472,8 +1408,6 @@ a:hover, a:focus{
     padding: 16px;
 
 }
-
-
 
 @media screen and (max-height: 450px) {
 
@@ -1719,4 +1653,19 @@ p.feedFrom {
 
 #myrole {
   display: none;
+}
+
+.logo-login {
+  text-align: center;
+}
+
+@media(max-width: 1200px) {
+    .col-sm-3{
+      display: block;
+      margin-top: 45px;
+      -webkit-box-flex: unset;
+      width: 100%;
+      flex: unset;
+      max-width: 100%;
+    }
 }

@@ -25,19 +25,6 @@ class Constant {
 	const CN_APPROVED = "Approved";
 	const CN_REJECT = "Rejected";
 
-	//Move leave Date
-	const M_LEAVE = "Move Leave Date";
-
-	//Module
-	const MODULE_DASHBOARD = 'Dashboard';
-	const MODULE_LEAVE = 'Leave Form';
-	const MODULE_LOGIN = 'Login';
-
-	//Action
-	const A_EDIT = 'Update';
-	const A_ADD = 'Add';
-	const A_DOWNLOAD = 'Download';
-
 	//Manager
 	const PROJECT_MANAGER = 'Project manager';
 
@@ -47,6 +34,35 @@ class Constant {
 	//Comment Status
 	const C_SEEN = 'seen';
 	const C_HIDE = 'hide';
+
+	//Leave Default
+	const D_LEAVE = '0/0';
+
+	//Module
+	const M_DASHBOARD = 'Dashboard';
+	const M_SUBORDINATE = 'Subordinate';
+	const M_MYDATABASE = 'Mydatabase';
+	const M_Login = 'Login';
+	const M_BULKUPLOAD = 'BulkUpload';
+	const M_COMMENT = 'Comment';
+	const M_LEAVEFORM = 'Leaveform';
+
+	//Actions
+	const A_ADD = 'Add';
+	const A_UPDATE = 'Update';
+	const A_VIEW = 'View';
+	const A_HIDE = 'Hide';
+	const A_APPROVED = 'Approved';
+	const A_BACKUP = 'Backup';
+	const A_REPAIR = 'Repair';
+	const A_OPTIMIZE = 'Optimize';
+	const A_FORGOT = 'Forgot Password';
+	const A_REJECT = "Rejected";
+	const A_MOVELEAVE = "Move Leave";
+	const A_CANCEL = "Cancel";
+	const A_DOWNLOAD = "Download";
+	const A_CHANGEPASSWORD = "Change Password";
+
 }
 
 ?>

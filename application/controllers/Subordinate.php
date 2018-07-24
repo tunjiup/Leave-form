@@ -26,6 +26,7 @@ class Subordinate extends MY_Controller {
 			$data['position'] = $this->input->post('position');
 			$data['department'] = $this->input->post('department');
 			$data['manager'] = $this->input->post('manager');
+			$data['active'] = 1;
 			$data['departmenthead'] = $this->input->post('departmenthead');
 			$data['created_at'] = date("Y-m-d H:i:s");
 			$first = strtolower(substr($this->input->post('name'), 0, 1));
@@ -59,6 +60,8 @@ class Subordinate extends MY_Controller {
 					$this->client->emit("new_employee",$new);
 					$this->client->close();
 
+					save_action(array('module' => Constant::M_SUBORDINATE, 'action' => Constant::A_ADD, 'object_id' => $this->db->insert_id()));
+
 				}
 			}
 
@@ -66,18 +69,36 @@ class Subordinate extends MY_Controller {
 	}
 
 	public function leaveUpdateBalance() {
-		
+
 		$id = $this->uri->segment(2);
 		$config = $this->config->item('leave');
+
+		$year = $this->employee->getUpdateLeaveYear($id);
 
 		$this->require_validation($config);
 
 		if($this->form_validation->run()) {
-			
+
 			$data['vacationleave'] = $this->input->post('vacation');
 			$data['sickleave'] = $this->input->post('sick');
 
-			$this->leave->UpdateLeave_balance($data,$id);
+			if($year['year'] != date('Y')) {
+
+				$this->leave->UpdateLeave_balance($data,$id);
+				
+				save_action(array('module' => Constant::M_SUBORDINATE, 'action' => Constant::A_UPDATE.' Leave', 'object_id' => $id));
+
+			} else {
+				if($year['vacationleave'] == Constant::D_LEAVE || $year['sickleave'] == Constant::D_LEAVE) {
+
+					$this->leave->UpdateLeave_balance($data,$id);
+
+					save_action(array('module' => Constant::M_SUBORDINATE, 'action' => Constant::A_UPDATE.' Leave', 'object_id' => $id));
+
+				} else {
+					show_error("Can't Update");
+				}
+			}
 
 		}
 	}

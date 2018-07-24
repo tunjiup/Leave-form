@@ -27,6 +27,7 @@ class BulkUpload extends MY_Controller {
 				'dob' => date('Y-m-d',strtotime($row['Birthdate'])),
 				'position' => $row['Position'],
 				'department' => $row['Department'],
+				'active' => 1,
 				'manager' => $row['Manager'],
 				'departmenthead' => $row['Department Head'],
 				'created_at' => date('Y-m-d H:i:s')
@@ -34,8 +35,8 @@ class BulkUpload extends MY_Controller {
 
 			$leave[] = array(
 				'employee_id' => $id,
-				'vacationleave' => '0/0',
-				'sickleave' => '0/0',
+				'vacationleave' => Constant::D_LEAVE,
+				'sickleave' => Constant::D_LEAVE,
 				'birthleave' => 1
 			);
 			
@@ -52,6 +53,18 @@ class BulkUpload extends MY_Controller {
 		$this->upload->bulkInsertEmployees($data);
 		$this->upload->bulkInsertUser($users);
 		$this->leave->batchInserleave($leave);
+
+		$Newids = $this->employee->getNewInsert();
+
+		foreach ($Newids as $val) {
+
+			$_ids[] = $val->id;
+
+		}
+
+		$_id = implode(',',$_ids);
+
+		save_action(array('module' => Constant::M_BULKUPLOAD, 'action' => Constant::A_ADD, 'object_ids' => $_id));
 	}
 
 }
