@@ -54,5 +54,4 @@ function emitNewOrder(http_server) {
 	});
 }
 
-//emitNewOrder(https_server);
 emitNewOrder(http_server);

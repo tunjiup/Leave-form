@@ -232,7 +232,7 @@
 						<div class="footer-text right">HRD-LEF002</div>
 					</div>
 				</div>
-				<input type="submit" class="print" id="saveto" value="Request Leave">
+				<input type="submit" class="print" id="editSave" value="Request Leave">
 			<!-- </form> -->
 		</div>
 

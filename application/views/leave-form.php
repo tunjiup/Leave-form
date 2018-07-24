@@ -23,7 +23,7 @@
 	</head>
 	<body>
 		<div class="wrapper">
-			<!-- <form method="post" action="http://localhost:8080/dev-leave-form/leave-form/add"> -->
+			<!-- <form method="post" action="http://localhost:8080/dev-leave-form/edit-leave-action/".$this->uri->segment(2)> -->
 				<div class="main formPaper" id="formPaper">
 					<div class="header">
 						<img src="<?php echo base_url('assets/'); ?>img/ocvi_logo.jpg" />

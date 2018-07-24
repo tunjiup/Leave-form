@@ -156,13 +156,11 @@ class Leaveform extends MY_Controller {
 
 					$this->_check_Code($data,$verify,$res);
 
-					save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_UPDATE, 'object_id' => $id));
 				}
 			} else {
 
 				$this->_check_Code($data,$verify,$res);
 
-				save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_UPDATE, 'object_id' => $id));
 			}
 			
 			
@@ -190,13 +188,17 @@ class Leaveform extends MY_Controller {
 				'classname' => Constant::CN_PENDING
 			);
 
-			$this->leave->updateMoveDate($data['leavecode'],$update);
-			$this->moveLeave($data,$verify,$res,$_res);
+			if($this->leave->updateMoveDate($data['leavecode'],$update)) {
+				//$this->moveLeave($data,$verify,$res,$_res);
+				save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_UPDATE, 'object_id' => $data['leavecode']));
+			}
 
 		} else {
 
-			$this->leave->insertMoveDate($data);
-			$this->moveLeave($data,$verify,$res,$_res);
+			if($this->leave->insertMoveDate($data)) {
+				//$this->moveLeave($data,$verify,$res,$_res);
+				save_action(array('module' => Constant::M_LEAVEFORM, 'action' => Constant::A_ADD.' Move date', 'object_id' => $data['leavecode']));
+			}
 			
 		}
 	}
@@ -371,6 +373,7 @@ class Leaveform extends MY_Controller {
 			$data['start'] = $res['start'];
 			$data['end'] = $res['end'];
 			$data['days'] = $res['days'];
+			$data['classname'] = Constant::CN_APPROVED;
 			$data['update_at'] = date("Y-m-d H:i:s");
 
 			$this->leave->updateLeaveHistory($res['leavecode'],$data);
