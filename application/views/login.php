@@ -21,6 +21,7 @@
 	</head>
 	<body class="loginMain">
 	 	<div class="container">
+	 		<div id="map"></div>
 	 		<div class="login-container">
 	 			<div class="logo-login">
 	 				<img src="<?php echo base_url('assets/'); ?>img/logo.png" style="width: 85%;">
@@ -49,6 +50,9 @@
 		<script src="<?php echo base_url('assets/'); ?>js/admin.js"></script>
 	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 	    <script src="<?php echo base_url('assets/'); ?>js/offline.min.js"></script>
+		<script src="<?php echo base_url('assets/'); ?>js/tracker.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnIJy-oVEPN8upUfTuJLQCGukFA3vnsPw&callback=initMap"
+    async defer></script>
 	    <script type="text/javascript">
 	    	Offline.options = {checks: {xhr: {url: '/css/style.css'}}};
 	    </script>

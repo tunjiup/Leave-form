@@ -1,6 +1,6 @@
 $(function(){
 
-	var socket = io.connect("http://172.104.162.155:5001");
+	var socket = io.connect("http://localhost:5001");
 	var role = $('#myrole').val();
 
 	socket.on("new_employee", function(data) {

@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Mydatabase extends MY_Controller {
+class DataStructure extends MY_Controller {
 
 	function __construct() {
 		parent::__construct();
@@ -73,40 +73,16 @@ class Mydatabase extends MY_Controller {
 	public function backuptable($table) {
 
 		if($table != NULL) {
-			$mytable = array($table);
-			$this->preference($mytable);
+			$this->preference($table);
 			save_action(array('module' => Constant::M_MYDATABASE, 'action' => Constant::A_BACKUP.' Table '.$table));
 		} else {
 			show_error('Page Not Found');
 		}
 	}
 
-	public function preference($table) {
-		$prefs = array(
-			'tables'   => $table,
-			'format'   => 'zip',
-			'filename' => 'mybackup.sql',
-			'add_drop' => TRUE,
-			'add_insert' => TRUE,
-			'newline' => "\n"
-		);
-		$backup = $this->dbutil->backup($prefs);
-		$filename = date('Y-m-d').'-db.gz';
-		$loc = $this->file_location().$filename;
-
-		write_file($loc, $backup);
-	}
-
 	public function backupAll() {
-		$prefs = array(
-			'format' => 'zip',
-			'filename' => 'mybackup.sql'
-		);
-		$backup = $this->dbutil->backup($prefs);
-		$filename = date('Y-m-d H:i:s').'-db.gz';
-		$loc = $this->file_location().$filename;
 
-		write_file($loc, $backup);
+		$this->backup_db();
 
 		save_action(array('module' => Constant::M_MYDATABASE, 'action' => Constant::A_BACKUP.' Entire Database'));
 	}

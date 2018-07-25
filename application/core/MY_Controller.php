@@ -32,6 +32,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->dbforge();
 		$this->load->helper('download');
 		$this->pdf = $this->pdf();
+    	$this->load->helper('file');
 		$this->_savePDF = $this->savePDF();
 		$this->version = new Version2X("http://localhost:5001");
 		$this->client = new Client($this->version);
@@ -44,6 +45,49 @@ class MY_Controller extends CI_Controller {
 		$count = count($_count);
 
 		return $count;
+	}
+
+	public function backup_db() {
+    	$prefs = array(
+			'format' => 'zip',
+			'filename' => 'mybackup.sql'
+		);
+		$fileName = 'database-backup-'.date('Y-m-d').'.zip';
+    	$backup = $this->dbutil->backup($prefs);
+    	$loc = $this->file_location().$fileName;
+    	write_file($loc, $backup);
+    }
+
+    public function preference($table) {
+		$prefs = array(
+			'tables'   => array($table),
+			'format'   => 'zip',
+			'filename' => $table.'.sql',
+			'add_drop' => TRUE,
+			'add_insert' => TRUE,
+			'newline' => "\n"
+		);
+		$filename = $table.'-'.date('Y-m-d').'.gz';
+		$backup = $this->dbutil->backup($prefs);
+		$loc = $this->file_location().$filename;
+		write_file($loc, $backup);
+	}
+
+	/**
+	* Check if Folder is existing if not Create one
+	* @return Boolean
+	*/
+	public function file_location() {
+
+		$folder = Constant::FOLDER_DB;
+
+		if(!is_dir($folder)) {
+			mkdir($folder,0755, true);
+		}
+
+		$path = FCPATH.$folder;
+
+		return $path;
 	}
 
 	/**
@@ -469,23 +513,6 @@ class MY_Controller extends CI_Controller {
 	public function delete_Cookies($name) {
 		$cname = underscore($name);
 		delete_cookie($cname);
-	}
-
-	/**
-	* Check if Folder is existing if not Create one
-	* @return Boolean
-	*/
-	public function file_location() {
-
-		$folder = Constant::FOLDER_DB;
-
-		if(!is_dir($folder)) {
-			mkdir($folder,0755, true);
-		}
-
-		$path = FCPATH.$folder;
-
-		return $path;
 	}
 
 	public function myFiles() {

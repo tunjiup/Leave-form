@@ -13,8 +13,9 @@ if (!function_exists('save_login_history')) {
 
 		if($uri == 'login') {
 			$data = array(
-			'username' => $ci->session->userdata('uname'),
-			'login_date' => date('Y-m-d H:i:s')
+				'ip_address' => $ci->input->ip_address(),
+				'username' => $ci->session->userdata('uname'),
+				'login_date' => date('Y-m-d H:i:s')
 			);
 			$ci->login->insert_logs($data);
 		} elseif($uri == 'logout') {
@@ -22,9 +23,10 @@ if (!function_exists('save_login_history')) {
 			$ci->login->updateLogin_logs($data);
 		} else {
 			$data = array(
-			'username' => $ci->session->userdata('uname'),
-			'login_date' => date('Y-m-d H:i:s'),
-			'logout_date' => date('Y-m-d H:i:s')
+				'ip_address' => $ci->input->ip_address(),
+				'username' => $ci->session->userdata('uname'),
+				'login_date' => date('Y-m-d H:i:s'),
+				'logout_date' => date('Y-m-d H:i:s')
 			);
 			$ci->login->insert_logs($data);
 		}
@@ -49,6 +51,7 @@ if (!function_exists('save_action')) {
 				'userid' => $ci->session->userdata('userid'),
 				'module' => $params['module'],
 				'action' => $params['action'],
+				'ipaddress' => $ci->input->ip_address(),
 				'object_id' => isset($params['object_id']) ? $params['object_id'] : '0',
 				'object_ids' => isset($params['object_ids']) ? $params['object_ids'] : '0',
 				'created_at' => date('Y-m-d H:i:s'),

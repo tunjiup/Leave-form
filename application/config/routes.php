@@ -64,11 +64,14 @@ $route['bulk-upload/import'] = 'BulkUpload/import';
 $route['bulk-upload'] = 'BulkUpload';
 
 //Database
-$route['database/table-list'] = 'Mydatabase/tableList';
-$route['database/backup'] = 'Mydatabase/backupAll';
-$route['database/table/backup/(:any)'] = 'Mydatabase/backuptable/$1';
-$route['database/table/repair/(:any)'] = 'Mydatabase/tableRepair/$1';
-$route['database/table/optimize/(:any)'] = 'Mydatabase/tableOptimize/$1';
-$route['database/table/rename/(:any)'] = 'Mydatabase/tableRename/$1';
-$route['database/backup/data/(:any)'] = 'Mydatabase/backupTableData/$1';
-$route['database/describe/(:any)'] = 'Mydatabase/describeTable/$1';
+$route['database/table-list'] = 'DataStructure/tableList';
+$route['database/backup'] = 'DataStructure/backupAll';
+$route['database/table/backup/(:any)'] = 'DataStructure/backuptable/$1';
+$route['database/table/repair/(:any)'] = 'DataStructure/tableRepair/$1';
+$route['database/table/optimize/(:any)'] = 'DataStructure/tableOptimize/$1';
+$route['database/table/rename/(:any)'] = 'DataStructure/tableRename/$1';
+$route['database/backup/data/(:any)'] = 'DataStructure/backupTableData/$1';
+$route['database/describe/(:any)'] = 'DataStructure/describeTable/$1';
+
+//User Tracker
+$route['user-location/(:any)/(:any)/(:any)'] = 'Track_location/userlocation/$1/$1/$1';
