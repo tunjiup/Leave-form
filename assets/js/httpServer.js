@@ -13,14 +13,6 @@ logger.info('SocketIO > Listening on Port');
 var app = express();
 var http_server = http.createServer(app).listen(5001);
 
-/**
-* For HTTPS connection
-*/
-/*var https_server = https.createServer({
-		key: fs.readFileSync('key.key'),
-		cert: fs.readFileSync('cert.crt');
-	},app).listen(5000);*/
-
 function emitNewOrder(http_server) {
 	
 	var io = socket.listen(http_server);

@@ -8,6 +8,7 @@ class Track_location extends MY_Controller {
 	}
 
 	public function userlocation() {
+		
 		$ip = trim(stripslashes(htmlspecialchars($this->uri->segment(2))));
 		$data['ip_address'] = $this->validate_ip($ip);
 		$data['latitude'] = trim(stripslashes(htmlspecialchars($this->uri->segment(3))));
@@ -20,7 +21,7 @@ class Track_location extends MY_Controller {
 
 	public function validate_ip($ipaddress) {
 
-		if (filter_var($ipaddress, FILTER_VALIDATE_IP)) {
+		if(filter_var($ipaddress, FILTER_VALIDATE_IP)) {
 		    $ip = $ipaddress;
 		} else {
 		    return false;

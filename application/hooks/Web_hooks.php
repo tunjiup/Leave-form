@@ -21,7 +21,7 @@ private $_ci = null;
 		$data['uri_string'] = $this->_ci->uri->uri_string();
 		$data['created_at'] = date('Y-m-d h:i:s');
 
-		if ($this->verify_activity())  {
+		if($this->verify_activity())  {
 			// And write it to the database
 			$this->_ci->db->insert('hooks', $data);
 		}

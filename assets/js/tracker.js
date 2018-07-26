@@ -23,7 +23,7 @@ function show_location(position){
 	infoWindow = new google.maps.InfoWindow({map: map});
 	var pos = {lat: position.coords.latitude, lng: position.coords.longitude};
 	$.getJSON('https://api.ipify.org?format=json', function(data){
-		$.post('http://localhost:8080/leave-form/user-location/'+ data.ip +'/'+position.coords.latitude+'/'+position.coords.longitude);
+		$.post('https://mswlive.com/staging/sites/leave-form/user-location/'+ data.ip +'/'+position.coords.latitude+'/'+position.coords.longitude);
 		console.log(pos);
 	});
 	//infoWindow.setPosition(pos);

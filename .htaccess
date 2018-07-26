@@ -59,24 +59,22 @@ RewriteRule ^(.*)$ ./index.php?/$1 [L,QSA]
         Header append Vary Accept-Encoding
     </FilesMatch>
     
-    <FilesMatch "\.(ico|jpe?g|png|gif|swf)$">
-        Header set Cache-Control "public"
-    </FilesMatch>
-    
-    <FilesMatch "\.(css)$">
-        Header set Cache-Control "public"
-    </FilesMatch>
-    
-    <FilesMatch "\.(js)$">
-        Header set Cache-Control "private"
-    </FilesMatch>
-    
     <FilesMatch "\.(x?html?|php)$">
         Header set Cache-Control "private, must-revalidate"
     </FilesMatch>
+
+    # 2 DAYS
+    <FilesMatch "\.(xml|txt)$">
+    Header set Cache-Control "max-age=172800, public, must-revalidate"
+    </FilesMatch>
+
+    # 2 HOURS
+    <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "max-age=7200, must-revalidate"
+    </FilesMatch>
     
     # 1 Month for most static assets
-    <filesMatch ".(css|jpg|jpeg|png|gif|js|ico)$">
+    <filesMatch ".(css|jpg|jpeg|png|gif|js|ico|swf)$">
         Header set Cache-Control "max-age=2592000, public"
     </filesMatch>
     
